@@ -1,14 +1,10 @@
-<!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" />
-    <title>Hello, SoloForest</title>
-</head>
+<html layout:decorate="~{home/navbar.html}">
+<head></head>
 <body>
-<h2>aaaaaaa</h2>
+    <main layout:fragment="main">
+        <p>
+            main section
+        </p>
+    </main>
 </body>
 </html>
