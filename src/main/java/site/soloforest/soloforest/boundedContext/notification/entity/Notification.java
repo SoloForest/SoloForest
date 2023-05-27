@@ -30,7 +30,7 @@ public class Notification {
 	 * 0: 댓글 발생
 	 * 1: 신고 발생
 	 */
-	int event_type;
+	private int event_type;
 
-	Long event_id;
+	private Long event_id;
 }
