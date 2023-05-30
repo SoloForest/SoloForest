@@ -26,7 +26,7 @@ public class AccountControllerTest {
 	private MockMvc mvc;
 
 	@Test
-	@DisplayName("계정 컨트롤러 테스트")
+	@DisplayName("로그인 폼 컨트롤러 테스트")
 	void t001() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(get("/account/login"))
@@ -35,6 +35,7 @@ public class AccountControllerTest {
 		resultActions
 			.andExpect(handler().handlerType(AccountController.class))
 			.andExpect(handler().methodName("showLogin"))
-			.andExpect(status().is2xxSuccessful());
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(view().name("/account/login"));
 	}
 }
