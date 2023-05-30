@@ -11,17 +11,17 @@ spring:
     url: jdbc:mariadb://127.0.0.1:3306/soloforest__dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
     username: lldj
     password: lldj123414
-jpa:
-  hibernate:
-    ddl-auto: create
-  properties:
+  jpa:
     hibernate:
-      show_sql: true
-      format_sql: true
-      use_sql_comments: true
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
 logging:
   level:
     root: INFO
-    com.ll.gramgram: DEBUG  #패키지명
+    com.ll.soloForest: DEBUG  #패키지명
     org.hibernate.orm.jdbc.bind: TRACE
     org.hibernate.orm.jdbc.extract: TRACE
