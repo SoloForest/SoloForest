@@ -2,7 +2,11 @@ package site.soloforest.soloforest.boundedContext.notification.entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,6 +22,7 @@ import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class Notification {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
