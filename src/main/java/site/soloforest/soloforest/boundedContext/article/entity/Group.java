@@ -18,18 +18,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Group extends Article {
 
-	@Column(unique = true)
+	@NotBlank(message = "인원을 정해줘야 합니다.")
 	private int member;
 
-	@Column(unique = true)
+	@NotBlank(message = "시작 날자를 정해야 합니다.")
 	private LocalDateTime startDate;
 
-	@Column(unique = true)
+	@NotBlank(message = "종료 날짜를 정해야 합니다.")
 	private LocalDateTime endDate;
 
-	@Column(unique = true)
+	@NotBlank(message = "모임 장소를 정해야 합니다.")
 	private String location;
 
-	@Column(unique = true)
+	@NotBlank(message = "회비를 정해주세요.")
 	private int money; // 회비
 }
