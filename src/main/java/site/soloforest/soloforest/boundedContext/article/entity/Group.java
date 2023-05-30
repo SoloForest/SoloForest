@@ -21,7 +21,7 @@ public class Group extends Article {
 	@NotBlank(message = "인원을 정해줘야 합니다.")
 	private int member;
 
-	@NotBlank(message = "시작 날자를 정해야 합니다.")
+	@NotBlank(message = "시작 날짜를 정해야 합니다.")
 	private LocalDateTime startDate;
 
 	@NotBlank(message = "종료 날짜를 정해야 합니다.")
