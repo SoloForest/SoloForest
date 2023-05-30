@@ -49,7 +49,7 @@ public class Account {
 	private int authority;
 	private int reported;
 
-	@OneToMany(mappedBy = "", cascade = {CascadeType.REMOVE})
+	@OneToMany(cascade = {CascadeType.REMOVE})
 	@ToString.Exclude
 	private List<Notification> Notifications;
 }
