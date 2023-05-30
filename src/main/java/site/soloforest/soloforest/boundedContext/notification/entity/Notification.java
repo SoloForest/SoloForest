@@ -24,7 +24,7 @@ public class Notification {
 	private Long id;
 
 	private String content;
-
+	@CreatedDate
 	private LocalDateTime createDate;
 
 	/**
