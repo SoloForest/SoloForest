@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 
-@Repository
+
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 	Comment findByContent(String content);
 }

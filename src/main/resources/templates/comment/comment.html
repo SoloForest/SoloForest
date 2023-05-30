@@ -1,21 +1,16 @@
-<!DOCTYPE html>
-<html lang="ko"
-      data-theme="garden"
->
+<html layout:decorate="~{home/layout.html}">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"/>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css"/>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
-<form th:action="@{|/comment/create/|}" method="POST">
-    <textarea placeholder="댓글을 입력해주세요." name = "content"
+<main layout:fragment="main">
+    <form th:action="@{/comment/create}" th:object="${commentForm}" method="POST">
+    <textarea placeholder="댓글을 입력해주세요." th:field="*{content}"
               class="bg-white textarea textarea-bordered textarea-sm w-full max-w-xs"></textarea>
-    <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">
-        <span>입력</span>
-    </button>
-</form>
+        <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded">
+            <span>입력</span>
+        </button>
+    </form>
+</main>
 </body>
 </html>
