@@ -46,7 +46,6 @@ public class Comment {
 	private Article article;
 
 	@ToString.Exclude
-	@Column(unique = true)
 	@ManyToOne
 	private Comment parent;
 
