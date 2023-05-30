@@ -1,0 +1,15 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>login</title>
+</head>
+<body>
+<main layout:fragment="main" class="flex flex-col justify-center items-center flex-grow">
+    <form method="POST" class="flex flex-col gap-1 min-w-[420px] pb-10 px-12 border-b-2 border-gray-300">
+        <input type="text" name="username" placeholder="username" class="input input-bordered w-full max-w-xs"/>
+        <input type="password" name="password" placeholder="password" class="input input-bordered w-full max-w-xs"/>
+        <button class="btn w-full">로그인</button>
+    </form>
+    <p class="m-4">아직 계정이 없으신가요? <a href="#" class="link link-primary">혼숲 계정 만들기</a></p>
+</main>
+</body>
+</html>
