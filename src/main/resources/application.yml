@@ -3,9 +3,6 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
-  profiles:
-    active: dev
-    include: secret
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://127.0.0.1:3306/soloforest__dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul

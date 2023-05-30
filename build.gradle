@@ -33,8 +33,16 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+
+    // 타임리프 레이아웃 디펜던시
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1' // json
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+
+
