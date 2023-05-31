@@ -29,7 +29,9 @@
         </div>
         <div class="flex-none">
             <a href="/account/login">로그인</a>
-            <a href="#">로그아웃</a>
+            <form th:action="|/account/logout|" method="POST" style="display: inline;">
+                <input type="submit" value="로그아웃">
+            </form>
         </div>
         <div class="flex-none">
             <button class="btn btn-ghost btn-circle">
