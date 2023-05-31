@@ -30,7 +30,7 @@ import site.soloforest.soloforest.boundedContext.notification.entity.Notificatio
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor

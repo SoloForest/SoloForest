@@ -19,7 +19,6 @@ import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepos
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@Rollback(false)
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class CommentServiceTests {
@@ -30,17 +29,42 @@ public class CommentServiceTests {
 	private CommentRepository commentRepository;
 
 	@Test
-	@DisplayName("comment test")
+	@DisplayName("댓글 생성 테스트")
 	void t01() {
 		// 댓글 생성 //
 		Comment comment = commentService.create("테스트 댓글");
 
+		// 조회
 		Comment comment1 = commentRepository.findByContent("테스트 댓글");
 		assertThat(comment.equals(comment1));
 
 	}
 
+	@Test
+	@DisplayName("댓글 수정 테스트")
+	void t02() {
+		// 댓글 생성
+		Comment comment = commentService.create("테스트 댓글");
 
+		// 댓글 수정
+		Comment comment2 = commentService.modify(comment, "수정!");
+
+		assertThat(comment2.getContent().equals("수정!"));
+	}
+
+	@Test
+	@DisplayName("댓글 삭제 테스트")
+	void t03() {
+		// 댓글 생성
+		Comment comment = commentService.create("테스트 댓글");
+
+		// 댓글 삭제
+		commentService.delete(comment);
+
+		comment = commentService.getComment("테스트 댓글");
+
+		assertThat(comment).isNull();
+	}
 
 
 }
