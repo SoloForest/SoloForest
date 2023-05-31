@@ -5,6 +5,7 @@ import java.security.Principal;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,7 +78,7 @@ public class CommentController {
 
 	// 댓글 삭제 메서드
 	// @PreAuthorize("isAuthenticated()") // 로그인한 사용자만보임
-	@GetMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public String delete(Principal principal, @PathVariable("id") Long id) {
 		Comment comment = this.commentService.getComment(id);
 		if (!comment.getWriter().getUsername().equals(principal.getName())) {

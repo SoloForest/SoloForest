@@ -7,7 +7,7 @@
     <!-- 댓글 리스트 -->
 
     <!-- 댓글 작성 -->
-    <label for="comment" class="text-lg font-bold">댓글</label>
+    <label for="content" class="text-lg font-bold">댓글</label>
     <form th:action="@{/comment/create}" th:object="${commentForm}" method="POST">
     <textarea placeholder="댓글을 입력해주세요." th:field="*{content}" columns="4"
               class="border border-gray-300 rounded-lg textarea-lg w-6/12 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
