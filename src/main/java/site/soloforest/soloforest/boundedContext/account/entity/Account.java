@@ -17,6 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,6 +39,7 @@ public class Account {
 	@CreatedDate
 	private LocalDateTime createDate;
 	@Column(unique = true, nullable = false)
+	@Size(min = 4, max = 16)
 	private String username;
 	@Column(nullable = false)
 	private String password;
@@ -60,7 +62,7 @@ public class Account {
 	@OneToMany(cascade = {CascadeType.REMOVE})
 	@ToString.Exclude
 	private List<Notification> Notifications;
-	
+
 	public List<? extends GrantedAuthority> getGrantedAuthorities() {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
