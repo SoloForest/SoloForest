@@ -1,6 +1,14 @@
 <html layout:decorate="~{home/layout.html}">
 <head>
     <title>커뮤니티</title>
+    <style>
+        .table td:nth-child(3) {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
 </head>
 
 <body>
@@ -9,6 +17,7 @@
         <h1 class="mt-4 mb-4">
             커뮤니티 게시판
         </h1>
+        <a href="share/create" role="button" class="btn btn-primary btn-sm ml-auto">글쓰기</a>
     </div>
     <div class="overflow-x-auto">
         <table class="table w-full">
@@ -25,13 +34,13 @@
             </thead>
             <tbody>
             <!-- row -->
-            <tr class="text-center hover">
-                <td>7</td>
+            <tr class="text-center hover" th:each="article, loop : ${shareList}">
+                <td th:text="${article.liked}"></td>
                 <td>일상</td>
-                <td>제목</td>
+                <td th:text="${article.subject}"></td>
                 <td>관리자</td>
-                <td>116</td>
-                <td>05.30</td>
+                <td th:text="${article.viewed}">116</td>
+                <td th:text="${#temporals.format(article.createDate, 'MM.dd')}"></td>
             </tr>
             </tbody>
         </table>
