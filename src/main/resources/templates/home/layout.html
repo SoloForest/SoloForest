@@ -32,9 +32,10 @@
             </ul>
         </div>
         <div class="flex-none">
-            <a href="/account/login">로그인</a>
-            <form th:action="|/account/logout|" method="POST" style="display: inline;">
-                <input type="submit" value="로그아웃">
+            <a href="/account/login" sec:authorize="isAnonymous()" class="link link-hover">로그인</a>
+            <form th:action="|/account/logout|" sec:authorize="isAuthenticated()" method="POST"
+                  style="display: inline; :placehorder">
+                <input class="link link-hover" type="submit" value="로그아웃">
             </form>
         </div>
         <div class="flex-none">
