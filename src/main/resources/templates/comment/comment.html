@@ -1,0 +1,22 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<main layout:fragment="main">
+    <!-- 댓글 리스트 -->
+
+    <!-- 댓글 작성 -->
+    <label for="content" class="text-lg font-bold">댓글</label>
+    <form th:action="@{/comment/create}" th:object="${commentForm}" method="POST">
+    <textarea placeholder="댓글을 입력해주세요." th:field="*{content}" columns="4"
+              class="border border-gray-300 rounded-lg textarea-lg w-6/12 focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+            <span>댓글 작성</span>
+        </button>
+    </form>
+
+    <!-- 대댓글 작성 -->
+</main>
+</body>
+</html>
