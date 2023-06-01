@@ -1,0 +1,42 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>커뮤니티</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <div class="flex justify-between items-center">
+        <h1 class="mt-4 mb-4">
+            커뮤니티 게시판
+        </h1>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="table w-full">
+            <!-- head -->
+            <thead>
+            <tr class="text-center">
+                <th>좋아요</th>
+                <th>태그</th>
+                <th>제목</th>
+                <th>닉네임</th>
+                <th>조회수</th>
+                <th>날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- row -->
+            <tr class="text-center hover">
+                <td>7</td>
+                <td>일상</td>
+                <td>제목</td>
+                <td>관리자</td>
+                <td>116</td>
+                <td>05.30</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
+

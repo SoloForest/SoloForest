@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 
 @Entity
@@ -24,6 +25,7 @@ import site.soloforest.soloforest.boundedContext.account.entity.Account;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 public class Article {
 	@Id
