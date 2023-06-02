@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,11 +23,21 @@ import site.soloforest.soloforest.boundedContext.article.service.ShareService;
 public class ShareController {
 	private final ShareService shareService;
 
-	@GetMapping("")
-	public String showList(Model model) {
-		List<Share> shareList = shareService.getShare();
+	@GetMapping("/{type}")
+	public String showList(@PathVariable String type, Model model) {
+		List<Share> shareList;
+
+		if ("community".equals(type)) {
+			shareList = shareService.getSharesByBoardNumber(0);
+		} else if ("program".equals(type)) {
+			shareList = shareService.getSharesByBoardNumber(1);
+		} else {
+			return "redirect:/main";
+		}
+
 		model.addAttribute("shareList", shareList);
-		return "article/share/list";
+
+		return String.format("article/share/%s", type);
 	}
 
 	@GetMapping("/create")
@@ -47,6 +58,6 @@ public class ShareController {
 	public String create(@Valid CreateForm createForm) {
 		shareService.create(createForm.getSubject(), createForm.getContent());
 
-		return "redirect:/article/share";
+		return "redirect:/article/share/community";
 	}
 }

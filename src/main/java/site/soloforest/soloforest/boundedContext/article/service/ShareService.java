@@ -24,8 +24,8 @@ public class ShareService {
 			.build();
 		shareRepository.save(s);
 	}
-
-	public List<Share> getShare() {
-		return shareRepository.findAll();
+	
+	public List<Share> getSharesByBoardNumber(int boardNumber) {
+		return shareRepository.findByBoardNumber(boardNumber);
 	}
 }
