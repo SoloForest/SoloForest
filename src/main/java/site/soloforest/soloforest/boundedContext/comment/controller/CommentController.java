@@ -3,15 +3,14 @@ package site.soloforest.soloforest.boundedContext.comment.controller;
 import java.security.Principal;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.ui.Model;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,8 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.Value;
-import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
@@ -55,27 +52,41 @@ public class CommentController {
 
 		// 기본값 false로 설정
 		private Boolean secret = false;
+
+		private Long parentId;
+
+		private Long articleId;
 	}
 
 	// @PreAuthorize("isAuthenticated()")
 	// ToDO : 게시글 id를 통해 게시글을 얻고, 현재 로그인한 회원의 사용자 정보도 얻어서 등록한다.
-	// ToDo : 대댓글 방식은 PostMapping을 추가하고, 댓글 id를 가지고 build를 하면 될 것 같은데 좀 더 고민해보기!
-	@PostMapping("/create/{id}")
-	public String create(Model model, @PathVariable("id") Long id, @Valid CommentForm commentForm, Principal principal) {
+	@PostMapping("/create")
+	public String create(Model model, @Valid CommentForm commentForm, Principal principal) {
 
 		// 게시글 id를 가져오고, 현재 로그인한 회원의 정보, 댓글 폼에 입력한 내용으로 댓글 객체 생성
-		Article article = articleService.getArticle(id);
+		Article article = articleService.getArticle(commentForm.getArticleId());
 		// Account account = AccoutService.getUser(principal.getName());
-		// Comment comment= commentService.create(commentForm, account, article);
+
+		if (commentForm.getParentId() == null) {
+			// 부모 댓글 생성
+			// commentService.create(commentForm.getContent(), commentForm.secret, account, article);
+		} else {
+			// 자식 댓글 생성
+			// 부모 댓글 찾아오기
+			Comment parent = commentService.getComment(commentForm.parentId);
+			// 자식 댓글 생성
+			// commentService.createReplyComment(commentForm.getContent(), commentForm.secret, account, article, parent);
+		}
+		// Comment comment= commentService.create(commentForm.getContent(), commentForm.getSecret(), account, article);
 
 		return "redirect:/main";
 
 		// TODO : 댓글 작성 시 게시글로 리다이렉트
-		// return "redirect:/article/detail/%s".formatted(id);
+		// return "redirect:/article/detail/%s".formatted(commentForm.getArticleId());
 	}
 
 	// @PreAuthorize("isAuthenticated()")
-	@GetMapping("/modify/{id}") 	// 댓글id
+	@GetMapping("/modify/{id}")    // 댓글id
 	public String showModify(CommentForm commentForm, @PathVariable("id") Long id, Principal principal) {
 		Comment comment = this.commentService.getComment(id);
 		if (!comment.getWriter().getUsername().equals(principal.getName())) { // 댓글 작성한 회원정보와 일치 여부 확인
@@ -89,11 +100,11 @@ public class CommentController {
 	}
 
 	// @PreAuthorize("isAuthenticated()")
-	@PostMapping("/modify/{id}") 	// 댓글 id
+	@PostMapping("/modify/{id}")    // 댓글 id
 	public String modify(@Valid CommentForm commentForm, @PathVariable("id") Long id, Principal principal) {
 		Comment comment = commentService.getComment(id);
 
-		if(!comment.getWriter().getUsername().equals(principal.getName()))
+		if (!comment.getWriter().getUsername().equals(principal.getName()))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
 
 		// 비밀 댓글 여부 변경할 수 있으니 입력받는 객체 자체를 넘기기로 변경

@@ -20,12 +20,12 @@ public class CommentService {
 
 	// TODO : 댓글 생성시 댓글 생성 알림 객체 생성 및 등록
 	@Transactional
-	public Comment create(CommentController.CommentForm commentForm, Account account, Article article) {
+	public Comment create(String content, boolean secret, Account account, Article article) {
 		Comment newComment = Comment.builder()
-			.content(commentForm.getContent())
+			.content(content)
 			.writer(account)
 			.article(article)
-			.secret(commentForm.getSecret())
+			.secret(secret)
 			.build();
 
 		// 알림 객체 생성 이벤트 발생
@@ -35,6 +35,26 @@ public class CommentService {
 
 		return newComment;
 	}
+
+	// TODO : 댓글 생성시 댓글 생성 알림 객체 생성 및 등록
+	@Transactional
+	public Comment createReplyComment(String content, boolean secret, Account account, Article article, Comment parentComment) {
+		Comment newComment = Comment.builder()
+			.content(content)
+			.writer(account)
+			.article(article)
+			.secret(secret)
+			.parent(parentComment)
+			.build();
+
+		// 대댓글 알림 객체 생성 이벤트 발생
+
+
+		commentRepository.save(newComment);
+
+		return newComment;
+	}
+
 
 	// 테스트용
 	public Comment getComment(Long commentId) {
