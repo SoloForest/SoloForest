@@ -1,24 +1,22 @@
 package site.soloforest.soloforest.boundedContext.account.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
-import site.soloforest.soloforest.boundedContext.account.entity.Account;
-import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
+import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
+import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/account")
 public class AccountController {
-	@Autowired
-	private final AccountRepository accountRepository;
-	@Autowired
-	private final PasswordEncoder passwordEncoder;
+	private final AccountService accountService;
 
 	@GetMapping("/login")
 	@PreAuthorize("isAnonymous()")
@@ -28,15 +26,14 @@ public class AccountController {
 
 	@GetMapping("/signUp")
 	@PreAuthorize("isAnonymous()")
-	public String signup() {
+	public String showSignUp() {
+		return "/account/sign_up";
+	}
 
-		Account account = Account.builder()
-			.username("usertest")
-			.password(passwordEncoder.encode("test1"))
-			.nickname("for test")
-			.email("test@test.com")
-			.build();
-		this.accountRepository.save(account);
+	@PostMapping("/signUp")
+	@PreAuthorize("isAnonymous()")
+	public String signup(@ModelAttribute AccountDTO input, Model model) {
+		accountService.singup(input);
 		return "redirect:/account/login";
 	}
 }
