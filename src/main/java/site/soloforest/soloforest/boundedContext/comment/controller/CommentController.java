@@ -22,6 +22,7 @@ import lombok.Setter;
 import lombok.Value;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
+import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 
@@ -32,6 +33,8 @@ public class CommentController {
 
 	// private final ArticleService articleService;
 	private final CommentService commentService;
+
+	private final ArticleService articleService;
 
 	// 디버깅시 활용
 	// private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
@@ -62,10 +65,8 @@ public class CommentController {
 
 		// 게시글 id를 가져오고, 현재 로그인한 회원의 정보, 댓글 폼에 입력한 내용으로 댓글 객체 생성
 		Article article = articleService.getArticle(id);
-		Account account = AccoutService.getUser(principal.getName());
-		Comment comment = commentService.create(commentForm, account);
-
-		Comment comment= commentService.create(commentForm, account, article);
+		// Account account = AccoutService.getUser(principal.getName());
+		// Comment comment= commentService.create(commentForm, account, article);
 
 		return "redirect:/main";
 
