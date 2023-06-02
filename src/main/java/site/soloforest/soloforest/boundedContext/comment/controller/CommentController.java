@@ -107,8 +107,8 @@ public class CommentController {
 		if (!comment.getWriter().getUsername().equals(principal.getName()))
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
 
-		// 비밀 댓글 여부 변경할 수 있으니 입력받는 객체 자체를 넘기기로 변경
-		commentService.modify(comment, commentForm);
+		// 댓글 내용, 비밀 댓글 여부만 수정 할테니 해당 값 넘기기
+		commentService.modify(comment, commentForm.getContent(), commentForm.getSecret());
 		// TODO : 게시글 정보로 리다이렉트 변경
 		return "redirect:/main";
 	}
@@ -123,6 +123,7 @@ public class CommentController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다");
 		}
 		commentService.delete(comment);
+		// TODO : 게시글 정보로 리다이렉트
 		return "comment/comment";
 	}
 

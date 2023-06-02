@@ -63,10 +63,10 @@ public class CommentService {
 
 	// 댓글 수정
 	@Transactional
-	public Comment modify(Comment comment, CommentController.CommentForm commentForm) {
+	public Comment modify(Comment comment, String content, boolean secret) {
 		Comment mComment = comment.toBuilder()
-			.content(commentForm.getContent())
-			.secret(commentForm.getSecret())
+			.content(content)
+			.secret(secret)
 			.build();
 		commentRepository.save(mComment);
 
