@@ -103,4 +103,18 @@ public class AccountControllerTest {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/account/login?error=true"));
 	}
+
+	@Test
+	@DisplayName("회원가입 폼 컨트롤러 테스트")
+	void t004() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/account/signUp"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("showSignUp"))
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(view().name("/account/sign_up"));
+	}
 }
