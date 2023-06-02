@@ -66,4 +66,15 @@ public class Comment {
 	@OneToOne
 	private Notification notification;
 
+	public void deleteParent(){
+		this.content = "삭제되었습니다.";
+	}
+
+	// 타임리프에서 비밀 댓글이면 댓글의 내용이 안보이게 하기 위함
+	// TODO : 템플릿에서 th:if(비밀글) => th:text = "비밀 댓글입니다."
+	//  + (사용자 id = 작성자 or admin or 게시글 작성자만 보이게 타임리프 조건)
+ 	public boolean isSecret() {
+		return this.secret == true;
+	}
+
 }

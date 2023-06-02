@@ -35,7 +35,7 @@ public class CommentServiceTests {
 		Comment comment = commentService.create("테스트 댓글");
 
 		// 조회
-		Comment comment1 = commentRepository.findByContent("테스트 댓글");
+		Comment comment1 = commentService.findById(1L);
 		assertThat(comment.equals(comment1));
 
 	}

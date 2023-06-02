@@ -1,9 +1,13 @@
 package site.soloforest.soloforest.boundedContext.comment.service;
 
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.boundedContext.account.entity.Account;
+import site.soloforest.soloforest.boundedContext.article.entity.Article;
+import site.soloforest.soloforest.boundedContext.comment.controller.CommentController;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepository;
 
@@ -14,12 +18,18 @@ public class CommentService {
 
 	private final CommentRepository commentRepository;
 
-	// 작성자 정보를 위해 로그인한 회원 정보 받아서 넣기는 아직 안함
+	// TODO : 댓글 생성시 댓글 생성 알림 객체 생성 및 등록
 	@Transactional
-	public Comment create(String content) {
+	public Comment create(CommentController.CommentForm commentForm, Account account, Article article) {
 		Comment newComment = Comment.builder()
-			.content(content)
+			.content(commentForm.getContent())
+			.writer(account)
+			.article(article)
+			.secret(commentForm.getSecret())
 			.build();
+
+		// 알림 객체 생성 이벤트 발생
+
 
 		commentRepository.save(newComment);
 
@@ -27,19 +37,16 @@ public class CommentService {
 	}
 
 	// 테스트용
-	public Comment getComment(String content) {
-		 return commentRepository.findByContent(content);
-	}
-
 	public Comment getComment(Long commentId) {
 		return commentRepository.findById(commentId).get();
 	}
 
-	// 수정, 아직 대댓글, 비밀댓글 고려 안함
+	// 댓글 수정
 	@Transactional
-	public Comment modify(Comment comment, String content) {
+	public Comment modify(Comment comment, CommentController.CommentForm commentForm) {
 		Comment mComment = comment.toBuilder()
-			.content(content)
+			.content(commentForm.getContent())
+			.secret(commentForm.getSecret())
 			.build();
 		commentRepository.save(mComment);
 
@@ -49,6 +56,31 @@ public class CommentService {
 	// 삭제
 	@Transactional
 	public void delete(Comment comment) {
-		commentRepository.delete(comment);
+		if (comment.getChildren().size() != 0) {
+			// 자식이 있으면 내용만 삭제
+			comment.deleteParent();
+		}
+		else { // 자식이 없다 -> 대댓글이 없다 -> 객체 그냥 삭제해도 된다.
+			// 삭제 가능한 조상 댓글을 구해서 삭제
+			// ex) 할아버지 - 아버지 - 대댓글, 3자라 했을 때 대댓글 입장에서 자식이 없으니 삭제 가능
+			// => 삭제하면 아버지도 삭제 가능 => 할아버지도 삭제 가능하니 이런식으로 조상 찾기 메서드
+			commentRepository.delete(getDeletableAncestorComment(comment));
+		}
+	}
+
+	private Comment getDeletableAncestorComment(Comment comment) {
+		Comment parent = comment.getParent(); // 현재 댓글의 부모를 구함
+		if (parent != null && parent.getChildren().size() == 1 && parent.getContent().equals("삭제되었습니다."))
+			// 부모가 있고, 부모의 자식이 1개(지금 삭제하는 댓글)이고, 부모의 삭제 상태가 TRUE인 댓글이라면 재귀
+			// 삭제가능 댓글 -> 만일 댓글의 조상(대댓글의 입장에서 할아버지 댓글)도 해당 댓글 삭제 시 삭제 가능한지 확인
+			return getDeletableAncestorComment(parent);
+		// 삭제 -> Cascade 옵션으로 가장 부모만 삭제 해도 자식들도 다 삭제 가능
+		return comment;
+	}
+
+	// 댓글 조회
+	public Comment findById(Long id) {
+
+		return commentRepository.findById(id).get();
 	}
 }
