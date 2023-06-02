@@ -40,8 +40,8 @@ public class ShareController {
 		return String.format("article/share/%s", type);
 	}
 
-	@GetMapping("/create")
-	public String showCreate() {
+	@GetMapping("/{type}/create")
+	public String showCreate(@PathVariable String type) {
 		return "article/share/form";
 	}
 
@@ -54,10 +54,14 @@ public class ShareController {
 		private final String content;
 	}
 
-	@PostMapping("/create")
-	public String create(@Valid CreateForm createForm) {
-		shareService.create(createForm.getSubject(), createForm.getContent());
+	@PostMapping("/{type}/create")
+	public String create(@PathVariable String type, @Valid CreateForm createForm) {
 
-		return "redirect:/article/share/community";
+		if ("community".equals(type))
+			shareService.create(0, createForm.getSubject(), createForm.getContent());
+		else if ("program".equals(type))
+			shareService.create(1, createForm.getSubject(), createForm.getContent());
+
+		return String.format("redirect:/article/share/%s", type);
 	}
 }

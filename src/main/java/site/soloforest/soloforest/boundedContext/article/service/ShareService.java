@@ -16,15 +16,16 @@ public class ShareService {
 	private final ShareRepository shareRepository;
 
 	@Transactional
-	public void create(String subject, String content) {
+	public void create(int boardNumber, String subject, String content) {
 		Share s = Share
 			.builder()
 			.subject(subject)
 			.content(content)
+			.boardNumber(boardNumber)
 			.build();
 		shareRepository.save(s);
 	}
-	
+
 	public List<Share> getSharesByBoardNumber(int boardNumber) {
 		return shareRepository.findByBoardNumber(boardNumber);
 	}
