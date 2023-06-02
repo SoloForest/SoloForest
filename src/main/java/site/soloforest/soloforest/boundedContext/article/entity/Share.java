@@ -9,12 +9,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 public class Share extends Article {
 	@Column

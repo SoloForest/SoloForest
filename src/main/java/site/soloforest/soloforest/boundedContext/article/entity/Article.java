@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 
 @Entity
@@ -24,6 +25,7 @@ import site.soloforest.soloforest.boundedContext.account.entity.Account;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 public class Article {
 	@Id
@@ -45,7 +47,9 @@ public class Article {
 
 	/**
 	 * 게시판 성격을 알려주는 변수
-	 * 0 : 정보 공유성 게시판
-	 * 1 : 인원 모집형 게시판 */
+	 * 0 : 커뮤니티 게시판
+	 * 1 : 프로그램 게시판
+	 * 2 : 이벤트/특가 게시판
+	 * 3 : 소모임 게시판 **/
 	private int boardNumber;
 }

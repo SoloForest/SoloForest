@@ -1,0 +1,51 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>커뮤니티</title>
+    <style>
+        .table td:nth-child(3) {
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <div class="flex justify-between items-center">
+        <h1 class="mt-4 mb-4">
+            커뮤니티 게시판
+        </h1>
+        <a href="/article/share/community/create" role="button" class="btn btn-primary btn-sm ml-auto">글쓰기</a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="table w-full">
+            <!-- head -->
+            <thead>
+            <tr class="text-center">
+                <th>좋아요</th>
+                <th>태그</th>
+                <th>제목</th>
+                <th>닉네임</th>
+                <th>조회수</th>
+                <th>날짜</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- row -->
+            <tr class="text-center hover" th:each="article, loop : ${shareList}">
+                <td th:text="${article.liked}"></td>
+                <td>일상</td>
+                <td th:text="${article.subject}"></td>
+                <td>관리자</td>
+                <td th:text="${article.viewed}">116</td>
+                <td th:text="${#temporals.format(article.createDate, 'MM.dd')}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
+
