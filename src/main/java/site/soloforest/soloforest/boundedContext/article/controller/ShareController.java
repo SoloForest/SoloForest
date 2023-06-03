@@ -56,12 +56,24 @@ public class ShareController {
 
 	@PostMapping("/{type}/create")
 	public String create(@PathVariable String type, @Valid CreateForm createForm) {
+		Share s;
 
 		if ("community".equals(type))
-			shareService.create(0, createForm.getSubject(), createForm.getContent());
+			s = shareService.create(0, createForm.getSubject(), createForm.getContent());
 		else if ("program".equals(type))
-			shareService.create(1, createForm.getSubject(), createForm.getContent());
+			s = shareService.create(1, createForm.getSubject(), createForm.getContent());
+		else
+			throw new IllegalArgumentException("Invalid board type: " + type);
 
-		return String.format("redirect:/article/share/%s", type);
+		return String.format("redirect:/article/share/detail/%d", s.getId());
+	}
+
+	@GetMapping("detail/{id}")
+	public String detail(@PathVariable Long id, Model model) {
+		Share share = shareService.getShare(id);
+
+		model.addAttribute(share);
+
+		return "article/share/detail";
 	}
 }

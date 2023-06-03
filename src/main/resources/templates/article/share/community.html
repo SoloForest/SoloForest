@@ -13,10 +13,11 @@
 
 <body>
 <main layout:fragment="main">
-    <div class="flex justify-between items-center">
-        <h1 class="mt-4 mb-4">
+    <div class="flex items-center relative">
+        <h1 class="mt-4 mb-4 font-semibold">
             커뮤니티 게시판
         </h1>
+        <div class="ml-4 h-4 w-px bg-black"></div>
         <a href="/article/share/community/create" role="button" class="btn btn-primary btn-sm ml-auto">글쓰기</a>
     </div>
     <div class="overflow-x-auto">
@@ -37,7 +38,9 @@
             <tr class="text-center hover" th:each="article, loop : ${shareList}">
                 <td th:text="${article.liked}"></td>
                 <td>일상</td>
-                <td th:text="${article.subject}"></td>
+                <td>
+                    <a th:href="@{|/article/share/detail/${article.id}|}" th:text="${article.subject}"></a>
+                </td>
                 <td>관리자</td>
                 <td th:text="${article.viewed}">116</td>
                 <td th:text="${#temporals.format(article.createDate, 'MM.dd')}"></td>
