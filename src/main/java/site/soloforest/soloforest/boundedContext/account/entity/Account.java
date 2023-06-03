@@ -56,8 +56,8 @@ public class Account {
 	 * 1: 일반 사용자
 	 * default : 1 (일반 사용자)
 	 */
-	private int authority = 1;
-	private int reported = 0;
+	private int authority;
+	private int reported;
 
 	@OneToMany(cascade = {CascadeType.REMOVE})
 	@ToString.Exclude
