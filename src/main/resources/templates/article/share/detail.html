@@ -1,0 +1,45 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>게시글 상세 페이지</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <div class="flex items-center relative">
+        <div class="flex items-center">
+            <h1 class="mt-4 mb-4 font-semibold">
+                커뮤니티 게시판
+            </h1>
+            <div class="ml-4 h-4 w-px bg-black"></div>
+        </div>
+    </div>
+    <div class="container mx-auto">
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-6"
+             style="min-height: 600px; max-height: auto; overflow: auto;">
+            <h1 class="text-3xl font-semibold mb-3 ml-2">안녕하세요. SoloForest 입니다.</h1>
+            <div class="mb-6 ml-6">
+                <span class="font-bold text-primary">관리자</span>
+                <span class="ml-3">06.02</span>
+                <i class="ml-2 fa-solid fa-eye"></i>
+                <span class="gap-1">116</span>
+                <!-- 즐겨찾기 -->
+                <i class="fa-regular fa-bookmark mr-10" style="float: right; display: inline-block;"></i>
+                <!-- 즐겨찾기 끝-->
+            </div>
+            <hr class="mb-8" style="border: none; border-top: 1px solid;">
+            <div class="mb-5 ml-5" style="height: 300px; max-height: auto; overflow: auto;">
+                <span class="text-xl">
+                    즐거운 커뮤니티 환경 함께 만들어보아요.</span>
+            </div>
+            <div class="mb-6 ml-6">
+                <i class="fa-regular fa-thumbs-up"></i>
+                <span class="gap-1">17</span>
+                <i class="fa-regular fa-comment ml-3"></i>
+                <span class="gap-1">4</span>
+            </div>
+            <hr class="mb-8" style="border: none; border-top: 1px solid;">
+        </div>
+    </div>
+</main>
+</body>
+</html>
