@@ -37,6 +37,19 @@ dependencies {
     // 타임리프 레이아웃 디펜던시
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1' // json
+
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    // redis 드라이버
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // 세션을 스프링 내부객체가 아닌 다른 저장소에 저장할 수 있도록 해주는 녀석
+    implementation 'org.springframework.session:spring-session-core'
+
+    // 세션을 redis
+    implementation 'org.springframework.session:spring-session-data-redis'
+
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 tasks.named('test') {
