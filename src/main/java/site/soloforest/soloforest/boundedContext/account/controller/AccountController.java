@@ -2,7 +2,6 @@ package site.soloforest.soloforest.boundedContext.account.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +31,7 @@ public class AccountController {
 
 	@PostMapping("/signUp")
 	@PreAuthorize("isAnonymous()")
-	public String signup(@ModelAttribute AccountDTO input, Model model) {
+	public String signup(@ModelAttribute AccountDTO input) {
 		accountService.singup(input);
 		return "redirect:/account/login";
 	}
