@@ -16,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -36,16 +35,14 @@ public class AccountControllerTest {
 	private MockMvc mvc;
 	@Autowired
 	private AccountRepository accountRepository;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	void initData() {
 		Account account = Account.builder()
-			.username("usertest")
-			.password(passwordEncoder.encode("test1"))
-			.nickname("for test")
-			.email("test@test.com")
+			.username("testuser")
+			.password("test1")
+			.nickname("testuser")
+			.email("testuser@test.com")
 			.build();
 		this.accountRepository.save(account);
 	}
@@ -71,7 +68,7 @@ public class AccountControllerTest {
 			.perform(
 				post("/account/login")
 					.with(csrf())
-					.param("username", "usertest")
+					.param("username", "testuser")
 					.param("password", "test1")
 			)
 			.andDo(print());
@@ -84,7 +81,7 @@ public class AccountControllerTest {
 		SecurityContext securityContext = (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT");
 		User user = (User)securityContext.getAuthentication().getPrincipal();
 
-		assertThat(user.getUsername()).isEqualTo("usertest");
+		assertThat(user.getUsername()).isEqualTo("testuser");
 	}
 
 	@Test
@@ -94,7 +91,7 @@ public class AccountControllerTest {
 			.perform(
 				post("/account/login")
 					.with(csrf())
-					.param("username", "usertest")
+					.param("username", "testuser")
 					.param("password", "user1")
 			)
 			.andDo(print());
