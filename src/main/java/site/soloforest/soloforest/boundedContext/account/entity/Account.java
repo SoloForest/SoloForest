@@ -56,7 +56,9 @@ public class Account {
 	 * 1: 일반 사용자
 	 * default : 1 (일반 사용자)
 	 */
+	@Builder.Default
 	private int authority = 1;
+	@Builder.Default
 	private int reported = 0;
 
 	@OneToMany(cascade = {CascadeType.REMOVE})

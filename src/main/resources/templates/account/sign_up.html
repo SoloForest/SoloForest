@@ -1,0 +1,105 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>sign up</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<main layout:fragment="main" class="flex flex-col justify-center items-center flex-grow">
+    <script>
+        $(document).ready(function () {
+            const doDropdown = $("#do");
+            const siDropdown = $("#si");
+
+            function populateDoDropdown() {
+                $.getJSON("/common/json/do-si.json")
+                    .done((data) => {
+                        data.forEach((entry) => {
+                            doDropdown.append(
+                                $("<option>", {value: entry.do, text: entry.do})
+                            );
+                        });
+                    })
+                    .fail((error) => {
+                        console.error("Error fetching JSON data:", error);
+                    });
+            }
+
+            function updateSiDropdown(selectedDo) {
+                siDropdown.empty();
+                siDropdown.append($("<option>", {value: "", text: "시 선택"}));
+
+                if (selectedDo) {
+                    $.getJSON("/common/json/do-si.json")
+                        .done((data) => {
+                            const selectedDoData = data.find((entry) => entry.do === selectedDo);
+                            selectedDoData.si.forEach((si) => {
+                                siDropdown.append($("<option>", {value: si, text: si}));
+                            });
+                        })
+                        .fail((error) => {
+                            console.error("Error fetching JSON data:", error);
+                        });
+                }
+            }
+
+            doDropdown.on("change", function (event) {
+                const selectedValue = event.target.value;
+                $("#address").val(selectedValue);
+                updateSiDropdown(selectedValue);
+            });
+
+            siDropdown.on("change", function (event) {
+                const selectedValue = event.target.value;
+                $("#address").val(doDropdown.find(":selected").val() + " " + selectedValue);
+            })
+
+            populateDoDropdown();
+        });
+    </script>
+
+    <form method="POST" th:action
+          class="flex flex-col gap-1 min-w-[420px] mt-6 pb-10 px-12 border-b-2 border-gray-300">
+        <label for="username" class="label">
+            <span class="label-text">Username <span style="color:red;">*</span></span>
+        </label>
+        <input id="username" type="text" name="username" placeholder="username"
+               class="input input-bordered w-full max-w-xs"/>
+        <label for="password" class="label">
+            <span class="label-text">Password <span style="color:red;">*</span></span>
+        </label>
+        <input id="password" type="password" name="password" placeholder="password"
+               class="input input-bordered w-full max-w-xs"/>
+        <label for="passwordCheck" class="label">
+            <span class="label-text">Password check <span style="color:red;">*</span></span>
+        </label>
+        <input id="passwordCheck" type="password" name="passwordCheck" placeholder="password check"
+               class="input input-bordered w-full max-w-xs"/>
+        <label for="nickname" class="label">
+            <span class="label-text">Nickname <span style="color:red;">*</span></span>
+        </label>
+        <input id="nickname" type="text" name="nickname" placeholder="nickname"
+               class="input input-bordered w-full max-w-xs"/>
+        <label for="email" class="label">
+            <span class="label-text">Email <span style="color:red;">*</span></span>
+        </label>
+        <input id="email" type="email" name="email" placeholder="email@example.com"
+               class="input input-bordered w-full max-w-xs"/>
+
+        <label class="label">
+            <span class="label-text">Address</span>
+        </label>
+        <div class="input-group mb-3">
+            <select id="do" class="select select-bordered w-full max-w-[160px]">
+                <option value="">도 선택</option>
+            </select>
+            <select id="si" class="select select-bordered w-full max-w-[160px]">
+                <option value="">시 선택</option>
+            </select>
+        </div>
+        <input type="text" id="address" name="address" value="" hidden/>
+        <button class="btn w-full">회원가입</button>
+    </form>
+    <p class="m-4">이미 계정이 있으신가요? <a href="/account/login" class="link link-primary">혼숲 로그인하기</a></p>
+</main>
+</body>
+</html>
