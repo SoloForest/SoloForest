@@ -59,10 +59,6 @@ public class AccountService {
 			}
 			System.out.println("catch" + status);
 		}
-
-		// 보안 세션 정보에 사용자 인증 객체 설정
-		SecurityContextHolder.getContext().setAuthentication(token);
-		System.out.println("security" + SecurityContextHolder.getContext().getAuthentication());
 	}
 
 }
