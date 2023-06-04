@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
-import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
+import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Group;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.repository.GroupRepository;
@@ -23,7 +23,7 @@ import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepos
 public class NotProd {
 	@Bean
 	CommandLineRunner initData(
-		AccountRepository accountRepository,
+		AccountService accountService,
 		ShareRepository shareRepository,
 		GroupRepository groupRepository,
 		CommentRepository commentRepository
@@ -50,8 +50,8 @@ public class NotProd {
 						.address("서울특별시 용산구")
 						.build()
 				);
-				accountRepository.save(accountAdmin1);
-				accountRepository.saveAll(accounts);
+				accountService.create(accountAdmin1);
+				accounts.forEach(accountService::create);
 
 				List<Share> shares = List.of(
 					Share.builder()
