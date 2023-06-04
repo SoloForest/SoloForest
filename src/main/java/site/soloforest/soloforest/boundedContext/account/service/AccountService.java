@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
@@ -31,12 +33,10 @@ public class AccountService {
 			.email(dto.getEmail())
 			.address(dto.getAddress())
 			.build();
-		Account savedAccount = accountRepository.save(account);
-		authenticateAccountAndSetSession(dto);
-		return savedAccount;
+		return accountRepository.save(account);
 	}
 
-	private void authenticateAccountAndSetSession(AccountDTO account) {
+	public void authenticateAccountAndSetSession(AccountDTO account, HttpServletRequest request) {
 		// 사용자 인증
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
 			account.getUsername(),
@@ -47,6 +47,9 @@ public class AccountService {
 			Authentication authentication = authenticationManager.authenticate(token);
 			// 실제 SecurityContext 에 authentication 정보를 등록한다.
 			SecurityContextHolder.getContext().setAuthentication(authentication);
+			// 실제 사용자의 세션에 context를 저장한다.
+			HttpSession session = request.getSession();
+			session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 		} catch (DisabledException | LockedException | BadCredentialsException e) {
 			String status;
 			if (e.getClass().equals(BadCredentialsException.class)) {
