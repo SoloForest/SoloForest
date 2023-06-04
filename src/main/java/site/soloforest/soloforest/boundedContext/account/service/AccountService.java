@@ -21,8 +21,6 @@ public class AccountService {
 			.nickname(dto.getNickname())
 			.email(dto.getEmail())
 			.address(dto.getAddress())
-			.authority(1)
-			.reported(0)
 			.build();
 		Account savedAccount = accountRepository.save(account);
 		return savedAccount;
