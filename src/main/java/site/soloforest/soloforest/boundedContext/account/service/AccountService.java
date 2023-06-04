@@ -32,15 +32,16 @@ public class AccountService {
 			.address(dto.getAddress())
 			.build();
 		Account savedAccount = accountRepository.save(account);
-		authenticateAccountAndSetSession(savedAccount);
+		authenticateAccountAndSetSession(dto);
 		return savedAccount;
 	}
 
-	private void authenticateAccountAndSetSession(Account account) {
+	private void authenticateAccountAndSetSession(AccountDTO account) {
 		// 사용자 인증
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(account.getUsername(),
-			account.getPassword(), account.getGrantedAuthorities());
-		System.out.println(token);
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+			account.getUsername(),
+			account.getPassword()
+		);
 		try {
 			// AuthenticationManager 에 token 을 넘기면 UserDetailsService 가 받아 처리하도록 한다.
 			Authentication authentication = authenticationManager.authenticate(token);
@@ -60,5 +61,4 @@ public class AccountService {
 			System.out.println("catch" + status);
 		}
 	}
-
 }
