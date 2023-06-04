@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-theme="garden" lang="ko"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,43 +12,75 @@
 </head>
 <body class="mx-auto" style="width:80%; min-height:100vh; display: flex; flex-direction: column;">
 
-<div class="navbar bg-base-100 flex-wrap border-b-2 border-gray-300">
-    <div class="w-full">
-        <a class="btn btn-ghost normal-case text-xl" href="/main">
-            <img src="Logo_white.png" width="150px" alt="SoloForest">
-        </a>
-    </div>
-    <div class="w-full">
-        <div class="flex-1">
-            <ul class="menu menu-horizontal px-1">
-                <li><a href="#">커뮤니티</a></li>
-                <li><a href="#">프로그램</a></li>
-                <li><a href="#">이벤트/특가</a></li>
-                <li><a href="#">소모임</a></li>
-            </ul>
+<div>
+    <div class="navbar bg-base-100 flex-wrap border-b-2 border-gray-300">
+        <div class="w-full">
+            <a class="btn btn-ghost normal-case text-xl" href="/main">
+                <img src="/Logo_white.png" width="150px" alt="SoloForest">
+            </a>
         </div>
-        <div class="flex-none">
-            <a href="#">로그아웃</a>
-        </div>
-        <div class="flex-none">
-            <button class="btn btn-ghost btn-circle">
-                <div class="indicator">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                    </svg>
-                    <span class="badge badge-xs badge-primary indicator-item"></span>
-                </div>
-            </button>
+        <div class="w-full">
+            <div class="flex-1">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="#">커뮤니티</a></li>
+                    <li><a href="#">프로그램</a></li>
+                    <li><a href="#">이벤트/특가</a></li>
+                    <li><a href="#">소모임</a></li>
+                </ul>
+            </div>
+            <div class="flex-none">
+                <a href="#">로그아웃</a>
+            </div>
+            <div class="flex-none">
+                <button class="btn btn-ghost btn-circle">
+                    <div class="indicator">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <span class="badge badge-xs badge-primary indicator-item"></span>
+                    </div>
+                </button>
+            </div>
         </div>
     </div>
 </div>
-<!-- main-->
 
-<main layout:fragment="main"></main>
+<div class="m-3 mb-3 flex justify-center">
 
-<!-- footer -->
+        <label class="space-x-2 mr-2 text-lg">제목</label>
+        <div>
+            <label for="small-input" class="block text-sm font-medium text-gray-900 dark:text-white"></label>
+            <input type="text" id="small-input"
+                   class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+        </div>
+
+
+</div>
+    <style>
+        .limited-height {
+            max-height: 1000px;
+            overflow-y: visible;
+        }
+    </style>
+
+    <div class="mb-6 flex justify-center">
+        <div class="w-1/2">
+            <label for="large-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"></label>
+            <textarea id="large-input"
+                      class="limited-height block w-full p-20 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+        </div>
+    </div>
+</div>
+<div class="max-w-md mx-auto">
+    <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+        등록
+    </button>
+    <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+        취소
+    </button>
+</div>
 <footer th:fragment="footerFragment" class="mt-auto footer items-center p-4 bg-neutral text-neutral-content">
     <div class="items-center grid-flow-col">
         <svg role="img" width="36" height="36" style="fill: white;" viewBox="0 0 24 24"
@@ -73,4 +105,4 @@
     </div>
 </footer>
 </body>
-</html>s
+</html>

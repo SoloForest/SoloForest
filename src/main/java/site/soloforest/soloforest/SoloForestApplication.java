@@ -11,5 +11,4 @@ public class SoloForestApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SoloForestApplication.class, args);
 	}
-
 }

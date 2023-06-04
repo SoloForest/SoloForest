@@ -4,18 +4,22 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Builder
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
+@ToString
 @AllArgsConstructor
+@Getter
+@SuperBuilder
 public class Group extends Article {
 
 	@NotBlank(message = "인원을 정해줘야 합니다.")
@@ -31,5 +35,6 @@ public class Group extends Article {
 	private String location;
 
 	@NotBlank(message = "회비를 정해주세요.")
-	private int money; // 회비
+	private int money;
+
 }

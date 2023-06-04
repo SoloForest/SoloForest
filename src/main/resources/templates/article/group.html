@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html data-theme="garden" lang="ko"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,43 +12,99 @@
 </head>
 <body class="mx-auto" style="width:80%; min-height:100vh; display: flex; flex-direction: column;">
 
-<div class="navbar bg-base-100 flex-wrap border-b-2 border-gray-300">
-    <div class="w-full">
-        <a class="btn btn-ghost normal-case text-xl" href="/main">
-            <img src="Logo_white.png" width="150px" alt="SoloForest">
-        </a>
-    </div>
-    <div class="w-full">
-        <div class="flex-1">
-            <ul class="menu menu-horizontal px-1">
-                <li><a href="#">커뮤니티</a></li>
-                <li><a href="#">프로그램</a></li>
-                <li><a href="#">이벤트/특가</a></li>
-                <li><a href="#">소모임</a></li>
-            </ul>
+<div>
+    <div class="navbar bg-base-100 flex-wrap border-b-2 border-gray-300">
+        <div class="w-full">
+            <a class="btn btn-ghost normal-case text-xl" href="/main">
+                <img src="/Logo_white.png" width="150px" alt="SoloForest">
+            </a>
         </div>
-        <div class="flex-none">
-            <a href="#">로그아웃</a>
-        </div>
-        <div class="flex-none">
-            <button class="btn btn-ghost btn-circle">
-                <div class="indicator">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                    </svg>
-                    <span class="badge badge-xs badge-primary indicator-item"></span>
-                </div>
-            </button>
+        <div class="w-full">
+            <div class="flex-1">
+                <ul class="menu menu-horizontal px-1">
+                    <li><a href="#">커뮤니티</a></li>
+                    <li><a href="#">프로그램</a></li>
+                    <li><a href="#">이벤트/특가</a></li>
+                    <li><a href="#">소모임</a></li>
+                </ul>
+            </div>
+            <div class="flex-none">
+                <a href="#">로그아웃</a>
+            </div>
+            <div class="flex-none">
+                <button class="btn btn-ghost btn-circle">
+                    <div class="indicator">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                        </svg>
+                        <span class="badge badge-xs badge-primary indicator-item"></span>
+                    </div>
+                </button>
+            </div>
         </div>
     </div>
 </div>
-<!-- main-->
 
-<main layout:fragment="main"></main>
 
-<!-- footer -->
+<div>
+    <div class="flex-2">
+        <br>
+        <div class="border-y-2 border-gray-400 indigo-500/50 bg-zinc-400/[.08]">
+            <div class="m-3">
+                <p class="text-2xl"><span th:text="${ArticleData.subject}"></span></p>
+                <div class="flex justify-between">
+                    <div>
+                        <a>작성자: <span th:text="${ArticleData.account}"></span></a>
+                        <a>작성일: <span th:text="${ArticleData.createDate}"></span></a>
+                    </div>
+                    <div>
+                        <a>조회수:</a>
+                        <a>댓글:</a>
+                        <a>좋아요:</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="m-4">
+    <span th:text="${ArticleData.content}"></span>
+</div>
+<div class="ml-4 w-1/3 border-y-2 border-gray-500 indigo-500/50 bg-zinc-400/[.08]">
+    <div class="m-5 flex flex-col space-y-1">
+        <div class="flex items-center space-x-2">
+            <img src="/User.png" width="20px" alt="member">
+            <span th:text="${GroupData.getMember()}"></span>명
+        </div>
+        </p>
+        <p class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2">
+            <img src="/Money.png" width="20px" alt="Money">
+            <span th:text="${GroupData.getMoney()}"></span>원
+        </div>
+        </p>
+        <p class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2">
+            <img src="/Calendar.png" width="20px" alt="Calendar">
+<!--            <span th:text="${GroupData.startDate()}"></span> ~ <span th:text="${GroupData.endDate()}"></span>-->
+    </div>
+        </p>
+        <p class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2">
+            <img src="/Map.png" width="20px" alt="Map">
+           <span th:text="${GroupData.getLocation()}"></span>
+        </p>
+        </div>
+    </div>
+</div>
+<div class="m-6 flex justify-center">
+    <a>좋아요!</a>
+</div>
+</div>
+
+
 <footer th:fragment="footerFragment" class="mt-auto footer items-center p-4 bg-neutral text-neutral-content">
     <div class="items-center grid-flow-col">
         <svg role="img" width="36" height="36" style="fill: white;" viewBox="0 0 24 24"
@@ -73,4 +129,5 @@
     </div>
 </footer>
 </body>
-</html>s
+
+</html>

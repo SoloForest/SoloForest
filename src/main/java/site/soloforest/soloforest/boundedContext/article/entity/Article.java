@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 
 @Entity
@@ -25,6 +26,7 @@ import site.soloforest.soloforest.boundedContext.account.entity.Account;
 @AllArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class)
+@SuperBuilder
 public class Article {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,4 +50,5 @@ public class Article {
 	 * 0 : 정보 공유성 게시판
 	 * 1 : 인원 모집형 게시판 */
 	private int boardNumber;
+
 }
