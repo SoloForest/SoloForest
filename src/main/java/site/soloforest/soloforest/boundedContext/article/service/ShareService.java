@@ -34,9 +34,7 @@ public class ShareService {
 		return shareRepository.findByBoardNumber(boardNumber);
 	}
 
-	public Share getShare(Long id) {
-		Optional<Share> share = shareRepository.findById(id);
-		
-		return share.orElse(null);
+	public Optional<Share> getShare(Long id) {
+		return shareRepository.findById(id);
 	}
 }

@@ -1,6 +1,7 @@
 package site.soloforest.soloforest.boundedContext.article.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,9 +71,13 @@ public class ShareController {
 
 	@GetMapping("detail/{id}")
 	public String detail(@PathVariable Long id, Model model) {
-		Share share = shareService.getShare(id);
+		Optional<Share> share = shareService.getShare(id);
 
-		model.addAttribute(share);
+		if (share.isEmpty()) {
+			return "error/404";
+		}
+
+		model.addAttribute(share.get());
 
 		return "article/share/detail";
 	}
