@@ -33,6 +33,6 @@ public class AccountController {
 	@PreAuthorize("isAnonymous()")
 	public String signup(@ModelAttribute AccountDTO input) {
 		accountService.singup(input);
-		return "redirect:/account/login";
+		return "redirect:/main";
 	}
 }
