@@ -17,12 +17,16 @@ public class AccountService {
 	public Account singup(AccountDTO dto) {
 		Account account = Account.builder()
 			.username(dto.getUsername())
-			.password(passwordEncoder.encode(dto.getPassword()))
+			.password(dto.getPassword())
 			.nickname(dto.getNickname())
 			.email(dto.getEmail())
 			.address(dto.getAddress())
 			.build();
 		Account savedAccount = accountRepository.save(account);
 		return savedAccount;
+	}
+
+	public Account create(Account account) {
+		return accountRepository.save(account);
 	}
 }
