@@ -22,7 +22,7 @@ public class AccountController {
 	@GetMapping("/login")
 	@PreAuthorize("isAnonymous()")
 	public String showLogin() {
-		return "/account/login";
+		return "account/login";
 	}
 
 	@GetMapping("/terms")
@@ -34,7 +34,7 @@ public class AccountController {
 	@GetMapping("/signUp")
 	@PreAuthorize("isAnonymous()")
 	public String showSignUp() {
-		return "/account/sign_up";
+		return "account/sign_up";
 	}
 
 	@PostMapping("/signUp")
