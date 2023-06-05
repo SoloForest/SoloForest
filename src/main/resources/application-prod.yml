@@ -25,7 +25,7 @@ spring:
     password: 1234
   jpa:
     hibernate:
-      ddl-auto: validate #엔티티와 테이블 매핑 여부만 확인
+      ddl-auto: update #엔티티와 테이블 매핑 여부만 확인
     properties:
       hibernate:
         show_sql: false
