@@ -41,14 +41,14 @@ public class Account {
 	private Long id;
 	@CreatedDate
 	private LocalDateTime createDate;
-	@Column(unique = true, nullable = false)
+	@Column(unique = true)
 	@Size(min = 4, max = 16)
 	private String username;
 	@Column(nullable = false)
 	private String password;
-	@Column(unique = true, nullable = false)
+	@Column(unique = true)
 	private String nickname;
-	@Column(unique = true, nullable = false)
+	@Column(unique = true)
 	private String email;
 	private String imageUrl;
 	private String address;

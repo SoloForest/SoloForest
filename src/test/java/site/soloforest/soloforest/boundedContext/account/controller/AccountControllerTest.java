@@ -119,19 +119,20 @@ public class AccountControllerTest {
 	@DisplayName("시큐리티 회원가입 테스트 - 자동 로그인 성공")
 	void t005() throws Exception {
 		ResultActions resultActions = mvc
-			.perform(
-				post("/account/signUp")
-					.with(csrf())
-					.param("username", "signUpAndLogin")
-					.param("password", "test")
-					.param("passwordCheck", "test")
-					.param("nickname", "1234")
-					.param("email", "signUp@test.com")
-					.param("address", "서울시 용산구")
+			.perform(post("/account/signUp")
+				.with(csrf())
+				.param("username", "signUpAndLogin")
+				.param("password", "test")
+				.param("passwordCheck", "test")
+				.param("nickname", "1234")
+				.param("email", "signUp@test.com")
+				.param("address", "서울시 용산구")
 			)
 			.andDo(print());
 
 		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("signup"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/main"));
 
@@ -140,5 +141,26 @@ public class AccountControllerTest {
 		User user = (User)securityContext.getAuthentication().getPrincipal();
 
 		assertThat(user.getUsername()).isEqualTo("signUpAndLogin");
+	}
+
+	@Test
+	@DisplayName("회원가입 입력 데이터 테스트 - 회원가입 성공 데이터")
+	void t006() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/signUp")
+				.with(csrf())
+				.param("username", "bbosong")
+				.param("password", "bbosong")
+				.param("passwordCheck", "bbosong")
+				.param("nickname", "bbosong")
+				.param("email", "bbosong@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("signup"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/main"));
 	}
 }
