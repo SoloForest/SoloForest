@@ -58,7 +58,7 @@ public class AccountControllerTest {
 			.andExpect(handler().handlerType(AccountController.class))
 			.andExpect(handler().methodName("showLogin"))
 			.andExpect(status().is2xxSuccessful())
-			.andExpect(view().name("/account/login"));
+			.andExpect(view().name("account/login"));
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class AccountControllerTest {
 			.andExpect(handler().handlerType(AccountController.class))
 			.andExpect(handler().methodName("showSignUp"))
 			.andExpect(status().is2xxSuccessful())
-			.andExpect(view().name("/account/sign_up"));
+			.andExpect(view().name("account/sign_up"));
 	}
 
 	@Test
