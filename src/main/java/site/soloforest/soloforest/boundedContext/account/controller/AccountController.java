@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
@@ -43,5 +43,11 @@ public class AccountController {
 		accountService.singup(input);
 		accountService.authenticateAccountAndSetSession(input, request);
 		return "redirect:/main";
+	}
+
+	@GetMapping("/me")
+	@PreAuthorize("isAuthenticated()")
+	public String showMe() {
+		return "account/me";
 	}
 }
