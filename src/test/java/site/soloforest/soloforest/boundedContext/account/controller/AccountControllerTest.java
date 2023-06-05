@@ -117,4 +117,31 @@ public class AccountControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(view().name("/account/sign_up"));
 	}
+
+	@Test
+	@DisplayName("시큐리티 회원가입 테스트 - 자동 로그인 성공")
+	void t005() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				post("/account/signUp")
+					.with(csrf())
+					.param("username", "signUpAndLogin")
+					.param("password", "test")
+					.param("passwordCheck", "test")
+					.param("nickname", "1234")
+					.param("email", "signUp@test.com")
+					.param("address", "서울시 용산구")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/main"));
+
+		HttpSession session = resultActions.andReturn().getRequest().getSession(false);// 세션이 없을 경우 새로 만들지 말라는 의미이다.
+		SecurityContext securityContext = (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT");
+		User user = (User)securityContext.getAuthentication().getPrincipal();
+
+		assertThat(user.getUsername()).isEqualTo("signUpAndLogin");
+	}
 }
