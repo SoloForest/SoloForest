@@ -43,6 +43,9 @@ public class ShareController {
 
 	@GetMapping("/{type}/create")
 	public String showCreate(@PathVariable String type) {
+		if (!("community".equals(type) || "program".equals(type)))
+			return "error/404";
+
 		return "article/share/form";
 	}
 
