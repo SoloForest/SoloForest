@@ -39,7 +39,7 @@ public class ShareService {
 	}
 
 	@Transactional
-	public void view(Share share) {
+	public void modifyViewd(Share share) {
 		share.updateViewd();
 		shareRepository.save(share);
 	}

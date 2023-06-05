@@ -79,7 +79,7 @@ public class ShareController {
 		if (share.isEmpty()) {
 			return "error/404";
 		}
-		shareService.view(share.get());
+		shareService.modifyViewd(share.get());
 		model.addAttribute(share.get());
 
 		return "article/share/detail";
