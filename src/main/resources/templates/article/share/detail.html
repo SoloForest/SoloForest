@@ -1,0 +1,41 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>게시글 상세 페이지</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <div class="flex items-center relative">
+        <h1 class="mt-4 mb-4 font-semibold" th:text="${share.boardNumber == 0} ? '커뮤니티 게시판' : '프로그램 게시판'">
+        </h1>
+        <div class="ml-4 h-4 w-px bg-black"></div>
+    </div>
+    <div class="container mx-auto">
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-6"
+             style="min-height: 600px; max-height: auto; overflow: auto;">
+            <h1 class="text-3xl font-semibold mb-3 ml-2" th:text="${share.subject}"></h1>
+            <div class="mb-6 ml-6">
+                <span class="font-bold text-primary">관리자</span>
+                <span class="ml-3" th:text="${#temporals.format(share.createDate, 'MM.dd')}"></span>
+                <i class="ml-2 fa-solid fa-eye"></i>
+                <span class="gap-1" th:text="${share.viewed}"></span>
+                <!-- 즐겨찾기 -->
+                <i class="fa-regular fa-bookmark mr-10" style="float: right; display: inline-block;"></i>
+                <!-- 즐겨찾기 끝-->
+            </div>
+            <hr class="mb-8" style="border: none; border-top: 1px solid;">
+            <div class="mb-5 ml-5" style="height: 300px; max-height: auto; overflow: auto;">
+                <span class="text-xl" th:text="${share.content}"></span>
+            </div>
+            <div class="mb-6 ml-6">
+                <i class="fa-regular fa-thumbs-up"></i>
+                <span class="gap-1" th:text="${share.liked}"></span>
+                <i class="fa-regular fa-comment ml-3"></i>
+                <span class="gap-1">4</span>
+            </div>
+            <hr class="mb-8" style="border: none; border-top: 1px solid;">
+        </div>
+    </div>
+</main>
+</body>
+</html>

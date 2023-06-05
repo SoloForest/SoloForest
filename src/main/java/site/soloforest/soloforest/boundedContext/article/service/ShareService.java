@@ -1,6 +1,7 @@
 package site.soloforest.soloforest.boundedContext.article.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +17,30 @@ public class ShareService {
 	private final ShareRepository shareRepository;
 
 	@Transactional
-	public void create(int boardNumber, String subject, String content) {
+	public Share create(int boardNumber, String subject, String content) {
 		Share s = Share
 			.builder()
 			.subject(subject)
 			.content(content)
 			.boardNumber(boardNumber)
 			.build();
+
 		shareRepository.save(s);
+
+		return s;
 	}
 
 	public List<Share> getSharesByBoardNumber(int boardNumber) {
 		return shareRepository.findByBoardNumber(boardNumber);
+	}
+
+	public Optional<Share> getShare(Long id) {
+		return shareRepository.findById(id);
+	}
+
+	@Transactional
+	public void modifyViewd(Share share) {
+		share.updateViewd();
+		shareRepository.save(share);
 	}
 }
