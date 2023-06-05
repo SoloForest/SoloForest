@@ -1,7 +1,7 @@
 <html layout:decorate="~{home/layout.html}">
 <head>
     <title>sign up</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/common/validator.js"></script>
 </head>
 <body>
 <main layout:fragment="main" class="flex flex-col justify-center items-center flex-grow">
@@ -57,7 +57,7 @@
         });
     </script>
 
-    <form method="POST" th:action
+    <form method="POST" th:action onsubmit="SignUpForm__submit(this); return false;"
           class="flex flex-col gap-1 min-w-[420px] mt-6 pb-10 px-12 border-b-2 border-gray-300">
         <label for="username" class="label">
             <span class="label-text">Username <span style="color:red;">*</span></span>

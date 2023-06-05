@@ -117,4 +117,24 @@ public class AccountControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(view().name("/account/sign_up"));
 	}
+
+	@Test
+	@DisplayName("회원가입 입력 데이터 테스트 - 회원가입 성공 데이터")
+	void t006() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/account/signUp")
+				.with(csrf())
+				.param("username", "bbosong")
+				.param("password", "bbosong")
+				.param("passwordCheck", "bbosong")
+				.param("passwordCheck", "bbosong")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("showSignUp"))
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(view().name("/account/sign_up"));
+	}
 }

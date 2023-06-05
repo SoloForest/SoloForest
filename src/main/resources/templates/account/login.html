@@ -1,35 +1,10 @@
 <html layout:decorate="~{home/layout.html}">
 <head>
     <title>login</title>
+    <script src="/common/validator.js"></script>
 </head>
 <body>
 <main layout:fragment="main" class="flex flex-col justify-center items-center flex-grow">
-    <script>
-        const usernameValueMinLength = 4;
-        const usernameValueMaxLength = 16;
-        const passwordValueMinLength = 4;
-        const passwordValueMaxLength = 16;
-
-        function LoginForm__submit(form) {
-            form.username.value = form.username.value.trim();
-            form.password.value = form.password.value.trim();
-            debugger;
-            if (form.username.value.length < usernameValueMinLength || form.username.value.length > usernameValueMaxLength) {
-                toastWarning('username은 공백 없이 4자 이상 16자 이하로 작성해야 합니다.');
-                form.username.focus();
-                return false;
-            }
-
-            if (form.password.value.length < passwordValueMinLength || form.password.value.length > passwordValueMaxLength) {
-                toastWarning('password는 공백 없이 4자 이상 16자 이하로 작성해야 합니다.');
-                form.password.focus();
-                return false;
-            }
-
-            form.submit();
-        }
-    </script>
-
     <form method="POST" th:action onsubmit="LoginForm__submit(this); return false;" id="loginForm"
           class="flex flex-col gap-1 min-w-[420px] pb-10 px-12 border-b-2 border-gray-300">
         <input type="text" name="username" placeholder="username" class="input input-bordered w-full max-w-xs"/>
