@@ -37,4 +37,10 @@ public class ShareService {
 	public Optional<Share> getShare(Long id) {
 		return shareRepository.findById(id);
 	}
+
+	@Transactional
+	public void view(Share share) {
+		share.updateViewd();
+		shareRepository.save(share);
+	}
 }

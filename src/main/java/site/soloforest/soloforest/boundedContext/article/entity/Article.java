@@ -52,4 +52,8 @@ public class Article {
 	 * 2 : 이벤트/특가 게시판
 	 * 3 : 소모임 게시판 **/
 	private int boardNumber;
+
+	public void updateViewd() {
+		this.viewed++;
+	}
 }
