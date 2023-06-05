@@ -1,10 +1,102 @@
 <html layout:decorate="~{home/layout.html}">
 <head>
     <title>my page</title>
+    <script src="/common/addressDropdown.js"></script>
+    <style>
+        .input-group span {
+            width: 100px;
+        }
+
+        .hidden-input {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <main layout:fragment="main" class="flex flex-col justify-center items-center flex-grow">
-    
+    <script>
+        function modify_active() {
+            $("#profile").addClass("hidden-input");
+            $("#imageUrl").removeClass("hidden-input");
+            $("#passwordText").removeClass("hidden-input");
+            $("#passwordCheckText").removeClass("hidden-input");
+            $("#nickname").prop("disabled", false);
+            $("#email").prop("disabled", false);
+            $("#addressDropdown").removeClass("hidden-input");
+            $("#addressText").addClass("hidden-input");
+            $("#modifyActive").addClass("hidden-input");
+            $("#modifyCancel").removeClass("hidden-input");
+            $('#modifySubmit').removeClass("hidden-input");
+        }
+
+        function modify_submit() {
+
+        }
+    </script>
+    <div class="gap-5 my-16 flex  flex-col justify-center items-center flex-grow">
+        <h1 class="text-xl font-bold">My Account</h1>
+        <img id="profile" class="max-w-xs min-w-xs mask mask-circle shadow-2xl" src="/profile-00000001.jpg"/>
+        <input id="imageUrl" type="file"
+               class="file-input file-input-bordered file-input-primary w-full max-w-xs hidden-input"/>
+
+        <div id="passwordText" class="form-control hidden-input">
+            <label class="input-group max-w-sm min-w-sm">
+                <span>Password</span>
+                <input id="password" type="password" placeholder="password" class="input input-bordered"/>
+            </label>
+        </div>
+        <div id="passwordCheckText" class="form-control hidden-input">
+            <label class="input-group max-w-sm min-w-sm">
+                <span>Password Check</span>
+                <input id="passwordCheck" type="password" placeholder="password" class="input input-bordered"/>
+            </label>
+        </div>
+
+        <div class="form-control">
+            <label class="input-group max-w-sm min-w-sm">
+                <span>Nickname</span>
+                <input id="nickname" type="text" placeholder="nickname" class="input input-bordered" disabled
+                       th:value="${account.nickname}"/>
+            </label>
+        </div>
+
+        <div class="form-control">
+            <label class="input-group">
+                <span>Email</span>
+                <input id="email" type="text" placeholder="yours@site.com" class="input input-bordered" disabled
+                       th:value="${account.email}"/>
+            </label>
+        </div>
+
+        <div id="addressDropdown" class="input-group hidden-input">
+            <select id="do" class="select select-bordered w-full max-w-[160px]">
+                <option value="">도 선택</option>
+            </select>
+            <select id="si" class="select select-bordered w-full max-w-[160px]">
+                <option value="">시 선택</option>
+            </select>
+        </div>
+        <div id="addressText" class="form-control">
+            <label class="input-group">
+                <span>Address</span>
+                <input id="address" type="text" placeholder="미설정" class="input input-bordered" disabled
+                       th:value="${account.address}"/>
+            </label>
+        </div>
+
+        <div id="modify-group" class="self-end">
+            <button id="modifyActive" class="btn btn-outline btn-primary" onclick="modify_active();">
+                변경하기
+            </button>
+            <a id="modifyCancel" href="/account/me" class="btn btn-outline btn-error hidden-input">
+                변경 취소
+            </a>
+            <button id="modifySubmit" class="btn btn-primary hidden-input" onclick="modify_submit();">
+                변경완료
+            </button>
+        </div>
+        <a class="link link-error self-start" onclick="">혼숲 탈퇴하기</a>
+    </div>
 </main>
 </body>
 </html>
