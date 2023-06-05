@@ -16,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -36,16 +35,14 @@ public class AccountControllerTest {
 	private MockMvc mvc;
 	@Autowired
 	private AccountRepository accountRepository;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	@BeforeEach
 	void initData() {
 		Account account = Account.builder()
-			.username("usertest")
-			.password(passwordEncoder.encode("test1"))
-			.nickname("for test")
-			.email("test@test.com")
+			.username("testuser")
+			.password("test1")
+			.nickname("testuser")
+			.email("testuser@test.com")
 			.build();
 		this.accountRepository.save(account);
 	}
@@ -71,7 +68,7 @@ public class AccountControllerTest {
 			.perform(
 				post("/account/login")
 					.with(csrf())
-					.param("username", "usertest")
+					.param("username", "testuser")
 					.param("password", "test1")
 			)
 			.andDo(print());
@@ -84,7 +81,7 @@ public class AccountControllerTest {
 		SecurityContext securityContext = (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT");
 		User user = (User)securityContext.getAuthentication().getPrincipal();
 
-		assertThat(user.getUsername()).isEqualTo("usertest");
+		assertThat(user.getUsername()).isEqualTo("testuser");
 	}
 
 	@Test
@@ -94,7 +91,7 @@ public class AccountControllerTest {
 			.perform(
 				post("/account/login")
 					.with(csrf())
-					.param("username", "usertest")
+					.param("username", "testuser")
 					.param("password", "user1")
 			)
 			.andDo(print());
@@ -119,22 +116,51 @@ public class AccountControllerTest {
 	}
 
 	@Test
-	@DisplayName("회원가입 입력 데이터 테스트 - 회원가입 성공 데이터")
-	void t006() throws Exception {
+	@DisplayName("시큐리티 회원가입 테스트 - 자동 로그인 성공")
+	void t005() throws Exception {
 		ResultActions resultActions = mvc
-			.perform(get("/account/signUp")
+			.perform(post("/account/signUp")
 				.with(csrf())
-				.param("username", "bbosong")
-				.param("password", "bbosong")
-				.param("passwordCheck", "bbosong")
-				.param("passwordCheck", "bbosong")
+				.param("username", "signUpAndLogin")
+				.param("password", "test")
+				.param("passwordCheck", "test")
+				.param("nickname", "1234")
+				.param("email", "signUp@test.com")
+				.param("address", "서울시 용산구")
 			)
 			.andDo(print());
 
 		resultActions
 			.andExpect(handler().handlerType(AccountController.class))
-			.andExpect(handler().methodName("showSignUp"))
-			.andExpect(status().is2xxSuccessful())
-			.andExpect(view().name("/account/sign_up"));
+			.andExpect(handler().methodName("signup"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/main"));
+
+		HttpSession session = resultActions.andReturn().getRequest().getSession(false);// 세션이 없을 경우 새로 만들지 말라는 의미이다.
+		SecurityContext securityContext = (SecurityContext)session.getAttribute("SPRING_SECURITY_CONTEXT");
+		User user = (User)securityContext.getAuthentication().getPrincipal();
+
+		assertThat(user.getUsername()).isEqualTo("signUpAndLogin");
+	}
+
+	@Test
+	@DisplayName("회원가입 입력 데이터 테스트 - 회원가입 성공 데이터")
+	void t006() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/signUp")
+				.with(csrf())
+				.param("username", "bbosong")
+				.param("password", "bbosong")
+				.param("passwordCheck", "bbosong")
+				.param("nickname", "bbosong")
+				.param("email", "bbosong@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("signup"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/main"));
 	}
 }

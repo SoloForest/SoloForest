@@ -1,6 +1,7 @@
 package site.soloforest.soloforest.boundedContext.article.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,9 @@ public class ShareController {
 
 	@GetMapping("/{type}/create")
 	public String showCreate(@PathVariable String type) {
+		if (!("community".equals(type) || "program".equals(type)))
+			return "error/404";
+
 		return "article/share/form";
 	}
 
@@ -56,12 +60,28 @@ public class ShareController {
 
 	@PostMapping("/{type}/create")
 	public String create(@PathVariable String type, @Valid CreateForm createForm) {
+		Share s;
 
 		if ("community".equals(type))
-			shareService.create(0, createForm.getSubject(), createForm.getContent());
+			s = shareService.create(0, createForm.getSubject(), createForm.getContent());
 		else if ("program".equals(type))
-			shareService.create(1, createForm.getSubject(), createForm.getContent());
+			s = shareService.create(1, createForm.getSubject(), createForm.getContent());
+		else
+			throw new IllegalArgumentException("Invalid board type: " + type);
 
-		return String.format("redirect:/article/share/%s", type);
+		return String.format("redirect:/article/share/detail/%d", s.getId());
+	}
+
+	@GetMapping("detail/{id}")
+	public String detail(@PathVariable Long id, Model model) {
+		Optional<Share> share = shareService.getShare(id);
+
+		if (share.isEmpty()) {
+			return "error/404";
+		}
+		shareService.modifyViewd(share.get());
+		model.addAttribute(share.get());
+
+		return "article/share/detail";
 	}
 }

@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -33,6 +35,7 @@ import site.soloforest.soloforest.boundedContext.notification.entity.Notificatio
 @ToString
 @EntityListeners(AuditingEntityListener.class)
 public class Account {
+	private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -64,6 +67,13 @@ public class Account {
 	@OneToMany(cascade = {CascadeType.REMOVE})
 	@ToString.Exclude
 	private List<Notification> Notifications;
+
+	public static class AccountBuilder {
+		public AccountBuilder password(String password) {
+			this.password = passwordEncoder.encode(password);
+			return this;
+		}
+	}
 
 	public List<? extends GrantedAuthority> getGrantedAuthorities() {
 		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();

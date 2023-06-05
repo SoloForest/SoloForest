@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
@@ -38,8 +39,9 @@ public class AccountController {
 
 	@PostMapping("/signUp")
 	@PreAuthorize("isAnonymous()")
-	public String signup(@Valid @ModelAttribute AccountDTO input) {
+	public String signup(@Valid @ModelAttribute AccountDTO input, HttpServletRequest request) {
 		accountService.singup(input);
-		return "redirect:/account/login";
+		accountService.authenticateAccountAndSetSession(input, request);
+		return "redirect:/main";
 	}
 }
