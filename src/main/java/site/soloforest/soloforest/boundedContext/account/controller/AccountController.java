@@ -24,6 +24,12 @@ public class AccountController {
 		return "/account/login";
 	}
 
+	@GetMapping("/terms")
+	@PreAuthorize("isAnonymous()")
+	public String showTerms() {
+		return "account/terms";
+	}
+
 	@GetMapping("/signUp")
 	@PreAuthorize("isAnonymous()")
 	public String showSignUp() {
