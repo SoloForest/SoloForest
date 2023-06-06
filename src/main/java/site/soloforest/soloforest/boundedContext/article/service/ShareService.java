@@ -43,4 +43,14 @@ public class ShareService {
 		share.updateViewd();
 		shareRepository.save(share);
 	}
+
+	@Transactional
+	public void modify(Share share, String subject, String content) {
+		Share modifyShare = share.toBuilder()
+			.subject(subject)
+			.content(content)
+			.build();
+
+		shareRepository.save(modifyShare);
+	}
 }

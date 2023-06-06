@@ -9,6 +9,11 @@
         <h1 class="mt-4 mb-4 font-semibold" th:text="${share.boardNumber == 0} ? '커뮤니티 게시판' : '프로그램 게시판'">
         </h1>
         <div class="ml-4 h-4 w-px bg-black"></div>
+        <div class="ml-auto">
+            <a th:href="@{|/article/share/modify/${share.id}|}" role="button"
+               class="btn btn-outline btn-primary btn-sm">수정</a>
+            <a href="#" role="button" class="btn btn-outline btn-error btn-sm">삭제</a>
+        </div>
     </div>
     <div class="container mx-auto">
         <div class="bg-white p-6 rounded-lg shadow-lg mb-6"
