@@ -115,4 +115,34 @@ public class ShareControllerTests {
 			.andExpect(handler().methodName("modify"))
 			.andExpect(redirectedUrl("/article/share/detail/1"));
 	}
+
+	@Test
+	@DisplayName("게시글 삭제 테스트")
+	void t007() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/article/share/community/delete/1")
+				.with(csrf())
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(ShareController.class))
+			.andExpect(handler().methodName("delete"))
+			.andExpect(redirectedUrl("/article/share/community"));
+	}
+
+	@Test
+	@DisplayName("게시글 잘못된 경로 삭제 시 - 에러 페이지 호출 테스트")
+	void t008() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/article/share/community/delete/-1")
+				.with(csrf())
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(ShareController.class))
+			.andExpect(handler().methodName("delete"))
+			.andExpect(content().string(containsString("404 ERROR")));
+	}
 }
