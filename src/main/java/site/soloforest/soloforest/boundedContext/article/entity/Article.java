@@ -31,7 +31,7 @@ import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Article {
 	@Id

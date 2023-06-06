@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Share extends Article {
 	@Column
