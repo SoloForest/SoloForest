@@ -1,10 +1,12 @@
 package site.soloforest.soloforest.boundedContext.comment.service;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.event.EventCommentCreate;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.comment.controller.CommentController;
@@ -18,6 +20,8 @@ public class CommentService {
 
 	private final CommentRepository commentRepository;
 
+	private final ApplicationEventPublisher publisher;
+
 	// TODO : 댓글 생성시 댓글 생성 알림 객체 생성 및 등록
 	@Transactional
 	public Comment create(String content, boolean secret, Account account, Article article) {
@@ -28,11 +32,11 @@ public class CommentService {
 			.secret(secret)
 			.build();
 
-		// 알림 객체 생성 이벤트 발생
-
-
+		// 댓글 생성
 		commentRepository.save(newComment);
 
+		// 알림 객체 생성 이벤트 발생
+		publisher.publishEvent(new EventCommentCreate(this, newComment));
 		return newComment;
 	}
 

@@ -5,16 +5,19 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 
 @Entity
@@ -39,8 +42,15 @@ public class Notification {
 	 */
 	private int event_type;
 
+	/**
+	 * comment_id 또는 report_id 저장
+	 */
 	private Long event_id;
 
-	@OneToOne
+	// 연관관계 맺기
+	@OneToOne(mappedBy = "notification", cascade = CascadeType.REMOVE)
 	private Comment comment;
+
+	@ManyToOne
+	private Account account;
 }

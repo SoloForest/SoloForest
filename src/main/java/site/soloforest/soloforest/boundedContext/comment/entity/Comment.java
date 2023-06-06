@@ -62,6 +62,9 @@ public class Comment {
 	private LocalDateTime modifyDate;
 
 	private Boolean secret;
+	// 삭제 여부 나타내는 속성 추가
+	// "삭제되었습니다" 라고 하기에는 저렇게 작성하는 사용자가 있다면 댓글 삭제된 것으로 처리될 듯
+	private Boolean isDeleted;
 	@OneToOne
 	private Notification notification;
 

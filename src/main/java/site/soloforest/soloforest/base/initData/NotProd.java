@@ -17,6 +17,7 @@ import site.soloforest.soloforest.boundedContext.article.repository.GroupReposit
 import site.soloforest.soloforest.boundedContext.article.repository.ShareRepository;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepository;
+import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 
 @Configuration
 @Profile({"dev", "test"})
@@ -26,7 +27,8 @@ public class NotProd {
 		AccountService accountService,
 		ShareRepository shareRepository,
 		GroupRepository groupRepository,
-		CommentRepository commentRepository
+		CommentRepository commentRepository,
+		CommentService commentService
 	) {
 		return new CommandLineRunner() {
 			@Override
@@ -154,6 +156,8 @@ public class NotProd {
 						.build()
 				);
 				commentRepository.saveAll(replyComments);
+
+				Comment tmp = commentService.create("알림객체 생성 테스트", false, accounts.get(2), shares.get(0));
 			}
 		};
 	}
