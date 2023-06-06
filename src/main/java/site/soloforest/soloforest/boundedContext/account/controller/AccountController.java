@@ -1,16 +1,20 @@
 package site.soloforest.soloforest.boundedContext.account.controller;
 
+import java.security.Principal;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
+import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 
 @Controller
@@ -43,5 +47,13 @@ public class AccountController {
 		accountService.singup(input);
 		accountService.authenticateAccountAndSetSession(input, request);
 		return "redirect:/main";
+	}
+
+	@GetMapping("/me")
+	@PreAuthorize("isAuthenticated()")
+	public String showMe(Principal principal, Model model) {
+		Account entity = accountService.findByUsername(principal.getName());
+		model.addAttribute("account", entity);
+		return "account/me";
 	}
 }

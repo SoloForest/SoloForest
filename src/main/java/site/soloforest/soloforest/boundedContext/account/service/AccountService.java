@@ -1,5 +1,7 @@
 package site.soloforest.soloforest.boundedContext.account.service;
 
+import java.util.Optional;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -67,5 +69,14 @@ public class AccountService {
 
 	public Account create(Account account) {
 		return accountRepository.save(account);
+	}
+
+	public Account findByUsername(String username) {
+		Optional<Account> findAccount = accountRepository.findByUsername(username);
+		if (!findAccount.isPresent()) {
+			// TODO : RsData가 추가되면 F-1을 내보냅니다
+			return null;
+		}
+		return findAccount.get();
 	}
 }
