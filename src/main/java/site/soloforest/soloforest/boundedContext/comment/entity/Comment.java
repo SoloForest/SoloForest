@@ -51,7 +51,6 @@ public class Comment {
 
 	@OneToMany(mappedBy = "parent", cascade = {CascadeType.REMOVE})
 	@ToString.Exclude
-	@OrderBy("id desc") // 정렬
 	@Builder.Default // 빌더패턴 리스트시 초기화
 	private List<Comment> children = new ArrayList<>();
 

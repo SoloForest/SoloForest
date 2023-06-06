@@ -58,7 +58,7 @@ public class CommentService {
 
 	// 테스트용
 	public Comment getComment(Long commentId) {
-		return commentRepository.findById(commentId).get();
+		return commentRepository.findById(commentId).orElse(null);
 	}
 
 	// 댓글 수정
@@ -100,7 +100,6 @@ public class CommentService {
 
 	// 댓글 조회
 	public Comment findById(Long id) {
-
-		return commentRepository.findById(id).get();
+			return commentRepository.findById(id).orElse(null);
 	}
 }
