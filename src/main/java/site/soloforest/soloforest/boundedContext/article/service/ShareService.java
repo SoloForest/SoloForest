@@ -18,16 +18,16 @@ public class ShareService {
 
 	@Transactional
 	public Share create(int boardNumber, String subject, String content) {
-		Share s = Share
+		Share share = Share
 			.builder()
 			.subject(subject)
 			.content(content)
 			.boardNumber(boardNumber)
 			.build();
 
-		shareRepository.save(s);
+		shareRepository.save(share);
 
-		return s;
+		return share;
 	}
 
 	public List<Share> getSharesByBoardNumber(int boardNumber) {
@@ -52,5 +52,16 @@ public class ShareService {
 			.build();
 
 		shareRepository.save(modifyShare);
+	}
+
+	@Transactional
+	public Share delete(Long id) {
+		Optional<Share> share = getShare(id);
+
+		if (share.isEmpty())
+			return null;
+
+		shareRepository.delete(share.get());
+		return share.get();
 	}
 }

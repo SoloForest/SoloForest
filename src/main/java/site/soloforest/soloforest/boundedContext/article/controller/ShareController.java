@@ -108,4 +108,14 @@ public class ShareController {
 
 		return String.format("redirect:/article/share/detail/%d", id);
 	}
+
+	@GetMapping("{type}/delete/{id}")
+	public String delete(@PathVariable String type, @PathVariable Long id) {
+		Share share = shareService.delete(id);
+
+		if (share == null)
+			return "error/404";
+
+		return String.format("redirect:/article/share/%s", type);
+	}
 }
