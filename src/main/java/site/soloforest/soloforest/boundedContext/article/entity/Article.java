@@ -63,6 +63,13 @@ public class Article {
 	 * 3 : 소모임 게시판 **/
 	private int boardNumber;
 
+	public String getBoardType() {
+		return switch (boardNumber) {
+			case 1 -> "program";
+			default -> "community";
+		};
+	}
+
 	public void updateViewd() {
 		this.viewed++;
 	}

@@ -12,7 +12,8 @@
         <div class="ml-auto">
             <a th:href="@{|/article/share/modify/${share.id}|}" role="button"
                class="btn btn-outline btn-primary btn-sm">수정</a>
-            <a href="#" role="button" class="btn btn-outline btn-error btn-sm">삭제</a>
+            <a th:href="@{|/article/share/${share.getBoardType()}/delete/${share.id}|}" role="button"
+               class="btn btn-outline btn-error btn-sm" onclick="return confirm('이 글을 삭제하시겠습니까?');">삭제</a>
         </div>
     </div>
     <div class="container mx-auto">
