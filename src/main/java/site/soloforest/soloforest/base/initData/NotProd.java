@@ -94,70 +94,28 @@ public class NotProd {
 				//groupRepository.saveAll(groups);
 				groupRepository.save(groups.get(0));
 				groupRepository.save(groups.get(1));
-				List<Comment> comments = List.of(
-					Comment.builder()
-						.writer(accounts.get(0)).article(shares.get(0)).content("넹")
-						.secret(false)
-						.build(),
-					Comment.builder()
-						.writer(accounts.get(1)).article(shares.get(0)).content("넵")
-						.secret(false)
-						.build(),
-					Comment.builder()
-						.writer(accounts.get(2)).article(shares.get(0)).content("누가 짱나게 하면 어떻게 하죠?")
-						.secret(true)
-						.build(),
 
-					Comment.builder()
-						.writer(accounts.get(0)).article(shares.get(1)).content("좋은 정보 감사합니다.")
-						.secret(false)
-						.build(),
-					Comment.builder()
-						.writer(accounts.get(2)).article(shares.get(1)).content("얼른 신청하세요!")
-						.secret(false)
-						.build(),
-					Comment.builder()
-						.writer(accountAdmin1).article(shares.get(1)).content("활발한 교류 부탁드립니다!")
-						.secret(false)
-						.build(),
+				// 댓글 생성
+				Comment comment1 = commentService.create("넹", false, accounts.get(0), shares.get(0));
+				Comment comment2 = commentService.create("넵", false, accounts.get(1), shares.get(0));
+				Comment comment3 = commentService.create("누가 짱나게 하면 어떻게 하죠?", false, accounts.get(2), shares.get(0));
+				Comment comment4 = commentService.create("좋은 정보 감사합니다.", false, accounts.get(0), shares.get(1));
+				Comment comment5 = commentService.create("얼른 신청하세요!", false, accounts.get(2), shares.get(1));
+				Comment comment6 = commentService.create("활발한 교류 부탁드립니다!", false, accountAdmin1, shares.get(1));
+				Comment comment7 = commentService.create("만나서 뭐하나요?", false, accounts.get(2), groups.get(0));
+				Comment comment8 = commentService.create("식사 후에 게임하러 가실분", false, accounts.get(1), groups.get(0));
+				Comment comment9 = commentService.create("저요!", false, accounts.get(0), groups.get(0));
+				Comment comment10 = commentService.create("인당 6만원인가요?", false, accounts.get(1), groups.get(0));
+				Comment comment111 = commentService.create("둘이 나눠도 비싸네여", false, accounts.get(0), groups.get(1));
 
-					Comment.builder()
-						.writer(accounts.get(2)).article(groups.get(0)).content("만나서 뭐하나요?")
-						.secret(true)
-						.build(),
-					Comment.builder()
-						.writer(accounts.get(1)).article(groups.get(0)).content("식사 후에 게임하러 가실분")
-						.secret(false)
-						.build(),
-					Comment.builder()
-						.writer(accounts.get(0)).article(groups.get(0)).content("저요!")
-						.secret(false)
-						.build(),
 
-					Comment.builder()
-						.writer(accounts.get(1)).article(groups.get(1)).content("인당 6만원인가요?")
-						.secret(false)
-						.build(),
-					Comment.builder()
-						.writer(accounts.get(0)).article(groups.get(1)).content("둘이 나눠도 비싸네여")
-						.secret(false)
-						.build()
-				);
-				commentRepository.saveAll(comments);
+				Comment replyComment1 = commentService.createReplyComment("신고하세요", false, accountAdmin1, shares.get(0),
+					comment3);
+				Comment replyComment2 = commentService.createReplyComment("네 맞습니다!", false, accounts.get(2),
+					shares.get(0), comment10);
+				Comment replyComment3 = commentService.createReplyComment("가시죠!!", false, accounts.get(1),
+					shares.get(1), comment8);
 
-				List<Comment> replyComments = List.of(
-					Comment.builder()
-						.writer(accountAdmin1).article(shares.get(0)).content("신고하세요.")
-						.secret(true).parent(comments.get(2))
-						.build(),
-					Comment.builder()
-						.writer(accounts.get(2)).article(shares.get(0)).content("네 맞습니다!")
-						.secret(false).parent(comments.get(9))
-						.build()
-				);
-				commentRepository.saveAll(replyComments);
-
-				Comment tmp = commentService.create("알림객체 생성 테스트", false, accounts.get(2), shares.get(0));
 			}
 		};
 	}
