@@ -1,22 +1,22 @@
 <html layout:decorate="~{home/layout.html}">
 <head>
     <title>알림 페이지</title>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <main layout:fragment="main">
     <div class="max-w-full w-full">
-        <h1 class="mb-4">
-            <i class="fa-regular fa-bell"></i>
-            알림 페이지
-        </h1>
-
         <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
-            <i class="fa-regular fa-face-laugh" th:each="notification : ${notifications}"></i> 최근에 받은 알림이 없습니다.
+            <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
         </div>
 
         <div class="flex flex-col gap-4">
-            <div class="card bg-base-100 shadow-xl">
-                <div class="card-body">
+            <h5 class="border-bottom my-3 py-2"
+                th:text="|${#lists.size(notifications)}개의 알림이 있습니다.|"></h5>
+            <div class="card bg-white shadow-xl" th:each="notification : ${notifications}">
+                <div class="card-body cursor-pointer rounded-lg" onclick="readNotification()" th:classappend="${notification.read ? '' : 'bg-blue-100'}">
                     <div class="flex flex-col gap-2">
                         <div>
                             <i class="fa-regular fa-clock"></i>
@@ -24,10 +24,9 @@
                         </div>
                         <div>
                             <span class="badge badge-primary">
-                                <span></span>
-                                <span>, <span></span></span>
+                                <span th:text="${#temporals.format(notification.createDate, 'yy.MM.dd HH:mm')}"></span>
+                                <span>, <span th:text="${notification.createDateAfterStrHuman}"></span></span>
                             </span>
-                            <i class="fa-solid fa-fire text-red-500"></i>
                         </div>
                     </div>
                     <div class="mt-4 flex flex-col gap-2">
@@ -35,25 +34,48 @@
                             <i class="fa-regular fa-message"></i>
                             내용
                         </div>
-                        <div>
-                            어떤 <span class="badge badge-primary"></span>이
-                            당신을 <span
-                                class="badge badge-primary"
-                        ></span> 때문에 좋아합니다.
+                        <div th:if="${notification.event_type == 0}">
+                             <span th:text="${notification.content}"></span>
                         </div>
-                        <div>
-                            어떤
-                            <span class="badge badge-primary"></span>이
-                            당신에 대한 호감사유를 <span
-                                class="badge badge-primary"
-                        ></span>에서 <span
-                                class="badge badge-primary"
-                        ></span>(으)로
-                            변경했습니다.
+                        <div th:if="${notification.event_type == 1}">
+                            <span th:text="${notification.content}"> </span>
                         </div>
                     </div>
                 </div>
-
+            </div>
+        </div>
+    </div>
 </main>
 </body>
+<script th:inline="javascript">
+    const readNotification = () => {
+        const notificationId = /*[[${notification.id}]]*/ null;
+        const articleId = /*[[${notification.comment.article.id}]]*/ null;
+        const params = {
+            "readIt": true,
+            "articleId": articleId,
+            "notificationId" : notificationId
+        };
+        $.ajax({
+            // 요청방식 : post
+            // 요청주소 : /notification
+            type: "post",
+            url: "/notification",
+            // parameter 전달하기(기존 : 자바스크립트 오브젝트 -> JSON 형태로 변환해서 보내기)
+            data: JSON.stringify(params),
+            contentType: "application/json", // 이 파라미터는 Json 형태다 명시
+            // 요청이 끝나고 어떻게 처리할지 정의가 필요함
+            // 여러 방식이 있음(done 등 체이닝 함수도 있음)
+            // 요청이 성공했을 때 실행되는 부분
+            // res 응답으로 html 코드가 넘어옴, 화면이 변경되지 않음
+            success: function(res) {
+                console.log("성공", res);
+            },
+            // 요청이 실패했을 때 실행되는 부분
+            error: function () {
+                console.log("실패");
+            }
+        })
+    }
+</script>
 </html>

@@ -1,6 +1,9 @@
 package site.soloforest.soloforest.boundedContext.notification.entity;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -63,6 +66,35 @@ public class Notification {
 
 	public void markAsRead() {
 		readDate = LocalDateTime.now();
+	}
+
+	public String getCreateDateAfterStrHuman() {
+		return diffFormatHuman(LocalDateTime.now(), getCreateDate());
+	}
+
+	public static String diffFormatHuman(LocalDateTime time1, LocalDateTime time2) {
+		String suffix = time1.isAfter(time2) ? "전" : "후";
+
+		Period period = Period.between(time1.toLocalDate(), time2.toLocalDate());
+		long diff = Math.abs(ChronoUnit.SECONDS.between(time1, time2));
+
+		long diffMonths = period.toTotalMonths();
+		long diffYears = period.getYears();
+		long diffSeconds = diff % 60; // 초 부분만
+		long diffMinutes = diff / (60) % 60; // 분 부분만
+		long diffHours = diff / (60 * 60) % 24; // 시간 부분만
+		long diffDays = diff / (60 * 60 * 24); // 나머지는 일 부분으로
+
+		StringBuilder sb = new StringBuilder();
+
+		if (diffYears > 0) sb.append(diffYears).append("년 ");
+		if (diffMonths > 0) sb.append(diffMonths).append("개월 ");
+		if (diffDays > 0) sb.append(diffDays).append("일 ");
+		if (diffHours > 0) sb.append(diffHours).append("시간 ");
+		if (diffMinutes > 0) sb.append(diffMinutes).append("분 ");
+		if (sb.isEmpty()) sb.append("1분 ");
+
+		return sb.append(suffix).toString();
 	}
 
 }
