@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.event.EventCommentCreate;
+import site.soloforest.soloforest.base.event.EventReplyCommentCreate;
 import site.soloforest.soloforest.boundedContext.notification.service.NotificationService;
 
 @Component
@@ -17,6 +18,11 @@ public class NotificationEventListener {
     @EventListener
     public void listen(EventCommentCreate event) {
         notificationService.whenCreateComment(event.getComment());
+    }
+
+    @EventListener
+    public void listen(EventReplyCommentCreate event) {
+        notificationService.whenReplyCommentCreate(event.getComment());
     }
 
 

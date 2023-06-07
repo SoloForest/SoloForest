@@ -28,4 +28,19 @@ public class NotificationService {
 
 		notificationRepository.save(notification);
 	}
+
+	@Transactional
+	public void whenReplyCommentCreate(Comment replyComment) {
+		String content = replyComment.getWriter().getUsername() + "님이 회원님의 댓글에 댓글을 남겼습니다.";
+		Account account = replyComment.getParent().getWriter();
+
+		Notification notification = Notification.builder()
+			.content(content)
+			.event_type(0)
+			.account(account)
+			.event_id(replyComment.getId())
+			.build();
+
+		notificationRepository.save(notification);
+	}
 }

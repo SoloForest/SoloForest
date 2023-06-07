@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.event.EventCommentCreate;
+import site.soloforest.soloforest.base.event.EventReplyCommentCreate;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.comment.controller.CommentController;
@@ -22,7 +23,6 @@ public class CommentService {
 
 	private final ApplicationEventPublisher publisher;
 
-	// TODO : 댓글 생성시 댓글 생성 알림 객체 생성 및 등록
 	@Transactional
 	public Comment create(String content, boolean secret, Account account, Article article) {
 		Comment newComment = Comment.builder()
@@ -40,7 +40,6 @@ public class CommentService {
 		return newComment;
 	}
 
-	// TODO : 댓글 생성시 댓글 생성 알림 객체 생성 및 등록
 	@Transactional
 	public Comment createReplyComment(String content, boolean secret, Account account, Article article, Comment parentComment) {
 		Comment newComment = Comment.builder()
@@ -51,10 +50,11 @@ public class CommentService {
 			.parent(parentComment)
 			.build();
 
-		// 대댓글 알림 객체 생성 이벤트 발생
-
-
+		// 대댓글 저장
 		commentRepository.save(newComment);
+
+		// 대댓글 작성 알림 객체 생성
+		publisher.publishEvent(new EventReplyCommentCreate(this, newComment));
 
 		return newComment;
 	}

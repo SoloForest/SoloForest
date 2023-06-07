@@ -1,0 +1,57 @@
+<html layout:decorate="~{home/layout.html}">
+<head></head>
+<body>
+<main layout:fragment="main">
+    <div class="max-w-2xl w-full px-4">
+        <h1 class="mb-4">
+            <i class="fa-regular fa-bell"></i>
+            알림 페이지
+        </h1>
+
+        <div class="text-center mt-10">
+            <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="card bg-base-100 shadow-xl">
+                <div class="card-body">
+                    <div class="flex flex-col gap-2">
+                        <div>
+                            <i class="fa-regular fa-clock"></i>
+                            알림
+                        </div>
+                        <div>
+                            <span class="badge badge-primary">
+                                <span></span>
+                                <span>, <span></span></span>
+                            </span>
+                            <i class="fa-solid fa-fire text-red-500"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-col gap-2">
+                        <div>
+                            <i class="fa-regular fa-message"></i>
+                            내용
+                        </div>
+                        <div>
+                            어떤 <span class="badge badge-primary"></span>이
+                            당신을 <span
+                                class="badge badge-primary"
+                        ></span> 때문에 좋아합니다.
+                        </div>
+                        <div>
+                            어떤
+                            <span class="badge badge-primary"></span>이
+                            당신에 대한 호감사유를 <span
+                                class="badge badge-primary"
+                        ></span>에서 <span
+                                class="badge badge-primary"
+                        ></span>(으)로
+                            변경했습니다.
+                        </div>
+                    </div>
+                </div>
+
+</main>
+</body>
+</html>
