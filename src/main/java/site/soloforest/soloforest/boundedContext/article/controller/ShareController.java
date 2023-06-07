@@ -72,7 +72,7 @@ public class ShareController {
 		return String.format("redirect:/article/share/detail/%d", s.getId());
 	}
 
-	@GetMapping("detail/{id}")
+	@GetMapping("/detail/{id}")
 	public String detail(@PathVariable Long id, Model model) {
 		Optional<Share> share = shareService.getShare(id);
 
@@ -85,7 +85,7 @@ public class ShareController {
 		return "article/share/detail";
 	}
 
-	@GetMapping("modify/{id}")
+	@GetMapping("/modify/{id}")
 	public String showModify(@PathVariable Long id, Model model) {
 		Optional<Share> share = shareService.getShare(id);
 
@@ -97,7 +97,7 @@ public class ShareController {
 		return "article/share/modify";
 	}
 
-	@PostMapping("modify/{id}")
+	@PostMapping("/modify/{id}")
 	public String modify(@PathVariable Long id, @Valid Form form) {
 		Optional<Share> share = shareService.getShare(id);
 
@@ -109,7 +109,7 @@ public class ShareController {
 		return String.format("redirect:/article/share/detail/%d", id);
 	}
 
-	@GetMapping("{type}/delete/{id}")
+	@PostMapping("/{type}/delete/{id}")
 	public String delete(@PathVariable String type, @PathVariable Long id) {
 		Share share = shareService.delete(id);
 
