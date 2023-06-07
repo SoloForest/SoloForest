@@ -1,5 +1,7 @@
 package site.soloforest.soloforest.boundedContext.notification.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,5 +44,15 @@ public class NotificationService {
 			.build();
 
 		notificationRepository.save(notification);
+	}
+
+	@Transactional
+	public void markAsRead(List<Notification> notifications) {
+		notifications
+			.stream()
+			.filter(notification -> !notification.isRead())
+			.forEach(Notification::markAsRead);
+
+		// ToDo : RsData 도입 시 성공 메세지 추가
 	}
 }

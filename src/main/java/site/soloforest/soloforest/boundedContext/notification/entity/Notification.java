@@ -53,4 +53,16 @@ public class Notification {
 
 	@ManyToOne
 	private Account account;
+
+	// 읽은 날짜 표기 -> 안읽음 알림만 모아보기
+	private LocalDateTime readDate;
+
+	public boolean isRead() {
+		return readDate != null;
+	}
+
+	public void markAsRead() {
+		readDate = LocalDateTime.now();
+	}
+
 }
