@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html data-theme="garden" lang="ko"
       xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{home/layout.html}"
 >
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,124 +13,57 @@
     <title>SoloForest</title>
     <script src="https://kit.fontawesome.com/28297d33d8.js" crossorigin="anonymous"></script>
 </head>
-<body class="mx-auto" style="width:80%; min-height:100vh; display: flex; flex-direction: column;">
-
-<div>
-    <div class="navbar bg-base-100 flex-wrap border-b-2 border-gray-300">
-        <div class="w-full">
-            <a class="btn btn-ghost normal-case text-xl" href="/main">
-                <img src="/Logo_white.png" width="150px" alt="SoloForest">
-            </a>
-        </div>
-        <div class="w-full">
-            <div class="flex-1">
-                <ul class="menu menu-horizontal px-1">
-                    <li><a href="#">커뮤니티</a></li>
-                    <li><a href="#">프로그램</a></li>
-                    <li><a href="#">이벤트/특가</a></li>
-                    <li><a href="#" id ="th:text=${GroupData.id}">소모임</a></li>
-                </ul>
-            </div>
-            <div class="flex-none">
-                <a href="#">로그아웃</a>
-            </div>
-            <div class="flex-none">
-                <button class="btn btn-ghost btn-circle">
-                    <div class="indicator">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                             stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
-                        </svg>
-                        <span class="badge badge-xs badge-primary indicator-item"></span>
-                    </div>
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div>
-        <div class="space-x-1 border-y-2 border-gray-400 indigo-500/50 bg-zinc-400/[.08]">
-            <div class="m-3">
-                <p class="text-2xl"><span th:text="${GroupData.subject}"></span></p>
-                <div class="flex justify-between">
-                    <div>
-                        <a>작성자 <span th:text="${GroupData.account}"></span></a>
-                        <a>작성일 <span th:text="${GroupData.createDate}"></span></a>
-                    </div>
-                    <div>
-                        <a>조회수</a>
-                        <a>댓글</a>
-                        <a>좋아요</a>
+<body class="mx-auto" style="min-height:100vh; display: flex; flex-direction: column;">
+<div class="container" style="width: 80%;">
+    <main layout:fragment="main" class="flex flex-col justify-start items-start flex-grow">
+        <div style="width: 75%; margin-left: 400px; min-width: 400px; max-width: 1000px;">
+            <div class="border-y-2 border-gray-400 indigo-500/50 bg-zinc-400/[.08]">
+                <div class="m-3 px-2">
+                    <p class="text-2xl"><span th:text="${GroupData.subject}"></span></p>
+                    <div class="flex justify-between">
+                        <div>
+                            <a>작성자 <span th:text="${GroupData.account}"></span></a>
+                            <a>작성일 <span th:text="${GroupData.createDate}"></span></a>
+                        </div>
+                        <div>
+                            <a>조회수</a>
+                            <a>댓글</a>
+                            <a>좋아요</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div class="m-4">
-    <span th:text="${GroupData.getContent()}"></span>
-</div>
-<div class="ml-4 w-1/3 border-y-2 border-gray-500 indigo-500/50 bg-zinc-400/[.08]">
-    <div class="m-5 flex flex-col space-y-1">
-        <div class="flex items-center space-x-2">
-            <i class="fa-solid fa-user-group fa-xs"></i>
-            <span th:text="${GroupData.getMember()}"></span>명
+        <div style="width: 80%; margin-left: 400px; min-width: 800px; max-width: 800px;">
+            <div class="m-4">
+                <span th:text="${GroupData.getContent()}"></span>
+            </div>
+            <div class="ml-4 w-1/3 border-y-2 border-gray-500 indigo-500/50 bg-zinc-400/[.08]">
+                <div class="m-5 flex flex-col space-y-1">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-user-group fa-xs"></i>
+                        <span th:text="${GroupData.getMember()}"></span>명
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-coins fa-sm"></i>
+                        <span th:text="${GroupData.getMoney()}"></span>원
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-calendar-days fa-xs"></i>
+                        <!-- <span th:text="${GroupData.getStartDate()}"></span> ~ <span th:text="${GroupData.getEndDate()}"></span> -->
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-location-dot" style="color: #1f1f1f;"></i>
+                        <span th:text="${GroupData.getLocation()}"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="m-8 space-y-2.5 space-x-1 flex justify-center" style="margin-left: 230px;">
+                <p>좋아요</p>
+                <i class="fa-regular fa-thumbs-up fa-lg"></i>
+            </div>
         </div>
-        </p>
-        <p class="flex items-center space-x-2">
-        <div class="flex items-center space-x-2">
-            <i class="fa-solid fa-coins fa-sm"></i>
-            <span th:text="${GroupData.getMoney()}"></span>원
-        </div>
-        </p>
-        <p class="flex items-center space-x-2">
-        <div class="flex items-center space-x-2">
-            <i class="fa-solid fa-calendar-days fa-xs"></i>
-<!--            <span th:text="${GroupData.getStartDate()}"></span> ~ <span th:text="${GroupData.getEndDate()()}"></span>-->
-    </div>
-        </p>
-        <p class="flex items-center space-x-2">
-        <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-location-dot" style="color: #1f1f1f;"></i>
-           <span th:text="${GroupData.getLocation()}"></span>
-        </p>
-        </div>
-    </div>
+    </main>
 </div>
-<div class="m-8 space-y-2.5 space-x-1 flex justify-center">
-    <p>좋아요</p>
-    <i class="fa-regular fa-thumbs-up fa-lg"></i>
-</div>
-
-</div>
-
-
-<footer th:fragment="footerFragment" class="mt-auto footer items-center p-4 bg-neutral text-neutral-content">
-    <div class="items-center grid-flow-col">
-        <svg role="img" width="36" height="36" style="fill: white;" viewBox="0 0 24 24"
-             xmlns="http://www.w3.org/2000/svg"><title>Forestry</title>
-            <path d="M5.564.332v2.82L0 8.736l1.305 1.284 4.26-4.26v2.568L0 13.912l1.305 1.283 4.26-4.26v12.733h1.831V10.932l4.284 4.263 1.304-1.283-5.588-5.588V5.756l3.989 3.969 5.195 5.214v8.729h1.832v-8.725L24 9.355l-1.305-1.283-4.283 4.264V9.768L24 4.18l-1.305-1.284-4.283 4.264V.332H16.58v6.824l-4.26-4.26-1.304 1.284 5.564 5.584v2.568l-3.596-3.596-5.588-5.588V.332H5.564z"/>
-        </svg>
-        <p>자연과 조화로운 공간을 제공하고 함께 자라나는 혼숲(Solo Forest)</p>
-    </div>
-    <div class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
-        <a href="#">
-            <svg role="img" width="24" height="24" viewBox="0 0 24 24" style="fill: white;"
-                 xmlns="http://www.w3.org/2000/svg"><title>GitHub</title>
-                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-            </svg>
-        </a>
-        <a href="https://www.notion.so/SoloForest-a98bdf16c4fb466e87d49e1444c40bb1">
-            <svg role="img" width="24" height="24" viewBox="0 0 24 24" style="fill: white;"
-                 xmlns="http://www.w3.org/2000/svg">
-                <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/>
-            </svg>
-        </a>
-    </div>
-</footer>
 </body>
-
 </html>
