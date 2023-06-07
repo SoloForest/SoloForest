@@ -1,7 +1,14 @@
 <html layout:decorate="~{home/layout.html}">
-<head></head>
+<head>
+    <title th:text="${type.equals('community')} ? '커뮤니티' : '프로그램'"></title>
+</head>
 <body>
 <main layout:fragment="main">
+    <div class="flex items-center relative">
+        <h1 class="mt-4 mb-4 font-semibold" th:text="${type.equals('community')} ? '커뮤니티 게시판' : '프로그램 게시판'">
+        </h1>
+        <div class="ml-4 h-4 w-px bg-black"></div>
+    </div>
     <div class="container mx-auto px-4 py-8">
         <form th:action method="post">
             <div class="mb-6">

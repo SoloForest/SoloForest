@@ -42,10 +42,11 @@ public class ShareController {
 	}
 
 	@GetMapping("/{type}/create")
-	public String showCreate(@PathVariable String type) {
+	public String showCreate(@PathVariable String type, Model model) {
 		if (!("community".equals(type) || "program".equals(type)))
 			return "error/404";
 
+		model.addAttribute("type", type);
 		return "article/share/form";
 	}
 
