@@ -60,8 +60,4 @@ public class NotificationService {
 		return notificationRepository.findByAccountOrderByIdDesc(account);
 	}
 
-	// 읽음 처리를 위한 단일 객체 가져오는 메서드
-	public Notification getNotification(Long notificationId) {
-		return notificationRepository.findById(notificationId).orElse(null);
-	}
 }
