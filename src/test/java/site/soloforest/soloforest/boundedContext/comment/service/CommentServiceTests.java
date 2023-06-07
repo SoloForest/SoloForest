@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
-import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
+import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.service.ShareService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
@@ -32,18 +32,18 @@ public class CommentServiceTests {
 	private ShareService shareService;
 
 	@Autowired
-	private AccountRepository accountRepository;
+	private AccountService accountService;
 
 	@Test
 	@DisplayName("댓글 생성 테스트")
 	void t01() {
-		Account account = accountRepository.findByUsername("usertest2").get();
+		Account account = accountService.findByUsername("usertest2");
 		Share article = shareService.getShare(2L).get();
 
 		Comment comment = commentService.create("테스트1234", false, account, article);
 
-		// NotProd 13번 댓글까지 있으므로, 위의 댓글은 14번이어야 함
-		Comment findComment = commentService.findById(14L);
+		// NotProd 14번 댓글까지 있으므로, 위의 댓글은 15번이어야 함
+		Comment findComment = commentService.findById(15L);
 
 		assertThat(comment.equals(findComment)).isTrue();
 	}
@@ -52,7 +52,7 @@ public class CommentServiceTests {
 	@Test
 	@DisplayName("댓글 수정 테스트")
 	void t02() {
-		Account account = accountRepository.findByUsername("usertest2").get();
+		Account account = accountService.findByUsername("usertest2");
 		Share article = shareService.getShare(2L).get();
 		Comment comment = commentService.getComment(5L);
 
