@@ -3,6 +3,9 @@
     <title>댓글테스트</title>
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+
 </head>
 <body>
 <main layout:fragment="main">
@@ -27,17 +30,22 @@
         const commentWrite = () => {
             const writer = document.getElementById("commentWriter").value;
             const contents = document.getElementById("commentContents").value;
-            const id = [[${article.id}]]; //게시글 번호
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+            //게시글 번호
             console.log("작성자: ", writer);
             console.log("내용: ", contents);
+
             $.ajax({
                 // 요청방식: post, 요청주소: /comment/save, 요청데이터: 작성자, 작성내용, 게시글번호
                 type: "post",
                 url : "/comment/create",
+                beforeSend: function(xhr){
+                    xhr.setRequestHeader(header, token);
+                },
                 data: {
                     "commentWriter": writer,
-                    "commentContents": contents,
-                    "boardId": id
+                    "commentContents": contents
                 },
                 success: function (res) {
                     console.log("요청 성공", res);
