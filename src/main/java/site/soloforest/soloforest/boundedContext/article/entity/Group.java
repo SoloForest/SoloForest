@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
@@ -21,7 +20,6 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @AllArgsConstructor
 @Getter
-@Setter
 @SuperBuilder
 public class Group extends Article {
 	@NotNull(message = "인원을 정해줘야 합니다.")

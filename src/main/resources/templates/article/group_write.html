@@ -10,11 +10,12 @@
 <section layout:fragment="main">
     <div>
         <h1 class="text-2xl font-bold mb-4">인원 모집 게시판 </h1>
-        <form th:action="@{/Group}" method="post">
-            <div class="mb-4">
-                <label for="title" class="block mb-1">제목:</label>
-                <input type="text" id="title" name="title" class="w-full px-3 py-2 border rounded" required>
-            </div>
+        <form th:action="/create" method="post">
+
+
+            <div> "class= mb-4"></div>
+            <label for="title" class="block mb-1">제목:</label>
+            <input type="text" id="title" name="title" class="w-full px-3 py-2 border rounded" required>
             <style>
                 .btn-primary {
                     background-color: #588221;
