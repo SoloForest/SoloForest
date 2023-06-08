@@ -14,6 +14,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+@Entity
+@SuperBuilder
+@EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+@Getter
+public class Group extends Article {
 
 	@NotNull(message = "인원을 정해줘야 합니다.")
 	private int member;
@@ -27,3 +35,7 @@ import lombok.experimental.SuperBuilder;
 	@NotBlank(message = "모임 장소를 정해야 합니다.")
 	private String location;
 
+	@NotNull(message = "회비를 정해주세요.")
+	private int money; // 회비
+
+}
