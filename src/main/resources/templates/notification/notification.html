@@ -1,0 +1,53 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>알림 페이지</title>
+</head>
+<body>
+<main layout:fragment="main">
+    <div class="max-w-full w-full">
+        <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
+            <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <h5 class="border-bottom my-3 py-2"
+                th:text="|${#lists.size(notifications)}개의 알림이 있습니다.|"></h5>
+            <div class="card bg-white shadow-xl m-3" th:each="notification, notificationIndex : ${notifications}"
+                 onclick="$(this).children('form').submit();">
+                <form hidden th:action="@{|/notification|}" method="POST" th:id="'notificationForm_' + ${notificationIndex}">
+                    <input type="hidden" name="notificationId" th:value="${notification.id}">
+                </form>
+
+                <div class="card-body cursor-pointer rounded-lg">
+                    <div class="flex flex-col gap-2">
+                        <div>
+                            <i class="fa-regular fa-clock"></i>
+                            알림
+                        </div>
+                        <div>
+                            <span class="badge badge-primary">
+                                <span th:text="${#temporals.format(notification.createDate, 'yy.MM.dd HH:mm')}"></span>
+                                <span>, <span th:text="${notification.createDateAfterStrHuman}"></span></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-col gap-2">
+                        <div>
+                            <i class="fa-regular fa-message"></i>
+                            내용
+                        </div>
+                        <div th:if="${notification.event_type == 0}">
+                             <span th:text="${notification.content}"></span>
+                        </div>
+                        <div th:if="${notification.event_type == 1}">
+                            <span th:text="${notification.content}"> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+
+</html>

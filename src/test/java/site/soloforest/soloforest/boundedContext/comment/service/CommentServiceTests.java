@@ -1,8 +1,8 @@
 package site.soloforest.soloforest.boundedContext.comment.service;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -10,18 +10,14 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
-import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
-import site.soloforest.soloforest.boundedContext.article.entity.Article;
+import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.service.ShareService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
-import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepository;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -36,59 +32,75 @@ public class CommentServiceTests {
 	private ShareService shareService;
 
 	@Autowired
-	private AccountRepository accountRepository;
+	private AccountService accountService;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-
-	// @BeforeEach
-	// void initData() {
-	// 	// 회원 생성
-	// 	Account account = Account.builder()
-	// 		.username("usertest")
-	// 		.password(passwordEncoder.encode("test1"))
-	// 		.nickname("for test")
-	// 		.email("test@test.com")
-	// 		.build();
-	// 	this.accountRepository.save(account);
-	//
-	// 	// 게시글 작성
-	//
-	// 	Article tmp1 = Share.builder()
-	// 		.boardNumber(0)
-	// 		.subject("테스트제목1")
-	// 		.content("테스트내용1")
-	// 		.account(account)
-	// 		.build();
-	//
-	// 	// 댓글 작성
-	// 	Comment comment1 = commentService.create("테스트댓글1", false, account, tmp1);
-	// 	Comment comment2 = commentService.create("테스트댓글2", false, account, tmp1);
-	// 	Comment comment3 = commentService.create("테스트댓글3", false, account, tmp1);
-	// 	Comment comment4 = commentService.create("테스트댓글4", false, account, tmp1);
-	// 	Comment comment5 = commentService.create("테스트댓글5", false, account, tmp1);
-	// 	Comment comment6 = commentService.create("테스트댓글6", false, account, tmp1);
-	//
-	// }
-
-	// TODO : NotProd 생성 시 테스트케이스 작성
 	@Test
 	@DisplayName("댓글 생성 테스트")
 	void t01() {
+		Account account = accountService.findByUsername("usertest2");
+		Share article = shareService.getShare(2L).get();
 
+		Comment comment = commentService.create("테스트1234", false, account, article);
+
+		// NotProd 14번 댓글까지 있으므로, 위의 댓글은 15번이어야 함
+		Comment findComment = commentService.findById(15L);
+
+		assertThat(comment.equals(findComment)).isTrue();
 	}
 
+	@SuppressWarnings("checkstyle:RegexpMultiline")
 	@Test
 	@DisplayName("댓글 수정 테스트")
 	void t02() {
+		Account account = accountService.findByUsername("usertest2");
+		Share article = shareService.getShare(2L).get();
+		Comment comment = commentService.getComment(5L);
 
+		Comment modifyComment = commentService.modify(comment, "가시죠", false);
+		// 내용 변경됐으니 같으면 안됨!
+		assertThat(comment.equals(modifyComment)).isFalse();
 	}
 
 	@Test
 	@DisplayName("댓글 삭제 테스트")
 	void t03() {
+		Comment comment = commentService.getComment(5L);
+
+		commentService.delete(comment);
+
+		// 삭제된 댓글 가져오기
+		Comment deletedComment = commentService.getComment(5L);
+
+		// 댓글이 null인지 확인
+		assertNull(deletedComment, "댓글이 삭제되었어야 합니다.");
 
 	}
 
+	@Test
+	@DisplayName("부모 댓글이 삭제되고, 대댓글이 1개일 때 대댓글이 삭제될 경우 부모 댓글 삭제 테스트")
+	void t04() {
+		Comment comment = commentService.getComment(3L);
+
+		// 부모 댓글 먼저 지우기
+		commentService.delete(comment);
+
+		// 댓글 삭제 확인(자식 댓글이 있으니, 내용만 "삭제되었습니다"
+		Comment deletedComment = commentService.getComment(3L);
+
+		// 댓글 내용이 "삭제되었습니다"로 바뀐지 확인
+		assertThat(deletedComment.getContent().equals("삭제되었습니다"));
+
+		// 자식 댓글 삭제(3번의 댓글의 대댓글 id는 12번)
+		Comment delComment = comment.getChildren().get(0);
+		commentService.delete(delComment);
+
+		// 삭제 확인용 객체 가져오기 -> 다 Null이어야 함
+		Comment assertParrent = commentService.getComment(3L);
+		Comment assertChild = commentService.getComment(12L);
+
+		// Null인지 확인
+		assertNull(assertParrent);
+		assertNull(assertChild);
+	}
 
 }

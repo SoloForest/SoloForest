@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CommentDTO {
-	private Long id;
 	private String commentWriter;
 	private String commentContents;
 	private Long boardId;

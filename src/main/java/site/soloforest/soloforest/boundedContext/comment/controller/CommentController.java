@@ -3,6 +3,7 @@ package site.soloforest.soloforest.boundedContext.comment.controller;
 import java.security.Principal;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +22,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
+import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.dto.CommentDTO;
@@ -32,7 +34,8 @@ import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 @RequestMapping("/comment")
 public class CommentController {
 
-	// private final ArticleService articleService;
+	// TODO : Rq 도입시 변경
+	 private final AccountService accountService;
 	private final CommentService commentService;
 
 	private final ArticleService articleService;
@@ -66,7 +69,7 @@ public class CommentController {
 		private Long articleId;
 	}
 
-	// @PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated()")
 	// ToDO : 게시글 id를 통해 게시글을 얻고, 현재 로그인한 회원의 사용자 정보도 얻어서 등록한다.
 	@PostMapping("/create")
 	@ResponseBody

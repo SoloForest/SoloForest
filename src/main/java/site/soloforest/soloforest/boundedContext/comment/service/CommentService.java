@@ -1,10 +1,13 @@
 package site.soloforest.soloforest.boundedContext.comment.service;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.event.EventCommentCreate;
+import site.soloforest.soloforest.base.event.EventReplyCommentCreate;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.comment.controller.CommentController;
@@ -18,7 +21,8 @@ public class CommentService {
 
 	private final CommentRepository commentRepository;
 
-	// TODO : 댓글 생성시 댓글 생성 알림 객체 생성 및 등록
+	private final ApplicationEventPublisher publisher;
+
 	@Transactional
 	public Comment create(String content, boolean secret, Account account, Article article) {
 		Comment newComment = Comment.builder()
@@ -28,15 +32,14 @@ public class CommentService {
 			.secret(secret)
 			.build();
 
-		// 알림 객체 생성 이벤트 발생
-
-
+		// 댓글 생성
 		commentRepository.save(newComment);
 
+		// 알림 객체 생성 이벤트 발생
+		publisher.publishEvent(new EventCommentCreate(this, newComment));
 		return newComment;
 	}
 
-	// TODO : 댓글 생성시 댓글 생성 알림 객체 생성 및 등록
 	@Transactional
 	public Comment createReplyComment(String content, boolean secret, Account account, Article article, Comment parentComment) {
 		Comment newComment = Comment.builder()
@@ -47,10 +50,11 @@ public class CommentService {
 			.parent(parentComment)
 			.build();
 
-		// 대댓글 알림 객체 생성 이벤트 발생
-
-
+		// 대댓글 저장
 		commentRepository.save(newComment);
+
+		// 대댓글 작성 알림 객체 생성
+		publisher.publishEvent(new EventReplyCommentCreate(this, newComment));
 
 		return newComment;
 	}
@@ -58,7 +62,7 @@ public class CommentService {
 
 	// 테스트용
 	public Comment getComment(Long commentId) {
-		return commentRepository.findById(commentId).get();
+		return commentRepository.findById(commentId).orElse(null);
 	}
 
 	// 댓글 수정
@@ -100,7 +104,6 @@ public class CommentService {
 
 	// 댓글 조회
 	public Comment findById(Long id) {
-
-		return commentRepository.findById(id).get();
+			return commentRepository.findById(id).orElse(null);
 	}
 }
