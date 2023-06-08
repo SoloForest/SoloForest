@@ -3,6 +3,7 @@ package site.soloforest.soloforest.boundedContext.article.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +42,7 @@ public class ShareController {
 		return String.format("article/share/%s", type);
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/{type}/create")
 	public String showCreate(@PathVariable String type, Model model) {
 		if (!("community".equals(type) || "program".equals(type)))
@@ -59,6 +61,7 @@ public class ShareController {
 		private final String content;
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{type}/create")
 	public String create(@PathVariable String type, @Valid Form form) {
 		Share s;
@@ -86,6 +89,7 @@ public class ShareController {
 		return "article/share/detail";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify/{id}")
 	public String showModify(@PathVariable Long id, Model model) {
 		Optional<Share> share = shareService.getShare(id);
@@ -98,6 +102,7 @@ public class ShareController {
 		return "article/share/modify";
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{id}")
 	public String modify(@PathVariable Long id, @Valid Form form) {
 		Optional<Share> share = shareService.getShare(id);
@@ -110,6 +115,7 @@ public class ShareController {
 		return String.format("redirect:/article/share/detail/%d", id);
 	}
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{type}/delete/{id}")
 	public String delete(@PathVariable String type, @PathVariable Long id) {
 		Share share = shareService.delete(id);
