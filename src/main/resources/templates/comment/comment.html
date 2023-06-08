@@ -1,0 +1,47 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>댓글테스트</title>
+</head>
+<body>
+<main layout:fragment="main">
+    <ul class="space-y-4">
+        <li>
+            <div class="border p-4 rounded-lg flex justify-between">
+                <p class="text-lg font-bold">댓글: 테스트</p>
+                <p class="text-gray-500">작성자: 테스트</p>
+            </div>
+            <ul class="ml-4 space-y-2">
+                <li>
+                    <div class="border-t border-gray-300 p-4 rounded-lg flex items-center">
+                        <div class="flex items-center flex-grow">
+                            <i class="fa-regular fa-arrow-turn-down-right" style="color: #ffdd00;"></i>
+                            <p class="text-lg font-bold ml-2">대댓글: 대댓글이다!</p>
+                        </div>
+                        <p class="text-gray-500">작성자: 테스트!</p>
+                    </div>
+                </li>
+            </ul>
+            <hr class="my-4" />
+        </li>
+    </ul>
+
+    <hr class="my-4" />
+
+    <!-- 댓글 작성 -->
+    <label for="content" class="text-lg font-bold">댓글</label>
+    <form th:action="@{/comment/create}" th:object="${commentForm}" method="POST">
+    <textarea placeholder="댓글을 입력해주세요." th:field="*{content}" columns="4"
+              class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+        <div>
+            <label class="label cursor-pointer">
+                <span class="label-text">비밀 댓글</span>
+                <input type="checkbox" th:field="*{secret}" />
+            </label>
+        </div>
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+            <span>댓글 작성</span>
+        </button>
+    </form>
+</main>
+</body>
+</html>

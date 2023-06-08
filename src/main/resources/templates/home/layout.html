@@ -5,30 +5,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://jhs512.github.io/toastr/toastr.css">
+    <script src="/common/toastr.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css"/>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>SoloForest</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title layout:title-pattern="$CONTENT_TITLE | $LAYOUT_TITLE">SoloForest</title>
 </head>
 <body class="mx-auto" style="width:80%; min-height:100vh; display: flex; flex-direction: column;">
 
 <div class="navbar bg-base-100 flex-wrap border-b-2 border-gray-300">
     <div class="w-full">
         <a class="btn btn-ghost normal-case text-xl" href="/main">
-            <img src="Logo_white.png" width="150px" alt="SoloForest">
+            <img src="/Logo_white.png" width="150px" alt="SoloForest">
         </a>
     </div>
     <div class="w-full">
         <div class="flex-1">
             <ul class="menu menu-horizontal px-1">
-                <li><a href="#">커뮤니티</a></li>
-                <li><a href="#">프로그램</a></li>
+                <li><a href="/article/share/community">커뮤니티</a></li>
+                <li><a href="/article/share/program">프로그램</a></li>
                 <li><a href="#">이벤트/특가</a></li>
                 <li><a href="#">소모임</a></li>
             </ul>
         </div>
         <div class="flex-none">
-            <a href="#">로그아웃</a>
+            <a href="/account/login" sec:authorize="isAnonymous()" class="link link-hover">로그인</a>
+            <a href="/account/me" sec:authorize="isAuthenticated()" class="link link-hover">마이페이지</a>
+            <form th:action="|/account/logout|" sec:authorize="isAuthenticated()" method="POST"
+                  style="display: inline;">
+                <input class="link link-hover" type="submit" value="로그아웃">
+            </form>
         </div>
         <div class="flex-none">
             <button class="btn btn-ghost btn-circle">
