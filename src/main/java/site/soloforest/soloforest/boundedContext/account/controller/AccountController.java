@@ -67,8 +67,9 @@ public class AccountController {
 
 	@PostMapping("/me/{id}")
 	@PreAuthorize("isAuthenticated()")
-	public String modifyMe(@PathVariable Long id, @ModelAttribute ModifyForm input, Model model) {
-		Account entity = accountService.modifyInfo(id, input);
+	public String modifyMe(@PathVariable Long id, @ModelAttribute ModifyForm input,
+		Model model, HttpServletRequest request) {
+		Account entity = accountService.modifyInfo(id, input, request);
 		if (entity == null)
 			return "redirect:/account/me?error=true";
 		model.addAttribute("account", entity);

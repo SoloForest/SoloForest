@@ -88,7 +88,7 @@ public class AccountService {
 	}
 
 	@SuppressWarnings("checkstyle:WhitespaceAround")
-	public Account modifyInfo(Long id, ModifyForm input) {
+	public Account modifyInfo(Long id, ModifyForm input, HttpServletRequest request) {
 		Account target = accountRepository.findById(id).orElse(null);
 		if (target == null) {
 			return null;
@@ -96,6 +96,7 @@ public class AccountService {
 
 		if (canModifyPassword(input)) {
 			target.setPassword(input.getPassword());
+			modifyLoginSetSession(target, input.getPassword(), request);
 		}
 		if (canModifyNickname(target, input)) {
 			target.setNickname(input.getNickname());
@@ -108,6 +109,35 @@ public class AccountService {
 		}
 
 		return accountRepository.save(target);
+	}
+
+	private void modifyLoginSetSession(Account account, String password, HttpServletRequest request) {
+		// 사용자 인증
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+			account.getUsername(),
+			password
+		);
+		try {
+			// AuthenticationManager 에 token 을 넘기면 UserDetailsService 가 받아 처리하도록 한다.
+			Authentication authentication = authenticationManager.authenticate(token);
+			// 실제 SecurityContext 에 authentication 정보를 등록한다.
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			// 실제 사용자의 세션에 context를 저장한다.
+			HttpSession session = request.getSession();
+			session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+		} catch (DisabledException | LockedException | BadCredentialsException e) {
+			String status;
+			if (e.getClass().equals(BadCredentialsException.class)) {
+				status = "invalid-password";
+			} else if (e.getClass().equals(DisabledException.class)) {
+				status = "locked";
+			} else if (e.getClass().equals(LockedException.class)) {
+				status = "disable";
+			} else {
+				status = "unknown";
+			}
+			System.out.println("catch" + status);
+		}
 	}
 
 	private boolean canModifyNickname(Account target, ModifyForm input) {
