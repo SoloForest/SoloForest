@@ -13,7 +13,7 @@
             <h5 class="border-bottom my-3 py-2"
                 th:text="|${#lists.size(notifications)}개의 알림이 있습니다.|"></h5>
             <div class="card bg-white shadow-xl m-3" th:each="notification, notificationIndex : ${notifications}"
-                 onclick=" $(this).parent().find('form').submit();">
+                 onclick="$(this).children('form').submit();">
                 <form hidden th:action="@{|/notification|}" method="POST" th:id="'notificationForm_' + ${notificationIndex}">
                     <input type="hidden" name="notificationId" th:value="${notification.id}">
                 </form>
