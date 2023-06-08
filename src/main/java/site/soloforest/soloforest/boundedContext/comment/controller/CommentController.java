@@ -7,9 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
@@ -18,8 +20,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
+import site.soloforest.soloforest.boundedContext.comment.dto.CommentDTO;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 
@@ -39,7 +43,11 @@ public class CommentController {
 
 	// 삭제 예정(댓글 자체는 게시글 조회시 자동으로 나오게)
 	@GetMapping("")
-	public String showComment(CommentForm commentForm) {
+	public String showComment(Model model, CommentForm commentForm) {
+		Article article = articleService.getArticle(1L);
+
+		model.addAttribute("article", article);
+
 		return "comment/comment";
 	}
 
@@ -61,28 +69,10 @@ public class CommentController {
 	// @PreAuthorize("isAuthenticated()")
 	// ToDO : 게시글 id를 통해 게시글을 얻고, 현재 로그인한 회원의 사용자 정보도 얻어서 등록한다.
 	@PostMapping("/create")
-	public String create(Model model, @Valid CommentForm commentForm, Principal principal) {
-
-		// 게시글 id를 가져오고, 현재 로그인한 회원의 정보, 댓글 폼에 입력한 내용으로 댓글 객체 생성
-		Article article = articleService.getArticle(commentForm.getArticleId());
-		// Account account = AccoutService.getUser(principal.getName());
-
-		if (commentForm.getParentId() == null) {
-			// 부모 댓글 생성
-			// commentService.create(commentForm.getContent(), commentForm.secret, account, article);
-		} else {
-			// 자식 댓글 생성
-			// 부모 댓글 찾아오기
-			Comment parent = commentService.getComment(commentForm.parentId);
-			// 자식 댓글 생성
-			// commentService.createReplyComment(commentForm.getContent(), commentForm.secret, account, article, parent);
-		}
-		// Comment comment= commentService.create(commentForm.getContent(), commentForm.getSecret(), account, article);
-
-		return "redirect:/main";
-
-		// TODO : 댓글 작성 시 게시글로 리다이렉트
-		// return "redirect:/article/detail/%s".formatted(commentForm.getArticleId());
+	@ResponseBody
+	public String create(@ModelAttribute CommentDTO commentDTO) {
+		System.out.println("commentDTO = " + commentDTO);
+		return "요청 성공";
 	}
 
 	// @PreAuthorize("isAuthenticated()")

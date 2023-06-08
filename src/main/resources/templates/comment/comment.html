@@ -1,47 +1,54 @@
 <html layout:decorate="~{home/layout.html}">
 <head>
     <title>댓글테스트</title>
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 </head>
 <body>
 <main layout:fragment="main">
-    <ul class="space-y-4">
-        <li>
-            <div class="border p-4 rounded-lg flex justify-between">
-                <p class="text-lg font-bold">댓글: 테스트</p>
-                <p class="text-gray-500">작성자: 테스트</p>
-            </div>
-            <ul class="ml-4 space-y-2">
-                <li>
-                    <div class="border-t border-gray-300 p-4 rounded-lg flex items-center">
-                        <div class="flex items-center flex-grow">
-                            <i class="fa-regular fa-arrow-turn-down-right" style="color: #ffdd00;"></i>
-                            <p class="text-lg font-bold ml-2">대댓글: 대댓글이다!</p>
-                        </div>
-                        <p class="text-gray-500">작성자: 테스트!</p>
-                    </div>
-                </li>
-            </ul>
-            <hr class="my-4" />
-        </li>
-    </ul>
+    <button onclick="listReq()">목록</button>
+    <button onclick="updateReq()">수정</button>
+    <button onclick="deleteReq()">삭제</button>
 
-    <hr class="my-4" />
+    <!-- 댓글 작성 부분 -->
+    <div id="comment-write">
+        <input type="text" id="commentWriter" placeholder="내용">
+        <input type="text" id="commentContents" placeholder="내용">
+        <button id="comment-write-btn" onclick="commentWrite()">댓글작성</button>
+    </div>
 
-    <!-- 댓글 작성 -->
-    <label for="content" class="text-lg font-bold">댓글</label>
-    <form th:action="@{/comment/create}" th:object="${commentForm}" method="POST">
-    <textarea placeholder="댓글을 입력해주세요." th:field="*{content}" columns="4"
-              class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
-        <div>
-            <label class="label cursor-pointer">
-                <span class="label-text">비밀 댓글</span>
-                <input type="checkbox" th:field="*{secret}" />
-            </label>
-        </div>
-        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
-            <span>댓글 작성</span>
-        </button>
-    </form>
+
+    <!-- 댓글 출력 부분 -->
+    <div id="comment-list"></div>
+
+    <!-- 스크립트는 main 태그 안족에, 타임리프 레이아웃에 의해 body 밖은 무시됨-->
+
+    <script th:inline="javascript">
+        const commentWrite = () => {
+            const writer = document.getElementById("commentWriter").value;
+            const contents = document.getElementById("commentContents").value;
+            const id = [[${article.id}]; //게시글 번호
+            console.log("작성자: ", writer);
+            console.log("내용: ", contents);
+            $.ajax({
+                // 요청방식: post, 요청주소: /comment/save, 요청데이터: 작성자, 작성내용, 게시글번호
+                type: "post",
+                url : "/comment/create",
+                data: {
+                    "commentWriter": writer,
+                    "commentContents": contents,
+                    "boardId": id
+                },
+                success: function (res) {
+                    console.log("요청 성공", res);
+                },
+                error: function (err) {
+                    console.log("요청 실패", err);
+                }
+            });
+        }
+    </script>
 </main>
 </body>
+
 </html>
