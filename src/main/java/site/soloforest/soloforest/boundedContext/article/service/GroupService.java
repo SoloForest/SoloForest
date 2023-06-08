@@ -9,7 +9,6 @@ import site.soloforest.soloforest.boundedContext.article.repository.GroupReposit
 @Service
 @RequiredArgsConstructor
 public class GroupService {
-
 	private final GroupRepository groupRepository;
 
 	public Group getGroup(Long id) {
