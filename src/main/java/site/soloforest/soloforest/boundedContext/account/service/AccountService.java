@@ -72,7 +72,7 @@ public class AccountService {
 		return accountRepository.save(account);
 	}
 
-	public Account getAccountfromUsername(String username) {
+	public Account getAccountFromUsername(String username) {
 		Optional<Account> findAccount = accountRepository.findByUsername(username);
 		if (!findAccount.isPresent()) {
 			// TODO : RsData가 추가되면 F-1을 내보냅니다

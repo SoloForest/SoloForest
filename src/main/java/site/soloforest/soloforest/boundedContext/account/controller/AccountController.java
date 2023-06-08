@@ -54,7 +54,7 @@ public class AccountController {
 	@GetMapping("/me")
 	@PreAuthorize("isAuthenticated()")
 	public String showMe(Principal principal, Model model) {
-		Account entity = accountService.getAccountfromUsername(principal.getName());
+		Account entity = accountService.getAccountFromUsername(principal.getName());
 		model.addAttribute("account", entity);
 		return "account/me";
 	}
