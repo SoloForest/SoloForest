@@ -60,4 +60,7 @@ public class NotificationService {
 		return notificationRepository.findByAccountOrderByIdDesc(account);
 	}
 
+	public Notification getNotification(Long notificationId) {
+		return notificationRepository.findById(notificationId).orElse(null);
+	}
 }
