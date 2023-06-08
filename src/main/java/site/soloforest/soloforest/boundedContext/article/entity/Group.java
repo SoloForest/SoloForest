@@ -9,31 +9,19 @@ import jakarta.persistence.EntityListeners;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity
+@SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
-@AllArgsConstructor
 @Getter
-@SuperBuilder
 public class Group extends Article {
-
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-
-@Entity
-@SuperBuilder
-@EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor
-@AllArgsConstructor
-public class Group extends Article {
-
 
 	@NotNull(message = "인원을 정해줘야 합니다.")
 	private int member;
@@ -51,4 +39,3 @@ public class Group extends Article {
 	private int money; // 회비
 
 }
-
