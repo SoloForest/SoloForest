@@ -3,6 +3,7 @@ package site.soloforest.soloforest.boundedContext.comment.controller;
 import java.security.Principal;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import site.soloforest.soloforest.boundedContext.account.entity.Account;
+import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
@@ -28,7 +31,8 @@ import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 @RequestMapping("/comment")
 public class CommentController {
 
-	// private final ArticleService articleService;
+	// TODO : Rq 도입시 변경
+	 private final AccountService accountService;
 	private final CommentService commentService;
 
 	private final ArticleService articleService;
@@ -58,26 +62,25 @@ public class CommentController {
 		private Long articleId;
 	}
 
-	// @PreAuthorize("isAuthenticated()")
+	@PreAuthorize("isAuthenticated()")
 	// ToDO : 게시글 id를 통해 게시글을 얻고, 현재 로그인한 회원의 사용자 정보도 얻어서 등록한다.
 	@PostMapping("/create")
 	public String create(Model model, @Valid CommentForm commentForm, Principal principal) {
 
 		// 게시글 id를 가져오고, 현재 로그인한 회원의 정보, 댓글 폼에 입력한 내용으로 댓글 객체 생성
 		Article article = articleService.getArticle(commentForm.getArticleId());
-		// Account account = AccoutService.getUser(principal.getName());
+		Account account = accountService.findByUsername(principal.getName());
 
 		if (commentForm.getParentId() == null) {
 			// 부모 댓글 생성
-			// commentService.create(commentForm.getContent(), commentForm.secret, account, article);
+			commentService.create(commentForm.getContent(), commentForm.secret, account, article);
 		} else {
 			// 자식 댓글 생성
 			// 부모 댓글 찾아오기
 			Comment parent = commentService.getComment(commentForm.parentId);
 			// 자식 댓글 생성
-			// commentService.createReplyComment(commentForm.getContent(), commentForm.secret, account, article, parent);
+			commentService.createReplyComment(commentForm.getContent(), commentForm.secret, account, article, parent);
 		}
-		// Comment comment= commentService.create(commentForm.getContent(), commentForm.getSecret(), account, article);
 
 		return "redirect:/main";
 
