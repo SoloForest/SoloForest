@@ -2,6 +2,8 @@ package site.soloforest.soloforest.boundedContext.account.service;
 
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -146,5 +148,36 @@ public class AccountService {
 			return false;
 		}
 		return true;
+	}
+
+	public ResponseEntity<String> withdraw(Account account, String password, HttpServletRequest request) {
+		if (account != null) {
+			if (passwordEncoder.matches(password, account.getPassword())) {
+				account.setUsername(null);
+				account.setNickname(null);
+				account.setEmail(null);
+				account.setAddress(null);
+				account.setImageUrl(null);
+				account.setDeleted(true);
+
+				accountRepository.save(account);
+				logoutAndInvalidateSession(request);
+				return new ResponseEntity<>("Account has been successfully deleted", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
+			}
+		} else {
+			return new ResponseEntity<>("Account does not exist", HttpStatus.NOT_FOUND);
+		}
+	}
+
+	private void logoutAndInvalidateSession(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+
+		if (session != null) {
+			session.invalidate();
+		}
+
+		SecurityContextHolder.clearContext();
 	}
 }
