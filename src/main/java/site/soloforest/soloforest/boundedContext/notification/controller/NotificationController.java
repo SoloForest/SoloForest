@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
+import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
@@ -25,14 +26,14 @@ public class NotificationController {
 
 	private final NotificationService notificationService;
 
-	private final AccountService accountService;
+	private final AccountRepository accountRepository;
 
 	private final CommentService commentService;
 
 	@GetMapping("/notification")
 	@PreAuthorize("isAuthenticated()")
 	public String showNotify(Model model, Principal principal) {
-		Account account = accountService.findByUsername(principal.getName());
+		Account account = accountRepository.findByUsername(principal.getName()).get();
 
 		List<Notification> notifications = notificationService.getNotifications(account);
 		// 모두 읽기 처리
