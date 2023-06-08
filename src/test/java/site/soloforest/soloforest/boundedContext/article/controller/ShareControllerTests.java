@@ -70,7 +70,7 @@ public class ShareControllerTests {
 	}
 
 	@Test
-	@DisplayName("게시글 작성 폼 처리")
+	@DisplayName("게시글 작성 폼 처리 테스트")
 	void t004() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(post("/article/share/community/create")
@@ -87,7 +87,7 @@ public class ShareControllerTests {
 	}
 
 	@Test
-	@DisplayName("게시글 상세 페이지 잘못 된 경로 - 에러 페이지 호출")
+	@DisplayName("게시글 상세 페이지 잘못 된 경로 - 에러 페이지 호출 테스트")
 	void t005() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(get("/article/share/detail/-1"))
@@ -96,7 +96,53 @@ public class ShareControllerTests {
 		resultActions
 			.andExpect(handler().handlerType(ShareController.class))
 			.andExpect(handler().methodName("detail"))
-			.andExpect(status().is2xxSuccessful())
+			.andExpect(content().string(containsString("404 ERROR")));
+	}
+
+	@Test
+	@DisplayName("게시글 수정 폼 처리 테스트")
+	void t006() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/article/share/modify/1")
+				.with(csrf())
+				.param("subject", "test Subject")
+				.param("content", "test Content")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(ShareController.class))
+			.andExpect(handler().methodName("modify"))
+			.andExpect(redirectedUrl("/article/share/detail/1"));
+	}
+
+	@Test
+	@DisplayName("게시글 삭제 테스트")
+	void t007() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/article/share/community/delete/1")
+				.with(csrf())
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(ShareController.class))
+			.andExpect(handler().methodName("delete"))
+			.andExpect(redirectedUrl("/article/share/community"));
+	}
+
+	@Test
+	@DisplayName("게시글 잘못된 경로 삭제 시 - 에러 페이지 호출 테스트")
+	void t008() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/article/share/community/delete/-1")
+				.with(csrf())
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(ShareController.class))
+			.andExpect(handler().methodName("delete"))
 			.andExpect(content().string(containsString("404 ERROR")));
 	}
 }

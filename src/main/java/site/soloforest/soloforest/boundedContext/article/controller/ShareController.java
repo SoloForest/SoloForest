@@ -42,16 +42,17 @@ public class ShareController {
 	}
 
 	@GetMapping("/{type}/create")
-	public String showCreate(@PathVariable String type) {
+	public String showCreate(@PathVariable String type, Model model) {
 		if (!("community".equals(type) || "program".equals(type)))
 			return "error/404";
 
+		model.addAttribute("type", type);
 		return "article/share/form";
 	}
 
 	@Getter
 	@AllArgsConstructor
-	public static class CreateForm {
+	public static class Form {
 		@NotBlank(message = "제목을 입력해주세요.")
 		private final String subject;
 		@NotBlank(message = "내용을 입력해주세요.")
@@ -59,20 +60,20 @@ public class ShareController {
 	}
 
 	@PostMapping("/{type}/create")
-	public String create(@PathVariable String type, @Valid CreateForm createForm) {
+	public String create(@PathVariable String type, @Valid Form form) {
 		Share s;
 
 		if ("community".equals(type))
-			s = shareService.create(0, createForm.getSubject(), createForm.getContent());
+			s = shareService.create(0, form.getSubject(), form.getContent());
 		else if ("program".equals(type))
-			s = shareService.create(1, createForm.getSubject(), createForm.getContent());
+			s = shareService.create(1, form.getSubject(), form.getContent());
 		else
 			throw new IllegalArgumentException("Invalid board type: " + type);
 
 		return String.format("redirect:/article/share/detail/%d", s.getId());
 	}
 
-	@GetMapping("detail/{id}")
+	@GetMapping("/detail/{id}")
 	public String detail(@PathVariable Long id, Model model) {
 		Optional<Share> share = shareService.getShare(id);
 
@@ -83,5 +84,39 @@ public class ShareController {
 		model.addAttribute(share.get());
 
 		return "article/share/detail";
+	}
+
+	@GetMapping("/modify/{id}")
+	public String showModify(@PathVariable Long id, Model model) {
+		Optional<Share> share = shareService.getShare(id);
+
+		if (share.isEmpty()) {
+			return "error/404";
+		}
+		model.addAttribute(share.get());
+
+		return "article/share/modify";
+	}
+
+	@PostMapping("/modify/{id}")
+	public String modify(@PathVariable Long id, @Valid Form form) {
+		Optional<Share> share = shareService.getShare(id);
+
+		if (share.isEmpty()) {
+			return "error/404";
+		}
+		shareService.modify(share.get(), form.subject, form.content);
+
+		return String.format("redirect:/article/share/detail/%d", id);
+	}
+
+	@PostMapping("/{type}/delete/{id}")
+	public String delete(@PathVariable String type, @PathVariable Long id) {
+		Share share = shareService.delete(id);
+
+		if (share == null)
+			return "error/404";
+
+		return String.format("redirect:/article/share/%s", type);
 	}
 }
