@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
+import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
 
@@ -71,12 +72,79 @@ public class AccountService {
 		return accountRepository.save(account);
 	}
 
-	public Account findByUsername(String username) {
+	public Account getAccountFromUsername(String username) {
 		Optional<Account> findAccount = accountRepository.findByUsername(username);
 		if (!findAccount.isPresent()) {
 			// TODO : RsData가 추가되면 F-1을 내보냅니다
 			return null;
 		}
 		return findAccount.get();
+	}
+
+	public Optional<Account> findByUsername(String username) {
+		return accountRepository.findByUsername(username);
+	}
+
+	@SuppressWarnings("checkstyle:WhitespaceAround")
+	public Account modifyInfo(Long id, ModifyForm input) {
+		Account target = accountRepository.findById(id).orElse(null);
+		if (target == null) {
+			return null;
+		}
+
+		if (canModifyPassword(input)) {
+			target.setPassword(input.getPassword());
+		}
+		if (canModifyNickname(target, input)) {
+			target.setNickname(input.getNickname());
+		}
+		if (canModifyEmail(target, input)) {
+			target.setEmail(input.getEmail());
+		}
+		if (canModifyAddress(target, input)) {
+			target.setAddress(input.getAddress());
+		}
+
+		return accountRepository.save(target);
+	}
+
+	private boolean canModifyNickname(Account target, ModifyForm input) {
+		if (input.getNickname().isBlank()) {
+			return false;
+		}
+		if (input.getNickname().equals(target.getNickname())) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean canModifyEmail(Account target, ModifyForm input) {
+		if (input.getEmail().isBlank()) {
+			return false;
+		}
+		if (input.getEmail().equals(target.getEmail())) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean canModifyPassword(ModifyForm input) {
+		if (input.getPassword().isBlank()) {
+			return false;
+		}
+		if (!input.getPassword().equals(input.getPasswordCheck())) {
+			return false;
+		}
+		return true;
+	}
+
+	private boolean canModifyAddress(Account target, ModifyForm input) {
+		if (input.getAddress().isBlank()) {
+			return false;
+		}
+		if (input.getAddress().equals(target.getAddress())) {
+			return false;
+		}
+		return true;
 	}
 }

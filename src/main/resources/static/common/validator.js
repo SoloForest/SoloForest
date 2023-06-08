@@ -56,6 +56,27 @@ function SignUpForm__submit(form) {
         return false;
     }
 
+    if (!emailRegExp.test(form.email.value)) {
+        toastWarning('이메일 형식을 지켜야 합니다.');
+        form.email.focus();
+        return false;
+    }
+
+    form.submit();
+}
+
+function ModifyForm__submit(form) {
+    form.password.value = form.password.value.trim();
+    form.passwordCheck.value = form.passwordCheck.value.trim();
+    form.nickname.value = form.nickname.value.trim();
+    form.email.value = form.email.value.trim();
+
+    if (form.password.value !== form.passwordCheck.value) {
+        toastWarning('동일한 password를 입력해주세요');
+        form.password.focus();
+        return false;
+    }
+
     if (form.nickname.value.length < nicknameValueMinLength || nicknameValueMaxLength < form.username.value.length) {
         toastWarning('nickname은 공백 없이 2자 이상 32자 이하로 작성해야 합니다.');
         form.nickname.focus();

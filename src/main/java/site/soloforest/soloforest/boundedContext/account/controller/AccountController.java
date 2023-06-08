@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
+import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 
@@ -52,8 +54,18 @@ public class AccountController {
 	@GetMapping("/me")
 	@PreAuthorize("isAuthenticated()")
 	public String showMe(Principal principal, Model model) {
-		Account entity = accountService.findByUsername(principal.getName());
+		Account entity = accountService.getAccountFromUsername(principal.getName());
 		model.addAttribute("account", entity);
 		return "account/me";
+	}
+
+	@PostMapping("/me/{id}")
+	@PreAuthorize("isAuthenticated()")
+	public String modifyMe(@PathVariable Long id, @ModelAttribute ModifyForm input, Model model) {
+		Account entity = accountService.modifyInfo(id, input);
+		if (entity == null)
+			return "redirect:/account/me?error=true";
+		model.addAttribute("account", entity);
+		return "redirect:/account/me";
 	}
 }
