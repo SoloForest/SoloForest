@@ -20,7 +20,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
-import site.soloforest.soloforest.boundedContext.account.service.AccountService;
+import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
@@ -32,7 +32,7 @@ import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 public class CommentController {
 
 	// TODO : Rq 도입시 변경
-	 private final AccountService accountService;
+	 private final AccountRepository accountRepository;
 	private final CommentService commentService;
 
 	private final ArticleService articleService;
@@ -69,7 +69,7 @@ public class CommentController {
 
 		// 게시글 id를 가져오고, 현재 로그인한 회원의 정보, 댓글 폼에 입력한 내용으로 댓글 객체 생성
 		Article article = articleService.getArticle(commentForm.getArticleId());
-		Account account = accountService.findByUsername(principal.getName());
+		Account account = accountRepository.findByUsername(principal.getName()).get();
 
 		if (commentForm.getParentId() == null) {
 			// 부모 댓글 생성
