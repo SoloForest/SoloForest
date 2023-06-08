@@ -58,10 +58,9 @@ public class Rq {
 			return null;
 
 		// 데이터가 없는지 체크
-		// AccountService.java에 getAccountByUsername 메소드 구현 후 주석 제거
-		// if (account == null) {
-		// 	account = accountService.getAccountByUsername(user.getUsername()).orElseThrow();
-		// } 
+		if (account == null) {
+			account = accountService.findByUsername(user.getUsername()).orElseThrow();
+		}
 
 		return account;
 	}
