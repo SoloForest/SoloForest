@@ -38,6 +38,7 @@ dependencies {
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'com.googlecode.json-simple:json-simple:1.1.1' // json
 
+
     implementation 'org.springframework.boot:spring-boot-starter-cache'
 
     // redis 드라이버
@@ -50,6 +51,7 @@ dependencies {
     implementation 'org.springframework.session:spring-session-data-redis'
 
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 }
 
 tasks.named('test') {
@@ -57,6 +59,8 @@ tasks.named('test') {
 }
 
 
+
 jar {
     enabled = false
 }
+
