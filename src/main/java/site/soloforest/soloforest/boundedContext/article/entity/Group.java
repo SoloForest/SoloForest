@@ -35,5 +35,6 @@ public class Group extends Article {
 	private String location;
 
 	@NotNull(message = "회비를 정해주세요.")
-	private int money; // 회비
+	private int money;
+	
 }
