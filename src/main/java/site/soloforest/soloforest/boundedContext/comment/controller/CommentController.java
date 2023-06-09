@@ -1,8 +1,10 @@
 package site.soloforest.soloforest.boundedContext.comment.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
+import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.dto.CommentDTO;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
@@ -45,7 +49,13 @@ public class CommentController {
 
 	// 삭제 예정(댓글 자체는 게시글 조회시 자동으로 나오게)
 	@GetMapping("")
-	public String showComment() {
+	public String showComment(Model model) {
+
+		Article article = articleService.getArticle(1L);
+		List<Comment> commentList = commentService.getCommentList(article);
+
+		model.addAttribute("article", article);
+		model.addAttribute("commentList", commentList);
 
 		return "comment/comment";
 	}
@@ -67,11 +77,42 @@ public class CommentController {
 
 	// ToDO : 게시글 id를 통해 게시글을 얻고, 현재 로그인한 회원의 사용자 정보도 얻어서 등록한다.
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
-	@ResponseBody
-	public String create(@ModelAttribute CommentDTO commentDTO) {
-		System.out.println("commentDTO = " + commentDTO);
-		return "요청 성공";
+	public String create(Model model ,@ModelAttribute CommentDTO commentDTO, Principal principal) {
+		Article article = articleService.getArticle(commentDTO.getArticleId());
+		Account account = accountService.findByUsername(principal.getName());
+
+		if (commentDTO.getParentId() == null) {
+			// 부모 댓글 생성
+			commentService.create(commentDTO.getCommentContents(), commentDTO.getSecret(), account, article);
+		}
+		model.addAttribute("article", article);
+
+		List<Comment> commentList = commentService.getCommentList(article);
+		model.addAttribute("commentList", commentList);
+
+		return "comment/comment :: #comment-list";
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/reply/create")
+	public String replyCreate(Model model ,@ModelAttribute CommentDTO commentDTO, Principal principal) {
+		Article article = articleService.getArticle(commentDTO.getArticleId());
+		Account account = accountService.findByUsername(principal.getName());
+
+		// 자식 댓글 생성
+			// 부모 댓글 찾아오기
+			Comment parent = commentService.getComment(commentDTO.getParentId());
+			// 자식 댓글 생성
+			commentService.createReplyComment(commentDTO.getCommentContents(), commentDTO.getSecret(), account, article, parent);
+
+		model.addAttribute("article", article);
+
+		List<Comment> commentList = commentService.getCommentList(article);
+		model.addAttribute("commentList", commentList);
+
+		return "comment/comment :: #comment-list";
 	}
 
 	// @PreAuthorize("isAuthenticated()")

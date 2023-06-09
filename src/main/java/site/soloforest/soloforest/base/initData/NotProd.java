@@ -115,6 +115,8 @@ public class NotProd {
 					shares.get(0), comment10);
 				Comment replyComment3 = commentService.createReplyComment("가시죠!!", false, accounts.get(1),
 					shares.get(1), comment8);
+				Comment replyComment4 = commentService.createReplyComment("가자구!", false, accounts.get(1),
+					shares.get(1), replyComment1);
 
 			}
 		};

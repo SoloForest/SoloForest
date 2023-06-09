@@ -1,5 +1,9 @@
 package site.soloforest.soloforest.boundedContext.comment.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -10,7 +14,9 @@ import site.soloforest.soloforest.base.event.EventCommentCreate;
 import site.soloforest.soloforest.base.event.EventReplyCommentCreate;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
+import site.soloforest.soloforest.boundedContext.article.repository.ArticleRepository;
 import site.soloforest.soloforest.boundedContext.comment.controller.CommentController;
+import site.soloforest.soloforest.boundedContext.comment.dto.CommentDTO;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepository;
 
@@ -20,6 +26,8 @@ import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepos
 public class CommentService {
 
 	private final CommentRepository commentRepository;
+
+	private final ArticleRepository articleRepository;
 
 	private final ApplicationEventPublisher publisher;
 
@@ -105,5 +113,10 @@ public class CommentService {
 	// 댓글 조회
 	public Comment findById(Long id) {
 			return commentRepository.findById(id).orElse(null);
+	}
+
+	public List<Comment> getCommentList(Article article) {
+		List<Comment> commentList = commentRepository.findAllByArticleOrderByIdDesc(article);
+		return commentList;
 	}
 }
