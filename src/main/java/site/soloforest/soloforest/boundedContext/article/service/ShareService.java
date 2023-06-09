@@ -1,8 +1,13 @@
 package site.soloforest.soloforest.boundedContext.article.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +35,21 @@ public class ShareService {
 		return share;
 	}
 
-	public List<Share> getSharesByBoardNumber(int boardNumber) {
-		return shareRepository.findByBoardNumber(boardNumber);
+	public Page<Share> getSharesByBoardNumber(String type, int page) {
+		int boardNumber;
+		if ("community".equals(type))
+			boardNumber = 0;
+		else if ("program".equals(type))
+			boardNumber = 1;
+		else
+			return null;
+
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
+
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+
+		return shareRepository.findAllByBoardNumber(boardNumber, pageable);
 	}
 
 	public Optional<Share> getShare(Long id) {

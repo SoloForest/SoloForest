@@ -1,8 +1,8 @@
 package site.soloforest.soloforest.boundedContext.article.controller;
 
-import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -26,18 +27,15 @@ public class ShareController {
 	private final ShareService shareService;
 
 	@GetMapping("/{type}")
-	public String showList(@PathVariable String type, Model model) {
-		List<Share> shareList;
+	public String showList(@PathVariable String type, Model model,
+		@RequestParam(value = "page", defaultValue = "0") int page) {
+		Page<Share> paging = shareService.getSharesByBoardNumber(type, page);
 
-		if ("community".equals(type)) {
-			shareList = shareService.getSharesByBoardNumber(0);
-		} else if ("program".equals(type)) {
-			shareList = shareService.getSharesByBoardNumber(1);
-		} else {
+		if (paging == null) {
 			return "redirect:/main";
 		}
 
-		model.addAttribute("shareList", shareList);
+		model.addAttribute("paging", paging);
 
 		return String.format("article/share/%s", type);
 	}
