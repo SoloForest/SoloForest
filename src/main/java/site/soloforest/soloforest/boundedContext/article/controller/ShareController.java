@@ -28,14 +28,16 @@ public class ShareController {
 
 	@GetMapping("/{type}")
 	public String showList(@PathVariable String type, Model model,
-		@RequestParam(value = "page", defaultValue = "0") int page) {
-		Page<Share> paging = shareService.getSharesByBoardNumber(type, page);
+		@RequestParam(value = "page", defaultValue = "0") int page,
+		@RequestParam(value = "kw", defaultValue = "") String kw) {
+		Page<Share> paging = shareService.getSharesByBoardNumber(type, kw, page);
 
 		if (paging == null) {
 			return "redirect:/main";
 		}
 
 		model.addAttribute("paging", paging);
+		model.addAttribute("kw", kw);
 
 		return String.format("article/share/%s", type);
 	}

@@ -35,7 +35,7 @@ public class ShareService {
 		return share;
 	}
 
-	public Page<Share> getSharesByBoardNumber(String type, int page) {
+	public Page<Share> getSharesByBoardNumber(String type, String kw, int page) {
 		int boardNumber;
 		if ("community".equals(type))
 			boardNumber = 0;
@@ -49,7 +49,7 @@ public class ShareService {
 
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
 
-		return shareRepository.findAllByBoardNumber(boardNumber, pageable);
+		return shareRepository.findByBoardNumberAndKeyword(boardNumber, kw, pageable);
 	}
 
 	public Optional<Share> getShare(Long id) {
