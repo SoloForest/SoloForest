@@ -5,11 +5,13 @@
 
 <body>
 <main layout:fragment="main">
-    <div class="flex items-center relative">
-        <h1 class="mt-4 mb-4 font-semibold" th:text="${share.boardNumber == 0} ? '커뮤니티 게시판' : '프로그램 게시판'">
-        </h1>
-        <div class="ml-4 h-4 w-px bg-black"></div>
-        <div class="ml-auto flex gap-2">
+    <div class="flex items-center justify-center mt-4 mb-3 relative">
+        <div class="mr-auto flex justify-center items-center min-w-[150px]">
+            <h1 class="font-semibold" th:text="${share.boardNumber == 0} ? '커뮤니티 게시판' : '프로그램 게시판'">
+            </h1>
+            <span class="ml-4 h-4 w-px bg-black"></span>
+        </div>
+        <div class="ml-auto mr-3 flex gap-4">
             <a th:href="@{|/article/share/modify/${share.id}|}" role="button"
                class="btn btn-outline btn-primary btn-sm">수정</a>
             <form th:action="@{|/article/share/${share.getBoardType()}/delete/${share.id}|}" method="post">
