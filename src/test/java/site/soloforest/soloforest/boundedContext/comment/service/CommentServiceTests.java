@@ -84,11 +84,11 @@ public class CommentServiceTests {
 		// 부모 댓글 먼저 지우기
 		commentService.delete(comment);
 
-		// 댓글 삭제 확인(자식 댓글이 있으니, 내용만 "삭제되었습니다"
+		// 댓글 삭제 확인(자식 댓글이 있으니, 객체 삭제처리 되지 않고 isDeleted 속성만 변경
 		Comment deletedComment = commentService.getComment(3L);
 
 		// 댓글 내용이 "삭제되었습니다"로 바뀐지 확인
-		assertThat(deletedComment.getContent().equals("삭제되었습니다"));
+		assertThat(deletedComment.getIsDeleted()==true);
 
 		// 자식 댓글 삭제(3번의 댓글의 대댓글 id는 12번)
 		Comment delComment = comment.getChildren().get(0);

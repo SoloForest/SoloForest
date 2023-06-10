@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 
+import io.lettuce.core.dynamic.CommandMethod;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
@@ -117,17 +118,25 @@ public class CommentController {
 	}
 
 	// 댓글 삭제 메서드
-	// @PreAuthorize("isAuthenticated()") // 로그인한 사용자만보임
-	@DeleteMapping("/{id}")
-	public String delete(Principal principal, @PathVariable("id") Long id) {
-		Comment comment = this.commentService.getComment(id);
-		if (!comment.getWriter().getUsername().equals(principal.getName())) {
-			// 댓글 작성한 회원정보와 일치 여부 확인
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다");
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/delete")
+	public String delete(Principal principal, Model model, CommentDTO commentDTO) {
+		Article article = articleService.getArticle(commentDTO.getArticleId());
+		Account account = accountService.findByUsername(principal.getName());
+
+		// ToDo : RsData 변경 필요 + Admin 사용자도 삭제 가능
+		// 현재 로그인한 사용자와 다른 사용자면 삭제 불가
+		if(account.getId() != commentDTO.getCommentWriter()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다");
 		}
+
+		Comment comment = commentService.getComment(commentDTO.getId());
 		commentService.delete(comment);
-		// TODO : 게시글 정보로 리다이렉트
-		return "comment/comment";
+
+		model.addAttribute("article", article);
+		List<Comment> commentList = commentService.getCommentList(article);
+		model.addAttribute("commentList", commentList);
+		return "comment/comment :: #comment-list";
 	}
 
 }

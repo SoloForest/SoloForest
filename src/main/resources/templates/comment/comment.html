@@ -30,6 +30,8 @@
                 <div class="card bg-white border p-4 rounded-lg">
                     <p class="text-lg font-bold">댓글: [[${comment.content}]]</p>
                     <p class="text-gray-500">작성자: [[${comment.writer.username}]]</p>
+                    <input type="hidden" id="delete-comment-${commentIndex}" th:value="${comment.id}"/>
+                    <input type="hidden" id="delete-writer-${commentIndex}" th:value="${comment.writer.id}" />
                 </div>
                 <div sec:authorize="isAuthenticated()" class="flex justify-start mt-2">
                     <button class="btn btn-primary" onclick="showReplyForm(this);" data-comment-index="${commentIndex}">
@@ -39,12 +41,15 @@
                             th:if="${#authentication.getPrincipal().getUsername() == comment.writer.username}"
                             th:text="수정" onclick="showModifyForm(this);" data-comment-index="${commentIndex}">
                     </button>
+                    <button class="btn btn-primary"
+                            th:if="${#authentication.getPrincipal().getUsername() == comment.writer.username}"
+                            th:text="삭제" onclick="deleteComment(this);" data-comment-index="${commentIndex}">
+                    </button>
                 </div>
-
                 <div>
                     <!-- 답글 버튼 클릭 -->
                     <div id="reply-form-${commentIndex}" class="hidden">
-                        <input type="hidden" id="parentId-${commentIndex}" th:value="${commentIndex.index}"/>
+                        <input type="hidden" id="parentId-${commentIndex}" th:value="${comment.id}"/>
                         <textarea placeholder="답글을 입력해주세요." id="replyCommentContents-${commentIndex}" columns="4"
                                   class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
                         </textarea>
@@ -71,7 +76,7 @@
                             <input type="checkbox" id="modifySecret-${commentIndex}"/>
                         </label>
                         <button id="modify-comment-write-btn" onclick="modifyCommentWrite(this)"
-                                data-comment-index="${commentIndex}" data-writer-id="${comment.writer.id}"
+                                data-comment-index="${commentIndex}"
                                 class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
                             <span>댓글수정</span>
                         </button>
@@ -120,6 +125,7 @@
     <!-- 스크립트는 main 태그 안족에, 타임리프 레이아웃에 의해 body 밖은 무시됨-->
 
     <script th:inline="javascript">
+        // 댓글 작성
         const commentWrite = () => {
             const secret = document.getElementById("secret");
             const secretValue = secret.checked ? true : false;
@@ -177,6 +183,8 @@
             document.getElementById(formId).classList.remove("hidden");
             // 기존 값 가져오기 필요
         }
+
+        // 답글(대댓글) 작성 메서드
         const replyCommentWrite = (button) => {
             const commentIndex = button.dataset.commentIndex;
             const replySecret = document.getElementById("replySecret-" + commentIndex);
@@ -240,6 +248,39 @@
                     "articleId": articleId,
                     "secret": secretValue,
                     "commentContents": contents,
+                    "commentWriter": writerId,
+                    "id": commentId
+                },
+                success: function (fragment) {
+                    $('#comment-list').replaceWith(fragment);
+                },
+                error: function (err) {
+                    console.log("요청 실패", err);
+                }
+            });
+        }
+
+        // 댓글 삭제 메서드
+        const deleteComment = (button) => {
+            const commentIndex = button.dataset.commentIndex; // 인덱스
+            const articleId = [[${article.id}]];
+            const commentId = document.getElementById("delete-comment-" + commentIndex).value; // 댓글번호
+            const writerId = document.getElementById("delete-writer-" + commentIndex).value; // 작성자 ID
+
+
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+
+            $.ajax({
+                // 요청방식: post, 요청주소: /comment/reply/create
+                // 요청데이터: 작성내용, 게시글번호, 비밀 댓글 여부, 부모 댓글 id
+                type: "post",
+                url: "/comment/delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                data: {
+                    "articleId": articleId,
                     "commentWriter": writerId,
                     "id": commentId
                 },

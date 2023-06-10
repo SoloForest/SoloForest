@@ -102,7 +102,7 @@ public class CommentService {
 
 	private Comment getDeletableAncestorComment(Comment comment) {
 		Comment parent = comment.getParent(); // 현재 댓글의 부모를 구함
-		if (parent != null && parent.getChildren().size() == 1 && parent.getContent().equals("삭제되었습니다."))
+		if (parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted().equals(true))
 			// 부모가 있고, 부모의 자식이 1개(지금 삭제하는 댓글)이고, 부모의 삭제 상태가 TRUE인 댓글이라면 재귀
 			// 삭제가능 댓글 -> 만일 댓글의 조상(대댓글의 입장에서 할아버지 댓글)도 해당 댓글 삭제 시 삭제 가능한지 확인
 			return getDeletableAncestorComment(parent);
