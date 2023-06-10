@@ -210,4 +210,24 @@ public class AccountService {
 
 		SecurityContextHolder.clearContext();
 	}
+
+	public ResponseEntity<String> report(Long targetId, Account account) {
+		Optional<Account> target = accountRepository.findById(targetId);
+		if (target.isEmpty()) {
+			return new ResponseEntity<>("대상을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+		}
+		if (target.get().isDeleted()) {
+			return new ResponseEntity<>("탈퇴한 이용자에 대한 신고입니다.", HttpStatus.BAD_REQUEST);
+		}
+
+		int reported = target.get().reportUp();
+		if ((reported / 3 > 0) && (reported % 3 == 0)) {
+			target.get().loginReject();
+			// target의 session을 끊어줘야 함....
+		}
+
+		accountRepository.save(target.get());
+
+		return new ResponseEntity<>("신고가 완료되었습니다.", HttpStatus.OK);
+	}
 }

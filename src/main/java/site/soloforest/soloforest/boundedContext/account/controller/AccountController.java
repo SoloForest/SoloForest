@@ -87,4 +87,14 @@ public class AccountController {
 
 		return accountService.withdraw(accountAdapter.getAccount(), password, request);
 	}
+
+	@PostMapping("/report/{id}")
+	@PreAuthorize("isAuthenticated()")
+	public ResponseEntity<String> report(@PathVariable Long id,
+		@AuthenticationPrincipal AccountAdapter accountAdapter) {
+		if (accountAdapter.getAccount().getId().equals(id)) {
+			return new ResponseEntity<>("자기 자신을 신고할 수 없습니다.", HttpStatus.BAD_REQUEST);
+		}
+		return accountService.report(id, accountAdapter.getAccount());
+	}
 }
