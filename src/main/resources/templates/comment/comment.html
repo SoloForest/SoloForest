@@ -35,23 +35,47 @@
                     <button class="btn btn-primary" onclick="showReplyForm(this);" data-comment-index="${commentIndex}">
                         답글 작성
                     </button>
-                </div>
-                <!-- 답글 버튼 클릭 -->
-                <div id="reply-form-${commentIndex}" class="hidden">
-                    <input type="hidden" id="parentId-${commentIndex}" th:value = "${commentIndex.index}" />
-                    <textarea placeholder="답글을 입력해주세요." id="replyCommentContents-${commentIndex}" columns="4"
-                              class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
-    </textarea>
-                    <label class="label cursor-pointer">
-                        <span class="label-text">비밀 댓글</span>
-                        <input type="checkbox" id="replySecret-${commentIndex}"/>
-                    </label>
-                    <button id="reply-comment-write-btn" onclick="replyCommentWrite(this)"
-                            data-comment-index="${commentIndex}" class="bg-blue-500 text-white py-2
-    px-4 rounded-lg hover:bg-blue-600">
-                        <span>답글작성</span>
+                    <button class="btn btn-primary" th:if="${#authentication.getPrincipal().getUsername() == comment.writer.username}"
+                       th:text="수정" onclick="showModifyForm(this);" data-comment-index="${commentIndex}">
                     </button>
                 </div>
+
+                <div>
+                    <!-- 답글 버튼 클릭 -->
+                    <div id="reply-form-${commentIndex}" class="hidden">
+                        <input type="hidden" id="parentId-${commentIndex}" th:value="${commentIndex.index}"/>
+                        <textarea placeholder="답글을 입력해주세요." id="replyCommentContents-${commentIndex}" columns="4"
+                                  class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        </textarea>
+                        <label class="label cursor-pointer">
+                            <span class="label-text">비밀 댓글</span>
+                            <input type="checkbox" id="replySecret-${commentIndex}"/>
+                        </label>
+                        <button id="reply-comment-write-btn" onclick="replyCommentWrite(this)"
+                                data-comment-index="${commentIndex}" class="bg-blue-500 text-white py-2
+    px-4 rounded-lg hover:bg-blue-600">
+                            <span>답글작성</span>
+                        </button>
+                    </div>
+
+                    <!-- 댓글 수정 버튼 클릭 -->
+                    <div id="modify-form-${commentIndex}" class="hidden">
+                        <input type="hidden" id="modify-comment-${commentIndex}" th:value="${comment.id}"/>
+                        <input type="hidden" id="modify-writer-${commentIndex}" th:value="${comment.writer.id}"/>
+                        <textarea placeholder="수정할 내용을 입력해주세요" id="modifyCommentContents-${commentIndex}" columns="4"
+                                  class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        </textarea>
+                        <label class="label cursor-pointer">
+                            <span class="label-text">비밀 댓글</span>
+                            <input type="checkbox" id="modifySecret-${commentIndex}"/>
+                        </label>
+                        <button id="modify-comment-write-btn" onclick="modifyCommentWrite(this)"
+                                data-comment-index="${commentIndex}" data-writer-id="${comment.writer.id}" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
+                            <span>댓글수정</span>
+                        </button>
+                    </div>
+                </div>
+
                 <ul class="ml-8 space-y-2">
                     <li th:each="childComment, childIndex : ${comment.children}">
                         <div class="border-t border-gray-300 p-4 rounded-lg">
@@ -109,6 +133,14 @@
             document.getElementById(formId).classList.remove("hidden");
         }
 
+        // 댓글 수정 버튼 눌렀을 때 입력 창 나오게
+        const showModifyForm = (button) => {
+            console.log("showModifyForm 호출");
+            const commentIndex = button.dataset.commentIndex;
+            const formId = "modify-form-" + commentIndex;
+            document.getElementById(formId).classList.remove("hidden");
+            // 기존 값 가져오기 필요
+        }
         const replyCommentWrite = (button) => {
             const commentIndex = button.dataset.commentIndex;
             const replySecret = document.getElementById("replySecret-" + commentIndex);
@@ -135,6 +167,45 @@
                     "secret": secretValue,
                     "commentContents": contents,
                     "parentId": parentId
+                },
+                success: function (fragment) {
+                    $('#comment-list').replaceWith(fragment);
+                },
+                error: function (err) {
+                    console.log("요청 실패", err);
+                }
+            });
+        }
+        // 댓글 수정 메서드
+        const modifyCommentWrite = (button) => {
+            const commentIndex = button.dataset.commentIndex; // 인덱스
+            const replySecret = document.getElementById("modifySecret-" + commentIndex);
+            const secretValue = replySecret.checked ? true : false; // 비밀 댓글 체크 여부
+            const contents = document.getElementById("modifyCommentContents-" + commentIndex).value; // 내용
+            const articleId = [[${article.id}]];
+            const writerId = document.getElementById("modify-writer-" + commentIndex).value; // 작성자 ID
+            const commentId = document.getElementById("modify-comment-" + commentIndex).value; // 댓글번호
+
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+            //게시글 번호
+            console.log("비밀여부: ", secretValue);
+            console.log("내용: ", contents);
+
+            $.ajax({
+                // 요청방식: post, 요청주소: /comment/reply/create
+                // 요청데이터: 작성내용, 게시글번호, 비밀 댓글 여부, 부모 댓글 id
+                type: "post",
+                url: "/comment/modify",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                data: {
+                    "articleId": articleId,
+                    "secret": secretValue,
+                    "commentContents": contents,
+                    "commentWriter" : writerId,
+                    "id" : commentId
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);

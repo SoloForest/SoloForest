@@ -18,7 +18,7 @@ import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 public class CommentDTO {
 	private Long id;
 
-	private String commentWriter;
+	private Long commentWriter;
 	private String commentContents;
 	private Long articleId;
 	private Boolean secret = false;
