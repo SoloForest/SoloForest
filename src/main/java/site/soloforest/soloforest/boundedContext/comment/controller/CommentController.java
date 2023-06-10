@@ -91,8 +91,9 @@ public class CommentController {
 		return "comment/comment :: #comment-list";
 	}
 
+	// 답글 수정 + 댓글 수정 둘다
 	@PreAuthorize("isAuthenticated()")
-	@PostMapping("/modify")    // 댓글 id
+	@PostMapping("/modify")
 	public String modify(CommentDTO commentDTO, Principal principal, Model model) {
 		Article article = articleService.getArticle(commentDTO.getArticleId());
 		Account account = accountService.findByUsername(principal.getName());
@@ -102,6 +103,7 @@ public class CommentController {
 			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
 		 }
 
+		 // 대댓글(답글)도 id로 찾을 수 있음(댓글과 동일 객체 사용)
 		Comment comment = commentService.getComment(commentDTO.getId());
 
 		// 댓글 내용, 비밀 댓글 여부만 수정 할테니 해당 값 넘기기
