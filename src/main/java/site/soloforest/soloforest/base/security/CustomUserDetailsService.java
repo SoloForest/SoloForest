@@ -1,6 +1,5 @@
 package site.soloforest.soloforest.base.security;
 
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +18,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Account account = accountRepository.findByUsername(username)
 			.orElseThrow(() -> new UsernameNotFoundException("username(%s) not found".formatted(username)));
-		return new User(account.getUsername(), account.getPassword(), account.getGrantedAuthorities());
+		return new AccountAdapter(account);
 	}
 }

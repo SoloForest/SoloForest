@@ -65,6 +65,8 @@ public class Account {
 	private int authority = 1;
 	@Builder.Default
 	private int reported = 0;
+	@Builder.Default
+	private boolean deleted = false;
 
 	@OneToMany(cascade = {CascadeType.REMOVE})
 	@ToString.Exclude

@@ -232,4 +232,43 @@ public class AccountControllerTest {
 		assertThat(accountRepository.findById(2L).get().getNickname()).isEqualTo("somsom");
 		assertThat(oldPassword).isNotEqualTo(accountRepository.findById(2L).get().getPassword());
 	}
+
+	@Test
+	@DisplayName("회원탈퇴 테스트 - 실패하는 경우")
+	@WithUserDetails("usertest")
+	void t010() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/withdraw/2")
+				.with(csrf())
+				.param("password", "bbosong1")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("withdraw"))
+			.andExpect(status().isBadRequest());
+
+		assertThat(accountRepository.findById(2L).get().getNickname()).isEqualTo("for test");
+	}
+
+	@Test
+	@DisplayName("회원탈퇴 테스트 - 성공하는 경우")
+	@WithUserDetails("usertest")
+	void t011() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/withdraw/2")
+				.with(csrf())
+				.param("password", "test1")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("withdraw"))
+			.andExpect(status().isOk());
+
+		assertThat(accountRepository.findById(2L).get().getNickname()).isEqualTo("알 수 없는 이용자");
+		assertThat(accountRepository.findByUsername("usertest")).isEmpty();
+	}
 }

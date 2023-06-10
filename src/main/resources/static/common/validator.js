@@ -91,3 +91,37 @@ function ModifyForm__submit(form) {
 
     form.submit();
 }
+
+function Withdraw__Submit(form) {
+    let isConfirm = confirm('탈퇴한 회원은 복구할 수 없습니다.\n그래도 탈퇴하시겠습니까?');
+    if (isConfirm === true) {
+        let input = prompt('비밀번호를 입력해주세요.');
+        if (input != null && passwordValueMinLength <= input.trim().length && input.trim().length <= passwordValueMaxLength) {
+            let header = $("meta[name='_csrf_header']").attr('content');
+            let token = $("meta[name='_csrf']").attr('content');
+
+            $.ajax({
+                url: form.action,
+                type: "POST",
+                data: {
+                    _csrf: form._csrf.value,
+                    password: input
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (result) {
+                    alert('탈퇴 완료');
+                    window.location.href = '/main';
+                },
+                error: function (request, status, error) {
+                    alert('올바르지 않은 비밀번호입니다.');
+                }
+            })
+        } else if (passwordValueMinLength > input.trim().length || passwordValueMaxLength < input.trim().length)
+            alert('올바르지 않은 비밀번호입니다.');
+        else {
+            alert('취소되었습니다.');
+        }
+    }
+}
