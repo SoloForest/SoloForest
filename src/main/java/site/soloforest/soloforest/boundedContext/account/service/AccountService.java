@@ -180,7 +180,8 @@ public class AccountService {
 		return true;
 	}
 
-	public ResponseEntity<String> withdraw(Account account, String password, HttpServletRequest request) {
+	public ResponseEntity<String> withdraw(Long id, String password, HttpServletRequest request) {
+		Account account = accountRepository.findById(id).orElse(null);
 		if (account != null) {
 			if (passwordEncoder.matches(password, account.getPassword())) {
 				account.setUsername(null);
@@ -211,7 +212,7 @@ public class AccountService {
 		SecurityContextHolder.clearContext();
 	}
 
-	public ResponseEntity<String> report(Long targetId, Account account) {
+	public ResponseEntity<String> report(Long targetId) {
 		Optional<Account> target = accountRepository.findById(targetId);
 		if (target.isEmpty()) {
 			return new ResponseEntity<>("대상을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);

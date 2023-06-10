@@ -35,7 +35,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		}
 
 		Account account = accountRepository.findById(
-			((AccountAdapter)authentication.getPrincipal()).getAccount().getId()).orElse(null);
+			((AccountAdapter)authentication.getPrincipal()).getId()).orElse(null);
 		if (account != null && account.getLoginRejectedDeadline() != null &&
 			account.getLoginRejectedDeadline().isAfter(LocalDateTime.now())) {
 			HttpSession session = request.getSession(false);

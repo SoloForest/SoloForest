@@ -81,20 +81,20 @@ public class AccountController {
 	@ResponseBody
 	public ResponseEntity<String> withdraw(@PathVariable Long id, @RequestParam("password") String password,
 		@AuthenticationPrincipal AccountAdapter accountAdapter, HttpServletRequest request) {
-		if (!accountAdapter.getAccount().getId().equals(id)) {
+		if (!accountAdapter.getId().equals(id)) {
 			return new ResponseEntity<>("Authentication failed", HttpStatus.UNAUTHORIZED);
 		}
 
-		return accountService.withdraw(accountAdapter.getAccount(), password, request);
+		return accountService.withdraw(accountAdapter.getId(), password, request);
 	}
 
 	@PostMapping("/report/{id}")
 	@PreAuthorize("isAuthenticated()")
 	public ResponseEntity<String> report(@PathVariable Long id,
 		@AuthenticationPrincipal AccountAdapter accountAdapter) {
-		if (accountAdapter.getAccount().getId().equals(id)) {
+		if (accountAdapter.getId().equals(id)) {
 			return new ResponseEntity<>("자기 자신을 신고할 수 없습니다.", HttpStatus.BAD_REQUEST);
 		}
-		return accountService.report(id, accountAdapter.getAccount());
+		return accountService.report(id);
 	}
 }
