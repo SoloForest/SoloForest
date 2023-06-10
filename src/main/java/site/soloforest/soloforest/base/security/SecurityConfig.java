@@ -11,10 +11,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration  // 환경설정
 @EnableWebSecurity // 모든 요청 URL이 스프링 시큐리티의 제어를 받도록 만듬
 @EnableMethodSecurity(prePostEnabled = true)  // PreAuthorize 사용하기 위해 반드시 필요
+@RequiredArgsConstructor
 public class SecurityConfig {
+	private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
 	@Bean
 		// 리턴값은 Bean에 등록
 		// SecurityFilterChain 빈을 생성하여 스프링 시큐리티 세부 설정 가능
@@ -23,7 +28,7 @@ public class SecurityConfig {
 			.formLogin(
 				formLogin -> formLogin
 					.loginPage("/account/login")
-					.defaultSuccessUrl("/main")
+					.successHandler(customAuthenticationSuccessHandler)
 					.failureUrl("/account/login?error=true")
 			)
 			.logout(
