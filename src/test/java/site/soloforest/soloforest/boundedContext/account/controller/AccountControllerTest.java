@@ -7,6 +7,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -24,6 +26,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
+import site.soloforest.soloforest.base.security.CustomAuthenticationSuccessHandler;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
 
@@ -37,6 +40,8 @@ public class AccountControllerTest {
 	private MockMvc mvc;
 	@Autowired
 	private AccountRepository accountRepository;
+	@Autowired
+	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
 	@BeforeEach
 	void initData() {
@@ -271,4 +276,65 @@ public class AccountControllerTest {
 		assertThat(accountRepository.findById(2L).get().getNickname()).isEqualTo("알 수 없는 이용자");
 		assertThat(accountRepository.findByUsername("usertest")).isEmpty();
 	}
+
+	@Test
+	@DisplayName("신고하기 테스트 - 신고하면 target의 신고횟수 증가")
+	@WithUserDetails("usertest2")
+	void t012() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/report/2")
+				.with(csrf())
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("report"))
+			.andExpect(status().isOk());
+
+		assertThat(accountRepository.findById(2L).get().getReported()).isEqualTo(1);
+	}
+
+	@Test
+	@DisplayName("신고하기 테스트 - 신고를 3회 받으면 tqrget의 loginRejectedDeadline이 활성화")
+	@WithUserDetails("usertest2")
+	void t013() throws Exception {
+		assertThat(accountRepository.findById(2L).get().getLoginRejectedDeadline()).isNull();
+
+		mvc.perform(post("/account/report/2").with(csrf())).andDo(print());
+		mvc.perform(post("/account/report/2").with(csrf())).andDo(print());
+		ResultActions resultActions = mvc
+			.perform(post("/account/report/2")
+				.with(csrf())
+			)
+			.andDo(print());
+		resultActions.andExpect(status().isOk());
+
+		assertThat(accountRepository.findById(2L).get().getReported()).isEqualTo(3);
+		assertThat(accountRepository.findById(2L).get().getLoginRejectedDeadline()).isNotNull();
+	}
+
+	@Test
+	@DisplayName("신고하기 테스트 - loginRejectedDeadline이 활성화되고 로그인하면 403애러")
+	void t014() throws Exception {
+		Account target = accountRepository.findById(2L).get();
+		assertThat(target).isNotNull();
+
+		target.setReported(3);
+		target.setLoginRejectedDeadline(LocalDateTime.now().plusDays(3));
+		accountRepository.save(target);
+
+		ResultActions resultActions = mvc
+			.perform(post("/account/login")
+				.with(csrf())
+				.param("username", "usertest")
+				.param("password", "test1")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/error/403"));
+	}
+
 }
