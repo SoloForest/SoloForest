@@ -33,7 +33,7 @@ public class ShareController {
 	public String showList(@PathVariable String type, Model model,
 		@RequestParam(value = "page", defaultValue = "0") int page,
 		@RequestParam(value = "kw", defaultValue = "") String kw) {
-		Page<Share> paging = shareService.getSharesByBoardNumber(type, kw, page);
+		Page<Share> paging = shareService.getList(type, kw, page);
 
 		if (paging == null) {
 			return "redirect:/main";
@@ -71,19 +71,19 @@ public class ShareController {
 
 		if (createRsData.isFail())
 			return rq.historyBack(createRsData);
-		
+
 		return rq.redirectWithMsg("/article/share/detail/%d".formatted(createRsData.getData().getId()), createRsData);
 	}
-
+	
 	@GetMapping("/detail/{id}")
 	public String detail(@PathVariable Long id, Model model) {
-		Optional<Share> share = shareService.getShare(id);
+		Optional<Share> share = shareService.findById(id);
 
 		if (share.isEmpty()) {
 			return "error/404";
 		}
 		shareService.modifyViewd(share.get());
-		model.addAttribute(share.get());
+		model.addAttribute("share", share.get());
 
 		return "article/share/detail";
 	}
@@ -91,12 +91,14 @@ public class ShareController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify/{id}")
 	public String showModify(@PathVariable Long id, Model model) {
-		Optional<Share> share = shareService.getShare(id);
+		Share share = shareService.findById(id).orElseThrow();
 
-		if (share.isEmpty()) {
-			return "error/404";
-		}
-		model.addAttribute(share.get());
+		RsData<Share> canModifyRsData = shareService.canModify(rq.getAccount(), share);
+
+		if (canModifyRsData.isFail())
+			return rq.historyBack(canModifyRsData);
+
+		model.addAttribute(share);
 
 		return "article/share/modify";
 	}
@@ -104,14 +106,12 @@ public class ShareController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{id}")
 	public String modify(@PathVariable Long id, @Valid Form form) {
-		Optional<Share> share = shareService.getShare(id);
+		RsData<Share> modifyRsData = shareService.modify(rq.getAccount(), id, form.subject, form.content);
 
-		if (share.isEmpty()) {
-			return "error/404";
-		}
-		shareService.modify(share.get(), form.subject, form.content);
+		if (modifyRsData.isFail())
+			return rq.historyBack(modifyRsData);
 
-		return String.format("redirect:/article/share/detail/%d", id);
+		return rq.redirectWithMsg("/article/share/detail/%d".formatted(modifyRsData.getData().getId()), modifyRsData);
 	}
 
 	@PreAuthorize("isAuthenticated()")

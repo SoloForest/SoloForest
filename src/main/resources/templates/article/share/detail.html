@@ -11,11 +11,13 @@
             </h1>
             <span class="ml-4 h-4 w-px bg-black"></span>
         </div>
-        <div class="ml-auto mr-3 flex gap-4">
+        <div class="ml-auto mr-3 flex gap-4" th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
             <a th:href="@{|/article/share/modify/${share.id}|}" role="button"
-               class="btn btn-outline btn-primary btn-sm">수정</a>
+               class="btn btn-outline btn-primary btn-sm"
+               th:if="${share.account != null and #authentication.getPrincipal().getUsername() == share.account.username}">수정</a>
             <form th:action="@{|/article/share/${share.getBoardType()}/delete/${share.id}|}" method="post">
                 <button type="submit" class="btn btn-outline btn-error btn-sm"
+                        th:if="${share.account != null and #authentication.getPrincipal().getUsername() == share.account.username}"
                         onclick="return confirm('이 글을 삭제하시겠습니까?');">삭제
                 </button>
             </form>
