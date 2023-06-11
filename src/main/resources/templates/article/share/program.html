@@ -27,36 +27,18 @@
                 </button>
             </div>
         </div>
-        <a href="/article/share/program/create" role="button" class="btn btn-primary btn-sm ml-10">글쓰기</a>
+        <a href="/article/share/program/create" role="button" class="btn btn-primary btn-sm ml-10" th:if="${@rq.login}">글쓰기</a>
     </div>
     <div class="overflow-x-auto flex flex-wrap justify-center space-x-5">
-        <div class="card card-compact w-96 bg-base-100 shadow-xl mb-10">
-            <figure><img src="/share/sample1.jpg" alt="Sample1"/></figure>
-            <div class="card-body flex flex-col items-center">
-                <h2 class="card-title">[서울 광진구] 취준백서</h2>
-                <p>2023-05-26 ~ 2023-06-09</p>
-                <div class="card-actions">
-                    <a href="#" class="btn">자세히 보기</a>
-                </div>
-            </div>
-        </div>
-        <div class="card card-compact w-96 bg-base-100 shadow-xl mb-10">
-            <figure><img src="/share/sample2.png" alt="Sample2"/></figure>
-            <div class="card-body flex flex-col items-center">
-                <h2 class="card-title">[서울 동대문구] 동일이의 득심득심</h2>
-                <p>2023-05-25 ~ 2023-06-29</p>
-                <div class="card-actions">
-                    <a href="#" class="btn">자세히 보기</a>
-                </div>
-            </div>
-        </div>
-        <div class="card card-compact w-96 bg-base-100 shadow-xl mb-10">
-            <figure><img src="/share/sample3.png" alt="Sample3"/></figure>
-            <div class="card-body flex flex-col items-center">
-                <h2 class="card-title">[서울 강북구] 1인가구 개인상담</h2>
-                <p>2023-05-26 ~ 2023-12-29</p>
-                <div class="card-actions">
-                    <a href="#" class="btn">자세히 보기</a>
+        <div th:each="article, loop : ${paging}">
+            <div class="card card-compact w-96 bg-base-100 shadow-xl mb-10">
+                <figure><img th:src="${article.imageUrl}" alt="Sample1"/></figure>
+                <div class="card-body flex flex-col items-center">
+                    <h2 class="card-title" th:text="${article.subject}"></h2>
+                    <p class="font-semibold text-primary">일상</p>
+                    <div class="card-actions">
+                        <a th:href="@{|/article/share/detail/${article.id}|}" class="btn">자세히 보기</a>
+                    </div>
                 </div>
             </div>
         </div>
