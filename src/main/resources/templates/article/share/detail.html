@@ -26,10 +26,18 @@
     <div class="container mx-auto">
         <div class="bg-white p-6 rounded-lg shadow-lg mb-6"
              style="min-height: 600px; max-height: auto; overflow: auto;">
-            <h1 class="text-3xl font-semibold mb-3 ml-2" th:text="${share.subject}"></h1>
-            <div class="mb-6 ml-6">
-                <span class="font-bold text-primary">관리자</span>
-                <span class="ml-3" th:text="${#temporals.format(share.createDate, 'MM.dd')}"></span>
+            <h1 class="text-3xl font-semibold ml-2" th:text="${share.subject}"></h1>
+            <div class="mb-3 ml-3">
+                <ul class="menu menu-horizontal menu-compact">
+                    <li tabindex="0">
+                        <span class="font-bold text-primary"
+                              th:text="${share.account.nickname}"></span>
+                        <ul class="bg-white">
+                            <li><a>신고하기</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <span th:text="${#temporals.format(share.createDate, 'MM.dd')}"></span>
                 <i class="ml-2 fa-solid fa-eye"></i>
                 <span class="gap-1" th:text="${share.viewed}"></span>
                 <!-- 즐겨찾기 -->
