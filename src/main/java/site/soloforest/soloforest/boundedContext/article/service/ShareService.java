@@ -26,7 +26,7 @@ public class ShareService {
 	private final ShareRepository shareRepository;
 
 	@Transactional
-	public RsData<Share> create(String type, Account account, String subject, String content) {
+	public RsData<Share> create(String type, Account account, String subject, String content, String imageUrl) {
 		int boardNumber = -1;
 
 		if ("community".equals(type))
@@ -42,6 +42,7 @@ public class ShareService {
 			.boardNumber(boardNumber)
 			.subject(subject)
 			.content(content)
+			.imageUrl(imageUrl)
 			.build();
 
 		shareRepository.save(share);

@@ -62,12 +62,14 @@ public class ShareController {
 		private final String subject;
 		@NotBlank(message = "내용을 입력해주세요.")
 		private final String content;
+		private final String imageUrl;
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{type}/create")
 	public String create(@PathVariable String type, @Valid Form form) {
-		RsData<Share> createRsData = shareService.create(type, rq.getAccount(), form.getSubject(), form.getContent());
+		RsData<Share> createRsData = shareService.create(type, rq.getAccount(), form.getSubject(), form.getContent(),
+			form.getImageUrl());
 
 		if (createRsData.isFail())
 			return rq.historyBack(createRsData);
