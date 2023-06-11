@@ -39,8 +39,6 @@ public class CommentServiceTests {
 
 	@Autowired
 	private ArticleService articleService;
-	@Autowired
-	private Rq rq;
 
 	@Test
 	@DisplayName("댓글 생성 테스트")

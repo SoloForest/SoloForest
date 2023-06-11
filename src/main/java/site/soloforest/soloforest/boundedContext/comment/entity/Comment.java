@@ -53,7 +53,8 @@ public class Comment {
 	@ManyToOne
 	private Comment parent;
 
-	@OneToMany(mappedBy = "parent", cascade = {CascadeType.REMOVE})
+	// orphanRemoval 추가 이유 : Ajax 비동기적 댓글 리스트 조회로 인해 연관관계 명시적으로 끊어줘야 하기에 추가
+	@OneToMany(mappedBy = "parent", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
 	@ToString.Exclude
 	@Builder.Default // 빌더패턴 리스트시 초기화
 	private List<Comment> children = new ArrayList<>();
