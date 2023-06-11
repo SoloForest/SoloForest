@@ -29,7 +29,14 @@
             <li th:each="comment, commentIndex : ${commentList}" th:if="${comment.parent == null}">
                 <div class="card bg-white border p-4 rounded-lg">
                     <p class="text-lg font-bold">댓글: [[${comment.content}]]</p>
-                    <p class="text-gray-500">작성자: [[${comment.writer.username}]]</p>
+                    <ul class="menu menu-horizontal bg-base-100">
+                        <li tabindex="0">
+                            <span>작성자 : [[${comment.writer.username}]] </span>
+                            <ul class="bg-base-100">
+                                <li><a>신고하기</a></li>
+                            </ul>
+                        </li>
+                    </ul>
                     <!-- 삭제 할 댓글 id와 작성자 정보 저장 용-->
                     <input type="hidden" th:id="'comment-' + ${comment.id}" th:value="${comment.id}"/>
                     <input type="hidden" th:id="'writer-' + ${comment.id}" th:value="${comment.writer.id}"/>
@@ -39,7 +46,7 @@
 
                 </div>
                 <!-- 수정, 삭제, 답글 등록 버튼-->
-                <div sec:authorize="isAuthenticated()" class="flex justify-start mt-2">
+                <div sec:authorize="isAuthenticated()" class="flex justify-start mt-2 gap-2" >
                     <button class="btn btn-primary" th:data-comment-index="${comment.id}"
                             onclick="showReplyForm(this.getAttribute('data-comment-index'));" >
                         답글 작성
@@ -89,7 +96,14 @@
                     <li th:each="childComment, childIndex : ${comment.children}">
                         <div class="border-t border-gray-300 p-4 rounded-lg">
                             <p class="text-lg font-bold">대댓글: [[${childComment.content}]]</p>
-                            <p class="text-gray-500">작성자: [[${childComment.writer.username}]]</p>
+                            <ul class="menu menu-horizontal bg-base-100">
+                                <li tabindex="0">
+                                    <span>작성자 : [[${childComment.writer.username}]]</span>
+                                    <ul class="bg-base-100">
+                                        <li><a>신고하기</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
                             <!-- 답글 삭제, 수정시 답글 정보 -->
                             <input type="hidden" th:id="'modify-reply-comment-' + ${childComment.id}" th:value="${childComment.id}"/>
                             <input type="hidden" th:id="'modify-reply-writer-' + ${childComment.id}" th:value="${childComment.writer.id}"/>
@@ -161,6 +175,8 @@
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
+                    document.getElementById("commentContents").value = ""; // 공백 설정
+                    document.getElementById("secret").checked = false; // 공백 설정
                 },
                 error: function (err) {
                     console.log("요청 실패", err);
