@@ -21,6 +21,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
+import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -72,6 +73,11 @@ public class Comment {
 	private Boolean deleted = false;
 	@OneToOne
 	private Notification notification;
+	@PrePersist
+	public void prePersist() {
+		this.modifyDate = null;
+	}
+
 
 	public void deleteParent(){
 		deleted = true;

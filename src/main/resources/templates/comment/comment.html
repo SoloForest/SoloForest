@@ -38,6 +38,16 @@
                             </ul>
                         </li>
                     </ul>
+                    <div>
+                    <div th:if="${comment.modifyDate != null}" class="badge bg-light text-dark p-2 text-start mx-3">
+                        <div class="mb-2">수정일</div>
+                        <div th:text="${#temporals.format(comment.modifyDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    </div>
+                    <div class="badge bg-light text-dark p-2 text-start">
+                        <div class="mb-2">작성일</div>
+                        <div th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
+                    </div>
+                </div>
                     <!-- 삭제 할 댓글 id와 작성자 정보 저장 용-->
                     <input type="hidden" th:id="'comment-' + ${comment.id}" th:value="${comment.id}"/>
                     <input type="hidden" th:id="'writer-' + ${comment.id}" th:value="${comment.writer.id}"/>
@@ -53,7 +63,7 @@
                         답글 작성
                     </button>
                     <button class="btn btn-primary"
-                            th:if="${#authentication.getPrincipal().getUsername() == comment.writer.username}"
+                            th:if="${#authentication.getPrincipal().getUsername() == comment.writer.username and !comment.deleted}"
                             th:data-comment-index="${comment.id}"
                             th:text="수정" onclick="showModifyForm(this.getAttribute('data-comment-index'));" >
                     </button>
@@ -117,7 +127,7 @@
                         <!-- 답글(대댓글) 수정, 삭제 버튼-->
                         <div sec:authorize="isAuthenticated()" class="flex justify-start mt-2 gap-2">
                             <button class="btn btn-primary"
-                                    th:if="${#authentication.getPrincipal().getUsername() == childComment.writer.username}"
+                                    th:if="${#authentication.getPrincipal().getUsername() == childComment.writer.username and !childComment.deleted}"
                                     th:data-child-index="${childComment.id}"
                                     th:text="수정" onclick="showReplyModifyForm(this.getAttribute('data-child-index'));" >
                             </button>
