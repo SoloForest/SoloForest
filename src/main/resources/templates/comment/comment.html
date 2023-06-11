@@ -195,8 +195,13 @@
         const commentWrite = () => {
             const secret = document.getElementById("secret");
             const secretValue = secret.checked ? true : false;
-            const contents = document.getElementById("commentContents").value;
+            const contents = document.getElementById("commentContents").value.trim();
             const articleId = [[${article.id}]];
+
+            if (contents.length == 0) {
+                toastWarning('댓글을 입력해주세요');
+                return;
+            }
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
             //게시글 번호
@@ -219,6 +224,7 @@
                     $('#comment-list').replaceWith(fragment);
                     document.getElementById("commentContents").value = ""; // 공백 설정
                     document.getElementById("secret").checked = false; // 공백 설정
+                    toastNotice('댓글이 작성되었습니다');
                 },
                 error: function (err) {
                     console.log("요청 실패", err);
@@ -307,8 +313,14 @@
         const replyCommentWrite = (commentIndex) => {
             const replySecret = document.getElementById("replySecret-" + commentIndex);
             const secretValue = replySecret.checked ? true : false;
-            const contents = document.getElementById("replyCommentContents-" + commentIndex).value;
+            const contents = document.getElementById("replyCommentContents-" + commentIndex).value.trim();
             const articleId = [[${article.id}]];
+
+            if (contents.length == 0) {
+                toastWarning('답글을 입력해주세요');
+                return;
+            }
+
             const parentId = document.getElementById("comment-" + commentIndex).value;
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
@@ -332,6 +344,7 @@
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
+                    toastNotice('답글이 작성되었습니다');
                 },
                 error: function (err) {
                     console.log("요청 실패", err);
@@ -342,8 +355,14 @@
         const modifyCommentWrite = (commentIndex) => {
             const replySecret = document.getElementById("modify-secret-" + commentIndex);
             const secretValue = replySecret.checked ? true : false; // 비밀 댓글 체크 여부
-            const contents = document.getElementById("modify-comment-contents-" + commentIndex).value; // 내용
+            const contents = document.getElementById("modify-comment-contents-" + commentIndex).value.trim();; // 내용
             const articleId = [[${article.id}]];
+
+            if (contents.length == 0) {
+                toastWarning('댓글을 입력해주세요');
+                return;
+            }
+
             const writerId = document.getElementById("modify-writer-" + commentIndex).value; // 작성자 ID
             const commentId = document.getElementById("modify-comment-" + commentIndex).value; // 댓글번호
 
@@ -370,6 +389,7 @@
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
+                    toastNotice('댓글이 수정되었습니다');
                 },
                 error: function (err) {
                     console.log("요청 실패", err);
@@ -401,6 +421,7 @@
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
+                    toastNotice('댓글이 삭제되었습니다');
                 },
                 error: function (err) {
                     console.log("요청 실패", err);
@@ -412,10 +433,15 @@
         const modifyReplyCommentWrite = (childIndex) => {
             const replySecret = document.getElementById("modify-reply-secret-" + childIndex);
             const secretValue = replySecret.checked ? true : false; // 비밀 댓글 체크 여부
-            const contents = document.getElementById("modify-reply-comment-contents-" + childIndex).value; // 내용
+            const contents = document.getElementById("modify-reply-comment-contents-" + childIndex).value.trim();; // 내용
             const articleId = [[${article.id}]];
             const writerId = document.getElementById("modify-reply-writer-" + childIndex).value; // 작성자 ID
             const commentId = document.getElementById("modify-reply-comment-" + childIndex).value; // 댓글번호
+
+            if (contents.length == 0) {
+                toastWarning('댓글을 입력해주세요');
+                return;
+            }
 
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
@@ -440,6 +466,7 @@
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
+                    toastNotice('답글이 수정되었습니다');
                 },
                 error: function (err) {
                     console.log("요청 실패", err);
@@ -471,8 +498,8 @@
                     "id": commentId
                 },
                 success: function (fragment) {
-                    console.log("삭제 완료");
                     $('#comment-list').replaceWith(fragment);
+                    toastNotice('답글이 삭제되었습니다');
                 },
                 error: function (err) {
                     console.log("요청 실패", err);
