@@ -116,14 +116,17 @@ public class ShareService {
 	}
 
 	@Transactional
-	public Share delete(Long id) {
-		Optional<Share> share = findById(id);
+	public RsData<Share> delete(Account account, Share share) {
 
-		if (share.isEmpty())
-			return null;
+		if (share == null)
+			return RsData.of("F-1", "이미 삭제된 게시글 입니다.");
 
-		shareRepository.delete(share.get());
-		return share.get();
+		if (!Objects.equals(account.getId(), share.getAccount().getId()))
+			return RsData.of("F-2", "해당 게시글을 삭제할 권한이 없습니다.");
+
+		shareRepository.delete(share);
+
+		return RsData.of("S-1", "게시글이 삭제되었습니다.");
 	}
 
 }

@@ -74,7 +74,7 @@ public class ShareController {
 
 		return rq.redirectWithMsg("/article/share/detail/%d".formatted(createRsData.getData().getId()), createRsData);
 	}
-	
+
 	@GetMapping("/detail/{id}")
 	public String detail(@PathVariable Long id, Model model) {
 		Optional<Share> share = shareService.findById(id);
@@ -117,11 +117,13 @@ public class ShareController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{type}/delete/{id}")
 	public String delete(@PathVariable String type, @PathVariable Long id) {
-		Share share = shareService.delete(id);
+		Share share = shareService.findById(id).orElseThrow();
 
-		if (share == null)
-			return "error/404";
+		RsData<Share> deleteRsData = shareService.delete(rq.getAccount(), share);
 
-		return String.format("redirect:/article/share/%s", type);
+		if (deleteRsData.isFail())
+			return rq.historyBack(deleteRsData);
+
+		return rq.redirectWithMsg("/article/share/%s".formatted(type), deleteRsData);
 	}
 }
