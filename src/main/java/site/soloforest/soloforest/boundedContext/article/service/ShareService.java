@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.rsData.RsData;
+import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.repository.ShareRepository;
 
@@ -22,17 +24,27 @@ public class ShareService {
 	private final ShareRepository shareRepository;
 
 	@Transactional
-	public Share create(int boardNumber, String subject, String content) {
+	public RsData<Share> create(String type, Account account, String subject, String content) {
+		int boardNumber = -1;
+
+		if ("community".equals(type))
+			boardNumber = 0;
+		else if ("program".equals(type))
+			boardNumber = 1;
+		else
+			RsData.failOf(null);
+
 		Share share = Share
 			.builder()
+			.account(account)
+			.boardNumber(boardNumber)
 			.subject(subject)
 			.content(content)
-			.boardNumber(boardNumber)
 			.build();
 
 		shareRepository.save(share);
 
-		return share;
+		return RsData.of("S-1", "게시글이 등록되었습니다.", share);
 	}
 
 	public Page<Share> getSharesByBoardNumber(String type, String kw, int page) {

@@ -35,7 +35,8 @@
                 </button>
             </div>
         </div>
-        <a href="/article/share/community/create" role="button" class="btn btn-primary btn-sm ml-10">글쓰기</a>
+        <a href="/article/share/community/create" role="button" class="btn btn-primary btn-sm ml-10"
+           th:if="${@rq.login}">글쓰기</a>
     </div>
     <div class="overflow-x-auto">
         <table class="table w-full">

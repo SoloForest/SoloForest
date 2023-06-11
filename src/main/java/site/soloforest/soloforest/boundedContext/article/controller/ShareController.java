@@ -17,6 +17,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.rq.Rq;
+import site.soloforest.soloforest.base.rsData.RsData;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.service.ShareService;
 
@@ -24,6 +26,7 @@ import site.soloforest.soloforest.boundedContext.article.service.ShareService;
 @RequestMapping("/article/share")
 @RequiredArgsConstructor
 public class ShareController {
+	private final Rq rq;
 	private final ShareService shareService;
 
 	@GetMapping("/{type}")
@@ -64,16 +67,12 @@ public class ShareController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{type}/create")
 	public String create(@PathVariable String type, @Valid Form form) {
-		Share s;
+		RsData<Share> createRsData = shareService.create(type, rq.getAccount(), form.getSubject(), form.getContent());
 
-		if ("community".equals(type))
-			s = shareService.create(0, form.getSubject(), form.getContent());
-		else if ("program".equals(type))
-			s = shareService.create(1, form.getSubject(), form.getContent());
-		else
-			throw new IllegalArgumentException("Invalid board type: " + type);
-
-		return String.format("redirect:/article/share/detail/%d", s.getId());
+		if (createRsData.isFail())
+			return rq.historyBack(createRsData);
+		
+		return rq.redirectWithMsg("/article/share/detail/%d".formatted(createRsData.getData().getId()), createRsData);
 	}
 
 	@GetMapping("/detail/{id}")
