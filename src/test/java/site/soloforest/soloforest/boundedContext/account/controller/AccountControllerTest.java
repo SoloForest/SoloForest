@@ -1,6 +1,7 @@
 package site.soloforest.soloforest.boundedContext.account.controller;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -162,5 +164,111 @@ public class AccountControllerTest {
 			.andExpect(handler().methodName("signup"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/main"));
+	}
+
+	@Test
+	@DisplayName("회원정보 조회 테스트")
+	@WithUserDetails("usertest")
+	void t007() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/account/me"))
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("showMe"))
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(model().attribute("account", hasProperty("nickname", is("for test"))))
+			.andExpect(model().attribute("account", hasProperty("email", is("test@test.com"))));
+	}
+
+	@Test
+	@DisplayName("회원정보 변경 데이터 테스트 - 비밀번호 변경 실패 데이터")
+	@WithUserDetails("usertest")
+	void t008() throws Exception {
+		String oldPassword = accountRepository.findById(2l).get().getPassword();
+		ResultActions resultActions = mvc
+			.perform(post("/account/me/2")
+				.with(csrf())
+				.param("password", "bbosong1")
+				.param("passwordCheck", "bbosong2")
+				.param("nickname", "for test")
+				.param("email", "test@test.com")
+				.param("address", "")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("modifyMe"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/account/me"));
+
+		assertThat(oldPassword).isEqualTo(accountRepository.findById(2L).get().getPassword());
+	}
+
+	@Test
+	@DisplayName("회원정보 변경 데이터 테스트 - 비밀번호, 닉네임 변경 성공 데이터")
+	@WithUserDetails("usertest")
+	void t009() throws Exception {
+		String oldPassword = accountRepository.findById(2l).get().getPassword();
+		ResultActions resultActions = mvc
+			.perform(post("/account/me/2")
+				.with(csrf())
+				.param("password", "bbosong1")
+				.param("passwordCheck", "bbosong1")
+				.param("nickname", "somsom")
+				.param("email", "test@test.com")
+				.param("address", "")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("modifyMe"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(redirectedUrl("/account/me"));
+
+		assertThat(accountRepository.findById(2L).get().getNickname()).isEqualTo("somsom");
+		assertThat(oldPassword).isNotEqualTo(accountRepository.findById(2L).get().getPassword());
+	}
+
+	@Test
+	@DisplayName("회원탈퇴 테스트 - 실패하는 경우")
+	@WithUserDetails("usertest")
+	void t010() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/withdraw/2")
+				.with(csrf())
+				.param("password", "bbosong1")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("withdraw"))
+			.andExpect(status().isBadRequest());
+
+		assertThat(accountRepository.findById(2L).get().getNickname()).isEqualTo("for test");
+	}
+
+	@Test
+	@DisplayName("회원탈퇴 테스트 - 성공하는 경우")
+	@WithUserDetails("usertest")
+	void t011() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/withdraw/2")
+				.with(csrf())
+				.param("password", "test1")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("withdraw"))
+			.andExpect(status().isOk());
+
+		assertThat(accountRepository.findById(2L).get().getNickname()).isEqualTo("알 수 없는 이용자");
+		assertThat(accountRepository.findByUsername("usertest")).isEmpty();
 	}
 }

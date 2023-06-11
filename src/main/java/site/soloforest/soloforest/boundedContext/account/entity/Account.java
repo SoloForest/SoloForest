@@ -24,11 +24,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import site.soloforest.soloforest.boundedContext.notification.entity.Notification;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -63,6 +65,8 @@ public class Account {
 	private int authority = 1;
 	@Builder.Default
 	private int reported = 0;
+	@Builder.Default
+	private boolean deleted = false;
 
 	@OneToMany(cascade = {CascadeType.REMOVE})
 	@ToString.Exclude
@@ -73,6 +77,17 @@ public class Account {
 			this.password = passwordEncoder.encode(password);
 			return this;
 		}
+	}
+
+	public String getNickname() {
+		if (this.nickname == null) {
+			return "알 수 없는 이용자";
+		}
+		return this.nickname;
+	}
+
+	public void setPassword(String password) {
+		this.password = passwordEncoder.encode(password);
 	}
 
 	public List<? extends GrantedAuthority> getGrantedAuthorities() {

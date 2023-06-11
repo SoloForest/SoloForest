@@ -9,7 +9,9 @@ import jakarta.persistence.EntityListeners;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity
@@ -17,6 +19,8 @@ import lombok.experimental.SuperBuilder;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@Getter
 public class Group extends Article {
 
 	@NotNull(message = "인원을 정해줘야 합니다.")
@@ -33,4 +37,5 @@ public class Group extends Article {
 
 	@NotNull(message = "회비를 정해주세요.")
 	private int money; // 회비
+
 }

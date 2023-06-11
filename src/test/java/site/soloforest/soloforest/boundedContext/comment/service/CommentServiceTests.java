@@ -34,7 +34,7 @@ public class CommentServiceTests {
 	private ShareService shareService;
 
 	@Autowired
-	private AccountService accountService;
+	private AccountService accountRepository;
 
 	@Autowired
 	private ArticleService articleService;
@@ -42,7 +42,7 @@ public class CommentServiceTests {
 	@Test
 	@DisplayName("댓글 생성 테스트")
 	void t01() {
-		Account account = accountService.findByUsername("usertest2");
+		Account account = accountRepository.findByUsername("usertest2").get();
 		Share article = shareService.getShare(2L).get();
 
 		Comment comment = commentService.create("테스트1234", false, account, article);
@@ -57,7 +57,7 @@ public class CommentServiceTests {
 	@Test
 	@DisplayName("댓글 수정 테스트")
 	void t02() {
-		Account account = accountService.findByUsername("usertest2");
+		Account account = accountRepository.findByUsername("usertest2").get();
 		Share article = shareService.getShare(2L).get();
 		Comment comment = commentService.getComment(5L);
 

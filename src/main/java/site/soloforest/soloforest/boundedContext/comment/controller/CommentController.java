@@ -17,8 +17,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import io.lettuce.core.dynamic.CommandMethod;
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.rq.Rq;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
-import site.soloforest.soloforest.boundedContext.account.service.AccountService;
+import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.dto.CommentDTO;
@@ -31,7 +32,9 @@ import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 public class CommentController {
 
 	// TODO : Rq 도입시 변경
-	 private final AccountService accountService;
+
+	private final Rq rq;
+	 private final AccountRepository accountRepository;
 	private final CommentService commentService;
 
 	private final ArticleService articleService;
