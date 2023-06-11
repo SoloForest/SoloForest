@@ -137,8 +137,13 @@ public class CommentController {
 		System.out.println(comment);
 		// 부모(댓글)이 있을 경우 연관관계 끊어주기 -> 삭제되더라도 GET 등으로 새로 요청을 보내는 것이 아니기에
 		// 이 작업은 꼭 해줘야 대댓글 리스트도 수정된다!
-		// 연관 끊어주니깐 자기의 부모가 삭제되더라도 같이 삭제되지 않으니 1일때는 연관관계 유지 (부모의 자식 size가 1일때)
-		if(comment.getParent() != null && comment.getParent().getChildren().size() !=1) {
+		// 부모 댓글이 삭제 상태이며, 부모의 자식이 1개(삭제하려는 자기 뿐)일 경우 연관관계 유지 시켜줘야
+		// 같이 삭제되니 연관관계 유지
+		if(comment.getParent() != null && comment.getParent().isDeleted() && comment.getParent().getChildren().size() ==1)
+		{
+		}
+		// 위의 경우가 아니라면 연관관계 끊어주기
+		else {
 			comment.getParent().getChildren().remove(comment);
 		}
 		commentService.delete(comment);
