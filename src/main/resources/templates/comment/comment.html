@@ -28,7 +28,8 @@
         <ul class="space-y-4">
             <li th:each="comment, commentIndex : ${commentList}" th:if="${comment.parent == null}">
                 <div class="card bg-white border p-4 rounded-lg">
-                    <p class="text-lg font-bold">댓글: [[${comment.content}]]</p>
+                    <p class="text-lg font-bold" th:unless="${comment.deleted}"> [[${comment.content}]]</p>
+                    <p class="text-lg text-grey-400" th:if="${comment.deleted}"> 삭제된 댓글입니다.</p>
                     <ul class="menu menu-horizontal bg-base-100">
                         <li tabindex="0">
                             <span>작성자 : [[${comment.writer.username}]] </span>
@@ -95,7 +96,8 @@
                 <ul class="ml-8 space-y-2">
                     <li th:each="childComment, childIndex : ${comment.children}">
                         <div class="border-t border-gray-300 p-4 rounded-lg">
-                            <p class="text-lg font-bold">대댓글: [[${childComment.content}]]</p>
+                            <p class="text-lg font-bold" th:if="${childComment.deleted}"> 삭제된 댓글입니다.</p>
+                            <p class="text-lg font-bold" th:unless="${childComment.deleted}">대댓글: [[${childComment.content}]]</p>
                             <ul class="menu menu-horizontal bg-base-100">
                                 <li tabindex="0">
                                     <span>작성자 : [[${childComment.writer.username}]]</span>
@@ -184,6 +186,28 @@
             });
         }
 
+        // 답변, 댓글 수정 동시에 못하도록 하기 위한 답변 폼 숨기기 메서드
+        const hideReplyForm = (commentIndex) => {
+            const formId = "reply-form-" + commentIndex;
+            const formElement = document.getElementById(formId);
+            if (formElement) {
+                formElement.classList.add("hidden");
+            } else {
+                console.error("Element with ID '" + formId + "' not found.");
+            }
+        };
+
+        // 답변, 댓글 수정 동시에 못하도록 하기 위한 수정 폼 숨기기 메서드
+        const hideModifyForm = (commentIndex) => {
+            const formId = "modify-form-" + commentIndex;
+            const formElement = document.getElementById(formId);
+            if (formElement) {
+                formElement.classList.add("hidden");
+            } else {
+                console.error("Element with ID '" + formId + "' not found.");
+            }
+        };
+
         // 답글 버튼 눌렀을 때 입력 창 나오게
         const showReplyForm = (commentIndex) => {
             console.log("showReplyForm 호출");
@@ -191,6 +215,7 @@
             const formElement = document.getElementById(formId);
             if (formElement) {
                 formElement.classList.remove("hidden");
+                hideModifyForm(commentIndex); // 수정 입력 폼 숨기기
             } else {
                 console.error("Element with ID '" + formId + "' not found.");
             }
@@ -206,6 +231,7 @@
             const existingSecretValue = document.getElementById("comment-secret-" + commentIndex).value;
 
             if (formElement) {
+                hideReplyForm(commentIndex); // 답글 입력 폼 숨기기
                 formElement.classList.remove("hidden");
                 // 기존 값 채우기
                 document.getElementById("modify-comment-contents-" + commentIndex).value = existingCommentContents;
@@ -215,6 +241,8 @@
                 console.error("Element with ID '" + formId + "' not found.");
             }
         }
+
+
 
         // 답글(대댓글) 수정 버튼 눌렀을 때 입력 창 나오게
         const showReplyModifyForm = (childIndex) => {

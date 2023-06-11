@@ -69,12 +69,12 @@ public class Comment {
 	// 삭제 여부 나타내는 속성 추가
 	// "삭제되었습니다" 라고 하기에는 저렇게 작성하는 사용자가 있다면 댓글 삭제된 것으로 처리될 듯
 	@Builder.Default
-	private Boolean isDeleted = false;
+	private Boolean deleted = false;
 	@OneToOne
 	private Notification notification;
 
 	public void deleteParent(){
-		isDeleted = true;
+		deleted = true;
 	}
 
 	// 타임리프에서 비밀 댓글이면 댓글의 내용이 안보이게 하기 위함
@@ -82,6 +82,9 @@ public class Comment {
 	//  + (사용자 id = 작성자 or admin or 게시글 작성자만 보이게 타임리프 조건)
  	public boolean isSecret() {
 		return this.secret == true;
+	}
+	public boolean isDeleted() {
+		return this.deleted == true;
 	}
 
 }

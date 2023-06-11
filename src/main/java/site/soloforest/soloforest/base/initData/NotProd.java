@@ -118,6 +118,11 @@ public class NotProd {
 				Comment replyComment4 = commentService.createReplyComment("가자구!", false, accounts.get(1),
 					shares.get(1), replyComment2);
 
+				Comment comment17 = commentService.create("부모 댓글 연쇄 삭제 테스트용", false, accountAdmin1, shares.get(0));
+				comment17.deleteParent();
+				Comment replyComment5 = commentService.createReplyComment("이녀석 삭제되면 위에 녀석 삭제되어야 함", false, accountAdmin1,
+					shares.get(1), comment17);
+
 			}
 		};
 	}
