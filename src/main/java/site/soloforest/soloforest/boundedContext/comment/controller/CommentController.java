@@ -59,9 +59,9 @@ public class CommentController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
-	public String create(Model model ,@ModelAttribute CommentDTO commentDTO, Principal principal) {
-		Article article = articleService.getArticle(commentDTO.getArticleId());
-		Account account = accountService.findByUsername(principal.getName());
+	public String create(Model model ,@ModelAttribute CommentDTO commentDTO) {
+		Article article = rq.getArticle(commentDTO.getArticleId());
+		Account account = rq.getAccount();
 
 		if (commentDTO.getParentId() == null) {
 			// 부모 댓글 생성
@@ -77,9 +77,9 @@ public class CommentController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/reply/create")
-	public String replyCreate(Model model ,@ModelAttribute CommentDTO commentDTO, Principal principal) {
-		Article article = articleService.getArticle(commentDTO.getArticleId());
-		Account account = accountService.findByUsername(principal.getName());
+	public String replyCreate(Model model ,@ModelAttribute CommentDTO commentDTO) {
+		Article article = rq.getArticle(commentDTO.getArticleId());
+		Account account = rq.getAccount();
 
 		// 자식 댓글 생성
 			// 부모 댓글 찾아오기
@@ -98,9 +98,9 @@ public class CommentController {
 	// 답글 수정 + 댓글 수정 둘다
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
-	public String modify(CommentDTO commentDTO, Principal principal, Model model) {
-		Article article = articleService.getArticle(commentDTO.getArticleId());
-		Account account = accountService.findByUsername(principal.getName());
+	public String modify(CommentDTO commentDTO, Model model) {
+		Article article = rq.getArticle(commentDTO.getArticleId());
+		Account account = rq.getAccount();
 
 		// ToDo : RsData 변경 필요 + Admin 사용자 수정 가능
 		 if(account.getId() != commentDTO.getCommentWriter()) {
@@ -123,9 +123,9 @@ public class CommentController {
 	// 댓글 삭제 메서드
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/delete")
-	public String delete(Principal principal, Model model, CommentDTO commentDTO) {
-		Article article = articleService.getArticle(commentDTO.getArticleId());
-		Account account = accountService.findByUsername(principal.getName());
+	public String delete(Model model, CommentDTO commentDTO) {
+		Article article = rq.getArticle(commentDTO.getArticleId());
+		Account account = rq.getAccount();
 
 		// ToDo : RsData 변경 필요 + Admin 사용자도 삭제 가능
 		// 현재 로그인한 사용자와 다른 사용자면 삭제 불가

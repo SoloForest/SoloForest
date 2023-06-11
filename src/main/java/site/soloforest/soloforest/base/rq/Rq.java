@@ -14,20 +14,26 @@ import jakarta.servlet.http.HttpSession;
 import site.soloforest.soloforest.base.rsData.RsData;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
+import site.soloforest.soloforest.boundedContext.article.entity.Article;
+import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.standard.util.Ut;
 
 @Component
 @RequestScope
 public class Rq {
 	private final AccountService accountService;
+	private final ArticleService articleService;
 	private final HttpServletRequest req;
 	private final HttpServletResponse resp;
 	private final HttpSession session;
 	private final User user;
 	private Account account = null; // 레이지 로딩, 처음부터 넣지 않고, 요청이 들어올 때 넣는다.
 
-	public Rq(AccountService accountService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+
+
+	public Rq(AccountService accountService, ArticleService articleService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
 		this.accountService = accountService;
+		this.articleService = articleService;
 		this.req = req;
 		this.resp = resp;
 		this.session = session;
@@ -64,6 +70,13 @@ public class Rq {
 
 		return account;
 	}
+	public Article getArticle(Long articleId) {
+
+		return articleService.getArticle(articleId);
+	}
+
+
+
 
 	public String historyBack(String msg) {
 		String referer = req.getHeader("referer");

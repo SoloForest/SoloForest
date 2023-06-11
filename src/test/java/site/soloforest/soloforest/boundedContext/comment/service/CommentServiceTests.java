@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import site.soloforest.soloforest.base.rq.Rq;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
@@ -34,15 +35,17 @@ public class CommentServiceTests {
 	private ShareService shareService;
 
 	@Autowired
-	private AccountService accountRepository;
+	private AccountService accountService;
 
 	@Autowired
 	private ArticleService articleService;
+	@Autowired
+	private Rq rq;
 
 	@Test
 	@DisplayName("댓글 생성 테스트")
 	void t01() {
-		Account account = accountRepository.findByUsername("usertest2").get();
+		Account account = accountService.findByUsername("usertest2").get();
 		Share article = shareService.getShare(2L).get();
 
 		Comment comment = commentService.create("테스트1234", false, account, article);
@@ -57,7 +60,7 @@ public class CommentServiceTests {
 	@Test
 	@DisplayName("댓글 수정 테스트")
 	void t02() {
-		Account account = accountRepository.findByUsername("usertest2").get();
+		Account account = accountService.findByUsername("usertest2").get();
 		Share article = shareService.getShare(2L).get();
 		Comment comment = commentService.getComment(5L);
 
@@ -112,7 +115,7 @@ public class CommentServiceTests {
 	void t05() {
 		// NotProd 파일에 의해 : 3번 -> 12번 관계
 		// 12번의 자식 댓글 생성(18번)
-		Account account = accountService.findByUsername("admin");
+		Account account = accountService.findByUsername("admin").orElse(null);
 		Article article = articleService.getArticle(1L);
 
 		// 할아버지, 아버지 댓글 가져오기
