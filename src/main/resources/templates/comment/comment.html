@@ -30,85 +30,97 @@
                 <div class="card bg-white border p-4 rounded-lg">
                     <p class="text-lg font-bold">댓글: [[${comment.content}]]</p>
                     <p class="text-gray-500">작성자: [[${comment.writer.username}]]</p>
-                    <input type="hidden" id="delete-comment-${commentIndex}" th:value="${comment.id}"/>
-                    <input type="hidden" id="delete-writer-${commentIndex}" th:value="${comment.writer.id}" />
+                    <!-- 삭제 할 댓글 id와 작성자 정보 저장 용-->
+                    <input type="hidden" th:id="'comment-' + ${comment.id}" th:value="${comment.id}"/>
+                    <input type="hidden" th:id="'writer-' + ${comment.id}" th:value="${comment.writer.id}"/>
+                    <!-- 수정폼에서 수정 전 값 불러오기 용-->
+                    <input type="hidden" th:id="'comment-content-' + ${comment.id}" th:value="${comment.content}"/>
+                    <input type="hidden" th:id="'comment-secret-' + ${comment.id}" th:value="${comment.secret}"/>
+
                 </div>
+                <!-- 수정, 삭제, 답글 등록 버튼-->
                 <div sec:authorize="isAuthenticated()" class="flex justify-start mt-2">
-                    <button class="btn btn-primary" onclick="showReplyForm(this);" data-comment-index="${commentIndex}">
+                    <button class="btn btn-primary" th:data-comment-index="${comment.id}"
+                            onclick="showReplyForm(this.getAttribute('data-comment-index'));" >
                         답글 작성
                     </button>
                     <button class="btn btn-primary"
                             th:if="${#authentication.getPrincipal().getUsername() == comment.writer.username}"
-                            th:text="수정" onclick="showModifyForm(this);" data-comment-index="${commentIndex}">
+                            th:data-comment-index="${comment.id}"
+                            th:text="수정" onclick="showModifyForm(this.getAttribute('data-comment-index'));" >
                     </button>
                     <button class="btn btn-primary"
                             th:if="${#authentication.getPrincipal().getUsername() == comment.writer.username}"
-                            th:text="삭제" onclick="deleteComment(this);" data-comment-index="${commentIndex}">
+                            th:data-comment-index="${comment.id}"
+                            th:text="삭제" onclick="deleteComment(this.getAttribute('data-comment-index'));">
                     </button>
                 </div>
-                <div>
                     <!-- 답글 버튼 클릭 -->
-                    <div id="reply-form-${commentIndex}" class="hidden">
-                        <input type="hidden" id="parentId-${commentIndex}" th:value="${comment.id}"/>
-                        <textarea placeholder="답글을 입력해주세요." id="replyCommentContents-${commentIndex}" columns="4"
-                                  class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        </textarea>
+                    <div th:id="'reply-form-' + ${comment.id}" class="hidden">
+                        <textarea placeholder="답글을 입력해주세요." th:id="'replyCommentContents-' + ${comment.id}" columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
                         <label class="label cursor-pointer">
                             <span class="label-text">비밀 댓글</span>
-                            <input type="checkbox" id="replySecret-${commentIndex}"/>
+                            <input type="checkbox"  th:id="'replySecret-' + ${comment.id}"/>
                         </label>
-                        <button id="reply-comment-write-btn" onclick="replyCommentWrite(this)"
-                                data-comment-index="${commentIndex}" class="bg-blue-500 text-white py-2
-    px-4 rounded-lg hover:bg-blue-600">
+                        <button id="reply-comment-write-btn" th:data-comment-index="${comment.id}" onclick="replyCommentWrite(this.getAttribute('data-comment-index'))"
+                                class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
                             <span>답글작성</span>
                         </button>
                     </div>
 
                     <!-- 댓글 수정 버튼 클릭 -->
-                    <div id="modify-form-${commentIndex}" class="hidden">
-                        <input type="hidden" id="modify-comment-${commentIndex}" th:value="${comment.id}"/>
-                        <input type="hidden" id="modify-writer-${commentIndex}" th:value="${comment.writer.id}"/>
-                        <textarea placeholder="수정할 내용을 입력해주세요" id="modifyCommentContents-${commentIndex}" columns="4"
-                                  class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
-                        </textarea>
+                    <div th:id="'modify-form-' + ${comment.id}" class="hidden">
+                        <input type="hidden" th:id="'modify-comment-' + ${comment.id}" th:value="${comment.id}"/>
+                        <input type="hidden" th:id="'modify-writer-' + ${comment.id}" th:value="${comment.writer.id}"/>
+                        <textarea placeholder="수정할 내용을 입력해주세요" th:id="'modify-comment-contents-' + ${comment.id}" class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
                         <label class="label cursor-pointer">
                             <span class="label-text">비밀 댓글</span>
-                            <input type="checkbox" id="modifySecret-${commentIndex}"/>
+                            <input type="checkbox" th:id="'modify-secret-' + ${comment.id}"/>
                         </label>
-                        <button id="modify-comment-write-btn" onclick="modifyCommentWrite(this)"
-                                data-comment-index="${commentIndex}"
+                        <button id="modify-comment-write-btn" th:data-comment-index="${comment.id}"
+                                onclick="modifyCommentWrite(this.getAttribute('data-comment-index'))"
                                 class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
                             <span>댓글수정</span>
                         </button>
                     </div>
-                </div>
 
+                <!-- 대댓글 출력-->
                 <ul class="ml-8 space-y-2">
                     <li th:each="childComment, childIndex : ${comment.children}">
                         <div class="border-t border-gray-300 p-4 rounded-lg">
                             <p class="text-lg font-bold">대댓글: [[${childComment.content}]]</p>
                             <p class="text-gray-500">작성자: [[${childComment.writer.username}]]</p>
+                            <!-- 답글 삭제, 수정시 답글 정보 -->
+                            <input type="hidden" th:id="'modify-reply-comment-' + ${childComment.id}" th:value="${childComment.id}"/>
+                            <input type="hidden" th:id="'modify-reply-writer-' + ${childComment.id}" th:value="${childComment.writer.id}"/>
+                            <!-- 수정폼에서 수정 전 값 불러오기 용-->
+                            <input type="hidden" th:id="'child-comment-content-' + ${childComment.id}" th:value="${childComment.content}"/>
+                            <input type="hidden" th:id="'child-comment-secret-' + ${childComment.id}" th:value="${childComment.secret}"/>
+
                         </div>
-                        <div sec:authorize="isAuthenticated()" class="flex justify-start mt-2">
+                        <!-- 답글(대댓글) 수정, 삭제 버튼-->
+                        <div sec:authorize="isAuthenticated()" class="flex justify-start mt-2 gap-2">
                             <button class="btn btn-primary"
                                     th:if="${#authentication.getPrincipal().getUsername() == childComment.writer.username}"
-                                    th:text="수정" onclick="showReplyModifyForm(this);" data-child-index="${childIndex}">
+                                    th:data-child-index="${childComment.id}"
+                                    th:text="수정" onclick="showReplyModifyForm(this.getAttribute('data-child-index'));" >
+                            </button>
+                            <button class="btn btn-primary"
+                                    th:if="${#authentication.getPrincipal().getUsername() == childComment.writer.username}"
+                                    th:data-comment-index="${childComment.id}"
+                                    th:text="삭제" onclick="deleteReplyComment(this.getAttribute('data-comment-index'));">
                             </button>
                         </div>
                         <div>
                             <!-- 답글(대댓글) 수정 버튼 클릭 -->
-                            <div id="modify-reply-form-${childIndex}" class="hidden">
-                                <input type="hidden" id="modify-reply-comment-${childIndex}" th:value="${childComment.id}"/>
-                                <input type="hidden" id="modify-reply-writer-${childIndex}" th:value="${childComment.writer.id}"/>
-                                <textarea placeholder="수정할 내용을 입력해주세요" id="modify-reply-commentContents-${childIndex}" columns="4"
-                                          class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
-                                </textarea>
+                            <div th:id="'modify-reply-form-' + ${childComment.id}" class="hidden">
+                                <textarea placeholder="수정할 내용을 입력해주세요" th:id="'modify-reply-comment-contents-' + ${childComment.id}" columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
                                 <label class="label cursor-pointer">
                                     <span class="label-text">비밀 댓글</span>
-                                    <input type="checkbox" id="modify-reply-secret-${childIndex}"/>
+                                    <input type="checkbox" th:id="'modify-reply-secret-' + ${childComment.id}"/>
                                 </label>
-                                <button id="modify-reply-comment-write-btn" onclick="modifyReplyCommentWrite(this)"
-                                        data-child-index="${childIndex}" data-writer-id="${childComment.writer.id}"
+                                <button id="modify-reply-comment-write-btn" th:data-child-index="${childComment.id}"
+                                        onclick="modifyReplyCommentWrite(this.getAttribute('data-child-index'))"
                                         class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600">
                                     <span>댓글수정</span>
                                 </button>
@@ -116,8 +128,6 @@
                         </div>
                     </li>
                 </ul>
-                <hr class="my-4"
-                    th:unless="${#lists.isEmpty(article.comments) || commentIndex == article.comments.size() - 1}"/>
             </li>
         </ul>
     </div>
@@ -159,39 +169,64 @@
         }
 
         // 답글 버튼 눌렀을 때 입력 창 나오게
-        const showReplyForm = (button) => {
+        const showReplyForm = (commentIndex) => {
             console.log("showReplyForm 호출");
-            const commentIndex = button.dataset.commentIndex;
             const formId = "reply-form-" + commentIndex;
-            document.getElementById(formId).classList.remove("hidden");
+            const formElement = document.getElementById(formId);
+            if (formElement) {
+                formElement.classList.remove("hidden");
+            } else {
+                console.error("Element with ID '" + formId + "' not found.");
+            }
         }
 
         // 댓글 수정 버튼 눌렀을 때 입력 창 나오게
-        const showModifyForm = (button) => {
+        const showModifyForm = (commentIndex) => {
             console.log("showModifyForm 호출");
-            const commentIndex = button.dataset.commentIndex;
             const formId = "modify-form-" + commentIndex;
-            document.getElementById(formId).classList.remove("hidden");
             // 기존 값 가져오기 필요
+            const formElement = document.getElementById(formId);
+            const existingCommentContents = document.getElementById("comment-content-" + commentIndex).value;
+            const existingSecretValue = document.getElementById("comment-secret-" + commentIndex).value;
+
+            if (formElement) {
+                formElement.classList.remove("hidden");
+                // 기존 값 채우기
+                document.getElementById("modify-comment-contents-" + commentIndex).value = existingCommentContents;
+                document.getElementById("modify-secret-" + commentIndex).checked = (existingSecretValue=="true");
+                // ...
+            } else {
+                console.error("Element with ID '" + formId + "' not found.");
+            }
         }
 
         // 답글(대댓글) 수정 버튼 눌렀을 때 입력 창 나오게
-        const showReplyModifyForm = (button) => {
+        const showReplyModifyForm = (childIndex) => {
             console.log("showReplyModifyForm 호출");
-            const childIndex = button.dataset.childIndex;
             const formId = "modify-reply-form-" + childIndex;
-            document.getElementById(formId).classList.remove("hidden");
-            // 기존 값 가져오기 필요
+            const formElement = document.getElementById(formId);
+            const existingCommentContents = document.getElementById("child-comment-content-" + childIndex).value;
+            const existingSecretValue = document.getElementById("child-comment-secret-" + childIndex).value;
+
+            if (formElement) {
+                formElement.classList.remove("hidden");
+                // 기존 값 채우기
+                document.getElementById("modify-reply-comment-contents-" + childIndex).value = existingCommentContents;
+                document.getElementById("modify-reply-secret-" + childIndex).checked = (existingSecretValue=="true");
+                // ...
+            } else {
+                console.error("Element with ID '" + formId + "' not found.");
+            }
+
         }
 
         // 답글(대댓글) 작성 메서드
-        const replyCommentWrite = (button) => {
-            const commentIndex = button.dataset.commentIndex;
+        const replyCommentWrite = (commentIndex) => {
             const replySecret = document.getElementById("replySecret-" + commentIndex);
             const secretValue = replySecret.checked ? true : false;
             const contents = document.getElementById("replyCommentContents-" + commentIndex).value;
             const articleId = [[${article.id}]];
-            const parentId = document.getElementById("parentId-" + commentIndex).value;
+            const parentId = document.getElementById("comment-" + commentIndex).value;
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
             //게시글 번호
@@ -221,11 +256,10 @@
             });
         }
         // 댓글 수정 메서드
-        const modifyCommentWrite = (button) => {
-            const commentIndex = button.dataset.commentIndex; // 인덱스
-            const replySecret = document.getElementById("modifySecret-" + commentIndex);
+        const modifyCommentWrite = (commentIndex) => {
+            const replySecret = document.getElementById("modify-secret-" + commentIndex);
             const secretValue = replySecret.checked ? true : false; // 비밀 댓글 체크 여부
-            const contents = document.getElementById("modifyCommentContents-" + commentIndex).value; // 내용
+            const contents = document.getElementById("modify-comment-contents-" + commentIndex).value; // 내용
             const articleId = [[${article.id}]];
             const writerId = document.getElementById("modify-writer-" + commentIndex).value; // 작성자 ID
             const commentId = document.getElementById("modify-comment-" + commentIndex).value; // 댓글번호
@@ -261,12 +295,10 @@
         }
 
         // 댓글 삭제 메서드
-        const deleteComment = (button) => {
-            const commentIndex = button.dataset.commentIndex; // 인덱스
+        const deleteComment = (commentIndex) => {
             const articleId = [[${article.id}]];
-            const commentId = document.getElementById("delete-comment-" + commentIndex).value; // 댓글번호
-            const writerId = document.getElementById("delete-writer-" + commentIndex).value; // 작성자 ID
-
+            const commentId = document.getElementById("comment-" + commentIndex).value; // 댓글번호
+            const writerId = document.getElementById("writer-" + commentIndex).value; // 작성자 ID
 
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
@@ -294,11 +326,10 @@
         }
 
         // 답글(대댓글) 수정 메서드
-        const modifyReplyCommentWrite = (button) => {
-            const childIndex = button.dataset.childIndex; // 인덱스
+        const modifyReplyCommentWrite = (childIndex) => {
             const replySecret = document.getElementById("modify-reply-secret-" + childIndex);
             const secretValue = replySecret.checked ? true : false; // 비밀 댓글 체크 여부
-            const contents = document.getElementById("modify-reply-commentContents-" + childIndex).value; // 내용
+            const contents = document.getElementById("modify-reply-comment-contents-" + childIndex).value; // 내용
             const articleId = [[${article.id}]];
             const writerId = document.getElementById("modify-reply-writer-" + childIndex).value; // 작성자 ID
             const commentId = document.getElementById("modify-reply-comment-" + childIndex).value; // 댓글번호
@@ -325,6 +356,39 @@
                     "id": commentId
                 },
                 success: function (fragment) {
+                    $('#comment-list').replaceWith(fragment);
+                },
+                error: function (err) {
+                    console.log("요청 실패", err);
+                }
+            });
+        }
+
+        //답글(대댓글) 삭제 메서드
+        const deleteReplyComment = (childIndex) => {
+            const articleId = [[${article.id}]];
+            const writerId = document.getElementById("modify-reply-writer-" + childIndex).value; // 작성자 ID
+            const commentId = document.getElementById("modify-reply-comment-" + childIndex).value; // 댓글번호
+
+
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+
+            $.ajax({
+                // 요청방식: post, 요청주소: /comment/delete
+                // 요청데이터: 작성내용, 게시글번호, 비밀 댓글 여부, 부모 댓글 id
+                type: "post",
+                url: "/comment/delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                data: {
+                    "articleId": articleId,
+                    "commentWriter": writerId,
+                    "id": commentId
+                },
+                success: function (fragment) {
+                    console.log("삭제 완료");
                     $('#comment-list').replaceWith(fragment);
                 },
                 error: function (err) {

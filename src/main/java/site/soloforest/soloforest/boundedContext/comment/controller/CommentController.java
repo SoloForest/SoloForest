@@ -131,6 +131,12 @@ public class CommentController {
 		}
 
 		Comment comment = commentService.getComment(commentDTO.getId());
+		System.out.println(comment);
+		// 부모(댓글)이 있을 경우 연관관계 끊어주기 -> 삭제되더라도 GET 등으로 새로 요청을 보내는 것이 아니기에
+		// 이 작업은 꼭 해줘야 대댓글 리스트도 수정된다!
+		if(comment.getParent() != null) {
+			comment.getParent().getChildren().remove(comment);
+		}
 		commentService.delete(comment);
 
 		model.addAttribute("article", article);

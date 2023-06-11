@@ -36,6 +36,7 @@ import site.soloforest.soloforest.boundedContext.notification.entity.Notificatio
 @EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

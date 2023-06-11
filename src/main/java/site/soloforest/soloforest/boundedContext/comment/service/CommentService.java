@@ -88,25 +88,32 @@ public class CommentService {
 	// 삭제
 	@Transactional
 	public void delete(Comment comment) {
+		if (comment == null) {
+			throw new IllegalArgumentException("Comment cannot be null");
+		}
 		if (comment.getChildren().size() != 0) {
-			// 자식이 있으면 내용만 삭제
+			// 자식이 있으면 삭제 상태만 변경
 			comment.deleteParent();
 		}
 		else { // 자식이 없다 -> 대댓글이 없다 -> 객체 그냥 삭제해도 된다.
 			// 삭제 가능한 조상 댓글을 구해서 삭제
 			// ex) 할아버지 - 아버지 - 대댓글, 3자라 했을 때 대댓글 입장에서 자식이 없으니 삭제 가능
 			// => 삭제하면 아버지도 삭제 가능 => 할아버지도 삭제 가능하니 이런식으로 조상 찾기 메서드
-			commentRepository.delete(getDeletableAncestorComment(comment));
+			Comment tmp = getDeletableAncestorComment(comment);
+			commentRepository.delete(tmp);
 		}
 	}
 
-	private Comment getDeletableAncestorComment(Comment comment) {
+	@Transactional
+	public Comment getDeletableAncestorComment(Comment comment) {
 		Comment parent = comment.getParent(); // 현재 댓글의 부모를 구함
-		if (parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted().equals(true))
+		if (parent != null && parent.getChildren().size() == 1 && parent.getIsDeleted().equals(true)) {
 			// 부모가 있고, 부모의 자식이 1개(지금 삭제하는 댓글)이고, 부모의 삭제 상태가 TRUE인 댓글이라면 재귀
 			// 삭제가능 댓글 -> 만일 댓글의 조상(대댓글의 입장에서 할아버지 댓글)도 해당 댓글 삭제 시 삭제 가능한지 확인
+			// 삭제 -> Cascade 옵션으로 가장 부모만 삭제 해도 자식들도 다 삭제 가능
 			return getDeletableAncestorComment(parent);
-		// 삭제 -> Cascade 옵션으로 가장 부모만 삭제 해도 자식들도 다 삭제 가능
+		}
+
 		return comment;
 	}
 
