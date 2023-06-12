@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.rsData.RsData;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
+import site.soloforest.soloforest.boundedContext.article.bookmark.entity.Bookmark;
+import site.soloforest.soloforest.boundedContext.article.bookmark.repository.BookmarkRepository;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.liked.entity.Liked;
 import site.soloforest.soloforest.boundedContext.article.liked.repository.LikedRepository;
@@ -27,6 +29,7 @@ import site.soloforest.soloforest.boundedContext.article.repository.ShareReposit
 public class ShareService {
 	private final ShareRepository shareRepository;
 	private final LikedRepository likeRepository;
+	private final BookmarkRepository bookmarkRepository;
 
 	@Transactional
 	public RsData<Share> create(String type, Account account, String subject, String content, String imageUrl) {
@@ -164,6 +167,37 @@ public class ShareService {
 		likeRepository.save(liked);
 		share.upLikes();
 
+		return true;
+	}
+
+	public boolean findBookmark(Share share, Account account) {
+		Optional<Bookmark> bookmarkOptional = bookmarkRepository.findByArticleAndAccount(share, account);
+
+		return bookmarkOptional.isPresent();
+	}
+
+	@Transactional
+	public boolean bookmark(Account account, Long shareId) {
+		Optional<Share> shareOptional = shareRepository.findById(shareId);
+
+		if (shareOptional.isEmpty())
+			return false;
+
+		Share share = shareOptional.get();
+
+		if (findBookmark(share, account)) {
+			bookmarkRepository.deleteByArticleAndAccount(share, account);
+
+			return false;
+		}
+
+		Bookmark bookmark = Bookmark
+			.builder()
+			.article(share)
+			.account(account)
+			.build();
+
+		bookmarkRepository.save(bookmark);
 		return true;
 	}
 }

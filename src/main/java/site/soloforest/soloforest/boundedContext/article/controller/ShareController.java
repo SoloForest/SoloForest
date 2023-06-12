@@ -88,10 +88,12 @@ public class ShareController {
 
 		shareService.modifyViewed(share.get());
 		model.addAttribute("share", share.get());
-		
-		boolean like = shareService.findLike(share.get(), rq.getAccount());
 
+		boolean like = shareService.findLike(share.get(), rq.getAccount());
 		model.addAttribute("like", like);
+
+		boolean bookmark = shareService.findBookmark(share.get(), rq.getAccount());
+		model.addAttribute("bookmark", bookmark);
 
 		return "article/share/detail";
 	}
@@ -137,7 +139,11 @@ public class ShareController {
 
 	@PostMapping("/like")
 	public @ResponseBody boolean like(Long shareId) {
-
 		return shareService.like(rq.getAccount(), shareId);
+	}
+
+	@PostMapping("/bookmark")
+	public @ResponseBody boolean bookmark(Long shareId) {
+		return shareService.bookmark(rq.getAccount(), shareId);
 	}
 }
