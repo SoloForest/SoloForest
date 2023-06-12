@@ -101,7 +101,7 @@ public class ShareController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify/{id}")
 	public String showModify(@PathVariable Long id, Model model) {
-		Share share = shareService.findById(id).orElseThrow();
+		Share share = shareService.findById(id).orElse(null);
 
 		RsData<Share> canModifyRsData = shareService.canModify(rq.getAccount(), share);
 
@@ -127,7 +127,7 @@ public class ShareController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{type}/delete/{id}")
 	public String delete(@PathVariable String type, @PathVariable Long id) {
-		Share share = shareService.findById(id).orElseThrow();
+		Share share = shareService.findById(id).orElse(null);
 
 		RsData<Share> deleteRsData = shareService.delete(rq.getAccount(), share);
 
