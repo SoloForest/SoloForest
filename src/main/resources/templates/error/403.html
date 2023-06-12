@@ -1,0 +1,24 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>403</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <div class="flex justify-center items-center w-full" style="height: calc(100vh - 180px);">
+        <div class="card w-96 bg-neutral text-neutral-content">
+            <div class="card-body items-center text-center">
+                <h2 class="card-title">
+                    <i class="fa-solid fa-circle-exclamation"></i>403 ERROR</h2>
+                <p>권한이 없는 이용자입니다.</p>
+                <div class="card-actions justify-end mt-2">
+                    <a href="/main" role="button" class="btn btn-primary">메인으로</a>
+                    <a href="#" onclick="window.history.back();return false;" role="button" class="btn btn-secondary">
+                        이전 페이지로</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
