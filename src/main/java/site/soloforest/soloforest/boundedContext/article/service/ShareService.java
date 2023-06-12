@@ -17,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.rsData.RsData;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
+import site.soloforest.soloforest.boundedContext.article.liked.entity.Liked;
+import site.soloforest.soloforest.boundedContext.article.liked.repository.LikedRepository;
 import site.soloforest.soloforest.boundedContext.article.repository.ShareRepository;
 
 @Service
@@ -24,6 +26,7 @@ import site.soloforest.soloforest.boundedContext.article.repository.ShareReposit
 @Transactional(readOnly = true)
 public class ShareService {
 	private final ShareRepository shareRepository;
+	private final LikedRepository likeRepository;
 
 	@Transactional
 	public RsData<Share> create(String type, Account account, String subject, String content, String imageUrl) {
@@ -72,8 +75,8 @@ public class ShareService {
 	}
 
 	@Transactional
-	public void modifyViewd(Share share) {
-		share.updateViewd();
+	public void modifyViewed(Share share) {
+		share.updateViewed();
 		shareRepository.save(share);
 	}
 
@@ -130,4 +133,37 @@ public class ShareService {
 		return RsData.of("S-1", "게시글이 삭제되었습니다.");
 	}
 
+	public boolean findLike(Share share, Account account) {
+		Optional<Liked> likeOptional = likeRepository.findByArticleAndAccount(share, account);
+
+		return likeOptional.isPresent();
+	}
+
+	@Transactional
+	public boolean like(Account account, Long shareId) {
+		Optional<Share> shareOptional = shareRepository.findById(shareId);
+
+		if (shareOptional.isEmpty())
+			return false;
+
+		Share share = shareOptional.get();
+
+		if (findLike(share, account)) {
+			likeRepository.deleteByArticleAndAccount(share, account);
+			share.downLikes();
+
+			return false;
+		}
+
+		Liked liked = Liked
+			.builder()
+			.article(share)
+			.account(account)
+			.build();
+
+		likeRepository.save(liked);
+		share.upLikes();
+
+		return true;
+	}
 }
