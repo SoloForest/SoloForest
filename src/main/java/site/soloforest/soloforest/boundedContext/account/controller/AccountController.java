@@ -109,12 +109,12 @@ public class AccountController {
 	@PostMapping("/find/username")
 	@ResponseBody
 	public String findUsername(@Valid @ModelAttribute FindUsernameForm form) {
-		return "전송완료";
+		return accountService.findUsername(form.getEmail());
 	}
 
 	@PostMapping("/find/password")
 	@ResponseBody
 	public String findPassword(@Valid @ModelAttribute FindPasswordForm form) {
-		return "전송완료";
+		return accountService.findPassword(form.getEmail(), form.getUsername());
 	}
 }

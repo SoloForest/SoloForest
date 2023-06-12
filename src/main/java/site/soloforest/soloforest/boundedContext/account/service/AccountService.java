@@ -231,4 +231,29 @@ public class AccountService {
 
 		return new ResponseEntity<>("신고가 완료되었습니다.", HttpStatus.OK);
 	}
+
+	public String findUsername(String email) {
+		Optional<Account> sameEmailAccount = accountRepository.findByEmail(email);
+		if (sameEmailAccount.isEmpty()) {
+			return "존재하지 않는 회원입니다.";
+		}
+
+		// 여기서 이메일 보내기...
+		return "입력된 이메일로 username을 발송했습니다.";
+	}
+
+	public String findPassword(String email, String username) {
+		Optional<Account> sameEmailAccount = accountRepository.findByEmail(email);
+		Optional<Account> sameUsernameAccount = accountRepository.findByUsername(username);
+
+		if (sameEmailAccount.isEmpty() || sameUsernameAccount.isEmpty()) {
+			return "존재하지 않는 회원입니다.";
+		}
+		if (!sameEmailAccount.get().getId().equals(sameUsernameAccount.get().getId())) {
+			return "계정 정보가 일치하지 않습니다.";
+		}
+
+		// 여기서 이메일 보내기...
+		return "입력된 이메일로 임시 비밀번호를 발송했습니다.";
+	}
 }
