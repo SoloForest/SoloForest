@@ -1,6 +1,7 @@
 package site.soloforest.soloforest.boundedContext.account.service;
 
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.email.MailSenderRunner;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
@@ -27,8 +29,8 @@ import site.soloforest.soloforest.boundedContext.account.repository.AccountRepos
 public class AccountService {
 	private final AccountRepository accountRepository;
 	private final PasswordEncoder passwordEncoder;
-
 	private final AuthenticationManager authenticationManager;
+	private final MailSenderRunner mailSenderRunner;
 
 	public Account singup(AccountDTO dto) {
 		Account account = Account.builder()
@@ -238,7 +240,12 @@ public class AccountService {
 			return "존재하지 않는 회원입니다.";
 		}
 
-		// 여기서 이메일 보내기...
+		mailSenderRunner.sendMessage(email, "[혼숲] Username 안내",
+			sameEmailAccount.get().getNickname() + " 님의 혼숲(Solo Forest) username은\n"
+				+ sameEmailAccount.get().getUsername()
+				+ "\n입니다."
+		);
+
 		return "입력된 이메일로 username을 발송했습니다.";
 	}
 
@@ -253,7 +260,30 @@ public class AccountService {
 			return "계정 정보가 일치하지 않습니다.";
 		}
 
-		// 여기서 이메일 보내기...
+		String temporarPassword = createRandomPassword();
+		sameEmailAccount.get().setPassword(temporarPassword);
+		accountRepository.save(sameEmailAccount.get());
+
+		mailSenderRunner.sendMessage(email, "[혼숲] Password 안내",
+			sameEmailAccount.get().getNickname() + " 님의 혼숲(Solo Forest) 임시 password는\n"
+				+ temporarPassword + "\n입니다."
+				+ "\n로그인 후 비밀번호를 변경해주세요."
+		);
+
 		return "입력된 이메일로 임시 비밀번호를 발송했습니다.";
+	}
+
+	private String createRandomPassword() {
+		int leftLimit = 48; // numeral '0'
+		int rightLimit = 122; // letter 'z'
+		int targetStringLength = 10;
+		Random random = new Random();
+		String generatedString = random.ints(leftLimit, rightLimit + 1)
+			.filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+			.limit(targetStringLength)
+			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			.toString();
+
+		return generatedString;
 	}
 }
