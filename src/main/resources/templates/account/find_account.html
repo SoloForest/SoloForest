@@ -2,6 +2,10 @@
 <head>
     <title>login</title>
     <script src="/common/validator.js"></script>
+
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+
     <style>
         .input-group span {
             width: 100px;
@@ -48,7 +52,8 @@
         <button class="tab tab-lg tab-lifted flex-1" data-tab="1">Password</button>
     </div>
     <div class="card glass" id="tab-0">
-        <form method="POST" th:action onsubmit="FindUsernameForm__submit(this); return false;" id="findUsername"
+        <form method="POST" th:action="|/account/find/username|" id="findUsername"
+              onsubmit="FindUsernameForm__submit(this); return false;"
               class="flex flex-col place-content-center gap-1 min-w-[420px] px-12">
             <label class="input-group max-w-sm min-w-sm">
                 <span>Email</span>
@@ -59,7 +64,8 @@
         </form>
     </div>
     <div class="card glass hidden" id="tab-1">
-        <form method="POST" th:action onsubmit="FindPasswordForm__submit(this); return false;" id="findPassword"
+        <form method="POST" th:action="|/account/find/password|" id="findPassword"
+              onsubmit="FindPasswordForm__submit(this); return false;"
               class="flex flex-col place-content-center gap-1 min-w-[420px] px-12">
             <label class="input-group max-w-sm min-w-sm">
                 <span>Email</span>
