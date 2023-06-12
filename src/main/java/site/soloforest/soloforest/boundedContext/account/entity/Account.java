@@ -65,6 +65,7 @@ public class Account {
 	private int authority = 1;
 	@Builder.Default
 	private int reported = 0;
+	private LocalDateTime loginRejectedDeadline;
 	@Builder.Default
 	private boolean deleted = false;
 
@@ -88,6 +89,14 @@ public class Account {
 
 	public void setPassword(String password) {
 		this.password = passwordEncoder.encode(password);
+	}
+
+	public int reportUp() {
+		return ++this.reported;
+	}
+
+	public void loginReject() {
+		this.loginRejectedDeadline = LocalDateTime.now().plusDays(3);
 	}
 
 	public List<? extends GrantedAuthority> getGrantedAuthorities() {

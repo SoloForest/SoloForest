@@ -1,0 +1,25 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>Login Rejected</title>
+</head>
+
+<body>
+<main layout:fragment="main">
+    <div class="flex justify-center items-center w-full" style="height: calc(100vh - 180px);">
+        <div class="card w-96 bg-neutral text-neutral-content">
+            <div class="card-body items-center text-center">
+                <h2 class="card-title">
+                    <i class="fa-solid fa-circle-exclamation"></i>Login Rejected</h2>
+                <p>신고로 인해 제재당한 이용자입니다.</p>
+                <p><span th:text="${session.loginRejectedDeadline}"></span><span> 이후에 다시 로그인 해주세요.</span></p>
+                <div class="card-actions justify-end mt-2">
+                    <a href="/main" role="button" class="btn btn-primary">메인으로</a>
+                    <a href="#" onclick="window.history.back();return false;" role="button" class="btn btn-secondary">
+                        이전 페이지로</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
