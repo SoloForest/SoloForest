@@ -13,13 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import site.soloforest.soloforest.base.rq.Rq;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
-import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
-import site.soloforest.soloforest.boundedContext.article.service.ShareService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 
 @SpringBootTest
@@ -32,19 +29,17 @@ public class CommentServiceTests {
 	private CommentService commentService;
 
 	@Autowired
-	private ShareService shareService;
+	private ArticleService articleService;
 
 	@Autowired
 	private AccountService accountService;
 
-	@Autowired
-	private ArticleService articleService;
 
 	@Test
 	@DisplayName("댓글 생성 테스트")
 	void t01() {
 		Account account = accountService.findByUsername("usertest2").get();
-		Share article = shareService.getShare(2L).get();
+		Article article = articleService.getArticle(2L);
 
 		Comment comment = commentService.create("테스트1234", false, account, article);
 
@@ -59,7 +54,7 @@ public class CommentServiceTests {
 	@DisplayName("댓글 수정 테스트")
 	void t02() {
 		Account account = accountService.findByUsername("usertest2").get();
-		Share article = shareService.getShare(2L).get();
+		Article article = articleService.getArticle(2L);
 		Comment comment = commentService.getComment(5L);
 
 		Comment modifyComment = commentService.modify(comment, "가시죠", false);
