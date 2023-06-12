@@ -15,7 +15,7 @@ public class ModifyForm {
 	String passwordCheck;
 	@Size(min = 2, max = 32)
 	String nickname;
-	@Pattern(regexp = "/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$/i", message = "이메일 형식이 아닙니다.")
+	@Pattern(regexp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$", message = "이메일 형식이 아닙니다.")
 	String email;
 	String address;
 }
