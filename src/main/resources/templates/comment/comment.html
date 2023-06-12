@@ -28,12 +28,18 @@
     <!-- 댓글 출력 부분, 일단 페이지 접속 했을때 보여지게!-->
     <div id="comment-list">
         <ul class="space-y-4">
-            <li th:each="comment, commentIndex : ${commentList}" th:if="${comment.parent == null}">
+            <li th:each="comment, commentIndex : ${paging}" th:if="${comment.parent == null}">
                 <div class="card bg-white border p-4 rounded-lg shadow-lg">
-                    <p class="text-lg font-bold" th:if="${!comment.deleted and !comment.secret}"> [[${comment.content}]]</p>
+                    <a th:id="|comment_${comment.id}|"></a>
+                    <p class="text-lg font-bold" th:if="${!comment.deleted and !comment.secret}">
+                        [[${comment.content}]]</p>
                     <p class="text-gray-200" th:if="${comment.deleted}"> 삭제된 댓글입니다.</p>
-                    <p class="text-lg font-bold" th:if="${comment.secret and ((comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}"> [[${comment.content}]]</p>
-                    <p class="text-gray-200" th:if="${comment.secret and ! ((comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}"> 비밀 댓글로 댓글 작성자, 게시글 관리자만 볼 수 있습니다.</p>
+                    <p class="text-lg font-bold"
+                       th:if="${comment.secret and ((comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}">
+                        [[${comment.content}]]</p>
+                    <p class="text-gray-200"
+                       th:if="${comment.secret and ! ((comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}">
+                        비밀 댓글로 댓글 작성자, 게시글 관리자만 볼 수 있습니다.</p>
                     <ul class="menu menu-horizontal bg-base-100">
                         <li tabindex="0">
                             <span>작성자 : [[${comment.writer.username}]] </span>
@@ -51,7 +57,7 @@
                             <div>작성일</div>
                             <div th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                         </div>
-                            <div class="badge gap-3" th:if="${comment.secret}">비밀댓글</div>
+                        <div class="badge gap-3" th:if="${comment.secret}">비밀댓글</div>
                     </div>
                     <!-- 삭제 할 댓글 id와 작성자 정보 저장 용-->
                     <input type="hidden" th:id="'comment-' + ${comment.id}" th:value="${comment.id}"/>
@@ -74,7 +80,8 @@
                         <button class="btn btn-primary"
                                 th:if="${(!comment.deleted) and ((@rq.account.username == comment.writer.username) or (@rq.account.admin))}"
                                 th:data-comment-index="${comment.id}"
-                                th:text="삭제" onclick="if (confirm('해당 댓글을 삭제하시겠습니까?')) deleteComment(this.getAttribute('data-comment-index'));">
+                                th:text="삭제"
+                                onclick="if (confirm('해당 댓글을 삭제하시겠습니까?')) deleteComment(this.getAttribute('data-comment-index'));">
                         </button>
                     </div>
                 </div>
@@ -115,10 +122,16 @@
                 <ul class="ml-8 space-y-2">
                     <li th:each="childComment, childIndex : ${comment.children}">
                         <div class="border-t border-gray-300 p-4 rounded-lg">
-                            <p class="text-lg font-bold" th:if="${!childComment.deleted and !childComment.secret}"> [[${childComment.content}]]</p>
+                            <a th:id="|comment_${childComment.id}|"></a>
+                            <p class="text-lg font-bold" th:if="${!childComment.deleted and !childComment.secret}">
+                                [[${childComment.content}]]</p>
                             <p class="text-gray-700" th:if="${childComment.deleted}"> 삭제된 댓글입니다.</p>
-                            <p class="text-lg font-bold" th:if="${childComment.secret and ( (childComment.writer.username == @rq.account.username) or (comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}"> [[${childComment.content}]]</p>
-                            <p class="text-gray-700" th:if="${childComment.secret and ! ( (childComment.writer.username == @rq.account.username) or (comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}"> 비밀 댓글로 댓글 작성자, 게시글 관리자만 볼 수 있습니다.</p>
+                            <p class="text-lg font-bold"
+                               th:if="${childComment.secret and ( (childComment.writer.username == @rq.account.username) or (comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}">
+                                [[${childComment.content}]]</p>
+                            <p class="text-gray-700"
+                               th:if="${childComment.secret and ! ( (childComment.writer.username == @rq.account.username) or (comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}">
+                                비밀 댓글로 댓글 작성자, 게시글 관리자만 볼 수 있습니다.</p>
                             <ul class="menu menu-horizontal bg-base-100">
                                 <li tabindex="0">
                                     <span>작성자 : [[${childComment.writer.username}]]</span>
@@ -166,7 +179,7 @@
                         </div>
 
                         <div>
-                            <!-- 답글(대댓글) 수정 버튼 클릭 -->
+                            <!-- 답글(대댓글) 수정 버튼 클릭시 나타날 폼 -->
                             <div th:id="'modify-reply-form-' + ${childComment.id}" class="hidden">
                                 <textarea placeholder="수정할 내용을 입력해주세요"
                                           th:id="'modify-reply-comment-contents-' + ${childComment.id}" columns="4"
@@ -186,6 +199,31 @@
                 </ul>
             </li>
         </ul>
+        <!-- 댓글 페이징 부분-->
+        <div class="btn-group flex justify-center" th:if="${!paging.isEmpty()}">
+            <div class="btn" th:classappend="${paging.number == 0} ? 'btn-disabled' : ''"
+                 th:attr="onclick='window.location.href=\'?page=0#comment-list\''">
+                    &laquo;
+            </div>
+            <div th:attr="onclick='window.location.href=\'?page=' + (${paging.number - 1}) + '#comment-list\''"
+                 class="btn" th:classappend="${!paging.hasPrevious} ? 'btn-disabled' : ''">
+                이전
+            </div>
+            <div class="btn" th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                 th:classappend="${paging.number == page} ? 'btn-active' : ''"
+                 th:if="${page >= paging.number - 5 and page <= paging.number + 5}"
+                 th:attr="onclick='window.location.href=\'?page=' + (${page}) + '#comment-list\''"
+            th:text="${page}">
+            </div>
+            <div class="btn" th:classappend="${!paging.hasNext} ? 'btn-disabled' :''"
+                 th:attr="onclick='window.location.href=\'?page=' + (${paging.number + 1}) + '#comment-list\''">
+                    다음
+            </div>
+            <div th:attr="onclick='window.location.href=\'?page=' + (${paging.totalPages - 1}) + '#comment-list\''"
+                 class="btn" th:classappend="${paging.number == paging.totalPages - 1} ? 'btn-disabled' : ''">
+                    &raquo;
+            </div>
+        </div>
     </div>
 
     <!-- 스크립트는 main 태그 안족에, 타임리프 레이아웃에 의해 body 밖은 무시됨-->
@@ -355,7 +393,8 @@
         const modifyCommentWrite = (commentIndex) => {
             const replySecret = document.getElementById("modify-secret-" + commentIndex);
             const secretValue = replySecret.checked ? true : false; // 비밀 댓글 체크 여부
-            const contents = document.getElementById("modify-comment-contents-" + commentIndex).value.trim();; // 내용
+            const contents = document.getElementById("modify-comment-contents-" + commentIndex).value.trim();
+            ; // 내용
             const articleId = [[${article.id}]];
 
             if (contents.length == 0) {
@@ -433,7 +472,8 @@
         const modifyReplyCommentWrite = (childIndex) => {
             const replySecret = document.getElementById("modify-reply-secret-" + childIndex);
             const secretValue = replySecret.checked ? true : false; // 비밀 댓글 체크 여부
-            const contents = document.getElementById("modify-reply-comment-contents-" + childIndex).value.trim();; // 내용
+            const contents = document.getElementById("modify-reply-comment-contents-" + childIndex).value.trim();
+            ; // 내용
             const articleId = [[${article.id}]];
             const writerId = document.getElementById("modify-reply-writer-" + childIndex).value; // 작성자 ID
             const commentId = document.getElementById("modify-reply-comment-" + childIndex).value; // 댓글번호

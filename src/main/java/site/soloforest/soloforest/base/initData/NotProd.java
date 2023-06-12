@@ -2,6 +2,7 @@ package site.soloforest.soloforest.base.initData;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -121,7 +122,10 @@ public class NotProd {
 				Comment comment17 = commentService.create("부모 댓글 연쇄 삭제 테스트용", false, accountAdmin1, shares.get(0));
 				comment17.deleteParent();
 				Comment replyComment5 = commentService.createReplyComment("이녀석 삭제되면 위에 녀석 삭제되어야 함", false, accountAdmin1,
-					shares.get(1), comment17);
+					shares.get(0), comment17);
+
+				// 페이징 테스트용 댓글
+				IntStream.rangeClosed(5, 100).forEach(n -> commentService.create("테스트 데이터 %d".formatted(n), false, accountAdmin1, shares.get(0)));
 
 			}
 		};

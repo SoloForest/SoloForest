@@ -1,11 +1,11 @@
 package site.soloforest.soloforest.boundedContext.comment.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +15,6 @@ import site.soloforest.soloforest.base.event.EventReplyCommentCreate;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.repository.ArticleRepository;
-import site.soloforest.soloforest.boundedContext.comment.controller.CommentController;
-import site.soloforest.soloforest.boundedContext.comment.dto.CommentDTO;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepository;
 
@@ -127,7 +125,16 @@ public class CommentService {
 	}
 
 	public List<Comment> getCommentList(Article article) {
-		List<Comment> commentList = commentRepository.findAllByArticleOrderByIdDesc(article);
+		List<Comment> commentList = commentRepository.findAllByArticle(article);
 		return commentList;
 	}
+
+	// 페이지화
+	public Page<Comment> getCommentPage(int page, Article article) {
+		Pageable pageable = PageRequest.of(page, 10); // 페이지네이션 정보
+		return commentRepository.findAllByArticle(article, pageable);
+	}
+
+
+
 }

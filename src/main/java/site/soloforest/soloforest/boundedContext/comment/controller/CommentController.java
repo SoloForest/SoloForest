@@ -2,6 +2,7 @@ package site.soloforest.soloforest.boundedContext.comment.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
@@ -37,13 +39,14 @@ public class CommentController {
 
 	// 삭제 예정(댓글 자체는 게시글 조회시 자동으로 나오게)
 	@GetMapping("")
-	public String showComment(Model model) {
+	public String showComment(Model model, @RequestParam(defaultValue = "0") int page) {
 
+		// TODO : 게시글과 합칠때는 실제 articleID를 받아서 가져오기
 		Article article = rq.getArticle(1L);
-		List<Comment> commentList = commentService.getCommentList(article);
+		Page<Comment> paging = commentService.getCommentPage(page, article);
 
 		model.addAttribute("article", article);
-		model.addAttribute("commentList", commentList);
+		model.addAttribute("paging", paging);
 
 		return "comment/comment";
 	}
