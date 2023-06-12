@@ -336,7 +336,7 @@ public class AccountControllerTest {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/error/403"));
 	}
-	/*
+
 	@Test
 	@DisplayName("계정 찾기 폼 테스트")
 	void t015() throws Exception {
@@ -383,5 +383,4 @@ public class AccountControllerTest {
 			.andExpect(handler().methodName("findPassword"))
 			.andExpect(status().is2xxSuccessful()); // 이메일 발송 : 임시 비밀번호 생성 후 발송
 	}
-	*/
 }
