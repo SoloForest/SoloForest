@@ -1,28 +1,23 @@
 package site.soloforest.soloforest.boundedContext.comment.controller;
 
-import java.security.Principal;
-
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import site.soloforest.soloforest.base.rq.Rq;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
-import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
-import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
+import site.soloforest.soloforest.boundedContext.comment.dto.CommentDTO;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 
@@ -32,10 +27,9 @@ import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 public class CommentController {
 
 	// TODO : Rq 도입시 변경
-	 private final AccountRepository accountRepository;
-	private final CommentService commentService;
 
-	private final ArticleService articleService;
+	private final Rq rq;
+	private final CommentService commentService;
 
 	// 디버깅시 활용
 	// private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
@@ -43,91 +37,119 @@ public class CommentController {
 
 	// 삭제 예정(댓글 자체는 게시글 조회시 자동으로 나오게)
 	@GetMapping("")
-	public String showComment(CommentForm commentForm) {
+	public String showComment(Model model, @RequestParam(defaultValue = "0") int page) {
+
+		// TODO : 게시글과 합칠때는 실제 articleID를 받아서 가져오기
+		Article article = rq.getArticle(1L);
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+
+		model.addAttribute("article", article);
+		model.addAttribute("paging", paging);
+
 		return "comment/comment";
-	}
-
-	@AllArgsConstructor
-	@Getter
-	@Setter
-	public static class CommentForm {
-		@NotBlank(message = "내용은 필수로 입력해야 합니다.")
-		private String content;
-
-		// 기본값 false로 설정
-		private Boolean secret = false;
-
-		private Long parentId;
-
-		private Long articleId;
 	}
 
 	@PreAuthorize("isAuthenticated()")
-	// ToDO : 게시글 id를 통해 게시글을 얻고, 현재 로그인한 회원의 사용자 정보도 얻어서 등록한다.
 	@PostMapping("/create")
-	public String create(Model model, @Valid CommentForm commentForm, Principal principal) {
+	@ResponseBody
+	public String create(Model model ,@ModelAttribute CommentDTO commentDTO, @RequestParam(defaultValue = "0") int page) {
+		Article article = rq.getArticle(commentDTO.getArticleId());
+		Account account = rq.getAccount();
+		// 부모댓글 생성
+		Comment comment = 	commentService.create(commentDTO.getCommentContents(), commentDTO.getSecret(), account, article);
 
-		// 게시글 id를 가져오고, 현재 로그인한 회원의 정보, 댓글 폼에 입력한 내용으로 댓글 객체 생성
-		Article article = articleService.getArticle(commentForm.getArticleId());
-		Account account = accountRepository.findByUsername(principal.getName()).get();
+		model.addAttribute("article", article);
 
-		if (commentForm.getParentId() == null) {
-			// 부모 댓글 생성
-			commentService.create(commentForm.getContent(), commentForm.secret, account, article);
-		} else {
-			// 자식 댓글 생성
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", paging);
+
+		return (comment.getId() +"");
+	}
+
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/reply/create")
+	public String replyCreate(Model model ,@ModelAttribute CommentDTO commentDTO, @RequestParam(defaultValue = "0") int page) {
+		Article article = rq.getArticle(commentDTO.getArticleId());
+		Account account = rq.getAccount();
+
 			// 부모 댓글 찾아오기
-			Comment parent = commentService.getComment(commentForm.parentId);
+			Comment parent = commentService.getComment(commentDTO.getParentId());
+			// ToDo : RsData 도입 고려
+			if(parent == null) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 댓글을 찾을 수 없습니다");
+			}
 			// 자식 댓글 생성
-			commentService.createReplyComment(commentForm.getContent(), commentForm.secret, account, article, parent);
-		}
+			commentService.createReplyComment(commentDTO.getCommentContents(), commentDTO.getSecret(), account, article, parent);
 
-		return "redirect:/main";
+		model.addAttribute("article", article);
 
-		// TODO : 댓글 작성 시 게시글로 리다이렉트
-		// return "redirect:/article/detail/%s".formatted(commentForm.getArticleId());
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", paging);
+
+		return "comment/comment :: #comment-list";
 	}
 
-	// @PreAuthorize("isAuthenticated()")
-	@GetMapping("/modify/{id}")    // 댓글id
-	public String showModify(CommentForm commentForm, @PathVariable("id") Long id, Principal principal) {
-		Comment comment = this.commentService.getComment(id);
-		if (!comment.getWriter().getUsername().equals(principal.getName())) { // 댓글 작성한 회원정보와 일치 여부 확인
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
-		}
-		commentForm.setContent(comment.getContent());
-		// 비밀 댓글 여부도 변경했을 수 있으니 비밀 댓글 속성도 값 가져오도록 수정
-		commentForm.setSecret(comment.getSecret());
-		// TODO : 다시 게시글 정보로 돌아가는 리다이렉트로 수정
-		return "comment/comment";// 댓글 폼 html
-	}
+	// 답글 수정 + 댓글 수정 둘다
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/modify")
+	public String modify(CommentDTO commentDTO, Model model, @RequestParam(defaultValue = "0") int page) {
+		Article article = rq.getArticle(commentDTO.getArticleId());
+		Account account = rq.getAccount();
 
-	// @PreAuthorize("isAuthenticated()")
-	@PostMapping("/modify/{id}")    // 댓글 id
-	public String modify(@Valid CommentForm commentForm, @PathVariable("id") Long id, Principal principal) {
-		Comment comment = commentService.getComment(id);
+		// ToDo : RsData 고민
+		 if(!(account.isAdmin()) && (account.getId() != commentDTO.getCommentWriter())) {
+			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
+		 }
 
-		if (!comment.getWriter().getUsername().equals(principal.getName()))
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
+		 // 대댓글(답글)도 id로 찾을 수 있음(댓글과 동일 객체 사용이 가능하니 하나의 메서드로 처리 가능)
+		Comment comment = commentService.getComment(commentDTO.getId());
 
 		// 댓글 내용, 비밀 댓글 여부만 수정 할테니 해당 값 넘기기
-		commentService.modify(comment, commentForm.getContent(), commentForm.getSecret());
-		// TODO : 게시글 정보로 리다이렉트 변경
-		return "redirect:/main";
+		commentService.modify(comment, commentDTO.getCommentContents().trim(), commentDTO.getSecret());
+
+		model.addAttribute("article", article);
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", paging);
+
+		return "comment/comment :: #comment-list";
 	}
 
 	// 댓글 삭제 메서드
-	// @PreAuthorize("isAuthenticated()") // 로그인한 사용자만보임
-	@DeleteMapping("/{id}")
-	public String delete(Principal principal, @PathVariable("id") Long id) {
-		Comment comment = this.commentService.getComment(id);
-		if (!comment.getWriter().getUsername().equals(principal.getName())) {
-			// 댓글 작성한 회원정보와 일치 여부 확인
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다");
+	@PreAuthorize("isAuthenticated()")
+	@PostMapping("/delete")
+	public String delete(Model model, CommentDTO commentDTO, @RequestParam(defaultValue = "0") int page) {
+		Article article = rq.getArticle(commentDTO.getArticleId());
+		Account account = rq.getAccount();
+
+		// ToDo : RsData 고려
+		// 관리자가 아니거나 현재 로그인한 사용자가 작성한 댓글이 아니면 삭제 불가
+		if(!(account.isAdmin()) && (account.getId() != commentDTO.getCommentWriter())) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다");
 		}
+
+		Comment comment = commentService.getComment(commentDTO.getId());
+		// 부모(댓글)이 있을 경우 연관관계 끊어주기 -> 삭제되더라도 GET 등으로 새로 요청을 보내는 것이 아니기에
+		// 이 작업은 꼭 해줘야 대댓글 리스트도 수정된다!
+		// 부모 댓글이 삭제 상태이며, 부모의 자식이 1개(삭제하려는 자기 뿐)일 경우 연관관계 유지 시켜줘야
+		// 같이 삭제되니 연관관계 유지
+		if(comment.getParent() != null && comment.getParent().isDeleted() && comment.getParent().getChildren().size() ==1)
+		{
+		}
+		// 댓글 자체가 삭제 상태건 아니건, 자식이 2개 이상 있는 상황이라면 그냥 대댓글만 삭제하면 되니까 해당 댓글 연관관계만 끊어주기
+		else if(comment.getParent() != null && comment.getParent().getChildren().size() > 1) {
+			comment.getParent().getChildren().remove(comment);
+		}
+		// 부모가 있고, 삭제 상태가 아니라면 대댓글만 삭제 => Ajax 비동기 리스트화를 위해 리스트에서 명시적 삭제
+		else if(comment.getParent() !=null && !comment.isDeleted()) {
+			comment.getParent().getChildren().remove(comment);
+		}
+
 		commentService.delete(comment);
-		// TODO : 게시글 정보로 리다이렉트
-		return "comment/comment";
+
+		model.addAttribute("article", article);
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", paging);
+		return "comment/comment :: #comment-list";
 	}
 
 }

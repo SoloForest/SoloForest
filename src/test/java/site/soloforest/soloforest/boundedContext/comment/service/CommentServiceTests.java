@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
-import site.soloforest.soloforest.boundedContext.article.entity.Share;
-import site.soloforest.soloforest.boundedContext.article.service.ShareService;
+import site.soloforest.soloforest.boundedContext.article.entity.Article;
+import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 
 @SpringBootTest
@@ -29,21 +29,22 @@ public class CommentServiceTests {
 	private CommentService commentService;
 
 	@Autowired
-	private ShareService shareService;
+	private ArticleService articleService;
 
 	@Autowired
-	private AccountService accountRepository;
+	private AccountService accountService;
+
 
 	@Test
 	@DisplayName("댓글 생성 테스트")
 	void t01() {
-		Account account = accountRepository.findByUsername("usertest2").get();
-		Share article = shareService.getShare(2L).get();
+		Account account = accountService.findByUsername("usertest2").get();
+		Article article = articleService.getArticle(2L);
 
 		Comment comment = commentService.create("테스트1234", false, account, article);
 
-		// NotProd 14번 댓글까지 있으므로, 위의 댓글은 15번이어야 함
-		Comment findComment = commentService.findById(15L);
+		// NotProd 113번 댓글까지 있으므로, 위의 댓글은 114번이어야 함
+		Comment findComment = commentService.findById(114L);
 
 		assertThat(comment.equals(findComment)).isTrue();
 	}
@@ -52,8 +53,8 @@ public class CommentServiceTests {
 	@Test
 	@DisplayName("댓글 수정 테스트")
 	void t02() {
-		Account account = accountRepository.findByUsername("usertest2").get();
-		Share article = shareService.getShare(2L).get();
+		Account account = accountService.findByUsername("usertest2").get();
+		Article article = articleService.getArticle(2L);
 		Comment comment = commentService.getComment(5L);
 
 		Comment modifyComment = commentService.modify(comment, "가시죠", false);
@@ -84,11 +85,11 @@ public class CommentServiceTests {
 		// 부모 댓글 먼저 지우기
 		commentService.delete(comment);
 
-		// 댓글 삭제 확인(자식 댓글이 있으니, 내용만 "삭제되었습니다"
+		// 댓글 삭제 확인(자식 댓글이 있으니, 객체 삭제처리 되지 않고 isDeleted 속성만 변경
 		Comment deletedComment = commentService.getComment(3L);
 
-		// 댓글 내용이 "삭제되었습니다"로 바뀐지 확인
-		assertThat(deletedComment.getContent().equals("삭제되었습니다"));
+		// 댓글 상태가 삭제로 변경되었는지 확인
+		assertThat(deletedComment.isDeleted()==true);
 
 		// 자식 댓글 삭제(3번의 댓글의 대댓글 id는 12번)
 		Comment delComment = comment.getChildren().get(0);

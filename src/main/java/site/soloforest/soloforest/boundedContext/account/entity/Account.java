@@ -73,6 +73,10 @@ public class Account {
 	@ToString.Exclude
 	private List<Notification> Notifications;
 
+	public boolean isAdmin() {
+		return this.authority ==0;
+	}
+
 	public static class AccountBuilder {
 		public AccountBuilder password(String password) {
 			this.password = passwordEncoder.encode(password);
