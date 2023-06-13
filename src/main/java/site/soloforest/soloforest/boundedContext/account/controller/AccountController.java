@@ -97,4 +97,10 @@ public class AccountController {
 		}
 		return accountService.report(id);
 	}
+
+	@GetMapping("/find")
+	@PreAuthorize("isAnonymous()")
+	public String find() {
+		return "account/find_account";
+	}
 }
