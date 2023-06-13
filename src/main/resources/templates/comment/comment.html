@@ -30,7 +30,7 @@
         <ul class="space-y-4">
             <li th:each="comment, commentIndex : ${paging}" th:if="${comment.parent == null}">
                 <div class="card bg-white border p-4 rounded-lg shadow-lg">
-                    <a th:id="|comment_${comment.id}|"></a>
+                    <a th:id="|comment_${comment.id}|" ></a>
                     <p class="text-lg font-bold" th:if="${!comment.deleted and !comment.secret}">
                         [[${comment.content}]]</p>
                     <p class="text-gray-200" th:if="${comment.deleted}"> 삭제된 댓글입니다.</p>
@@ -229,12 +229,14 @@
     <!-- 스크립트는 main 태그 안족에, 타임리프 레이아웃에 의해 body 밖은 무시됨-->
 
     <script th:inline="javascript">
+        const currentPage = [[${paging.number}]];
         // 댓글 작성
         const commentWrite = () => {
             const secret = document.getElementById("secret");
             const secretValue = secret.checked ? true : false;
             const contents = document.getElementById("commentContents").value.trim();
             const articleId = [[${article.id}]];
+            const lastPage = [[${paging.totalPages}]] - 1;
 
             if (contents.length == 0) {
                 toastWarning('댓글을 입력해주세요');
@@ -256,10 +258,13 @@
                 data: {
                     "articleId": articleId,
                     "secret": secretValue,
-                    "commentContents": contents
+                    "commentContents": contents,
+                    "page" : lastPage
                 },
-                success: function (fragment) {
-                    $('#comment-list').replaceWith(fragment);
+                success: function (response) {
+                    const newUrl = "/comment" + "?page=" + lastPage + "#comment_" + response ;
+                    window.location.href = newUrl;
+                    // $('#comment-list').replaceWith(fragment);
                     document.getElementById("commentContents").value = ""; // 공백 설정
                     document.getElementById("secret").checked = false; // 공백 설정
                     toastNotice('댓글이 작성되었습니다');
@@ -378,7 +383,8 @@
                     "articleId": articleId,
                     "secret": secretValue,
                     "commentContents": contents,
-                    "parentId": parentId
+                    "parentId": parentId,
+                    "page" : currentPage
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
@@ -424,7 +430,8 @@
                     "secret": secretValue,
                     "commentContents": contents,
                     "commentWriter": writerId,
-                    "id": commentId
+                    "id": commentId,
+                    "page" : currentPage
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
@@ -456,7 +463,8 @@
                 data: {
                     "articleId": articleId,
                     "commentWriter": writerId,
-                    "id": commentId
+                    "id": commentId,
+                    "page" : currentPage
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
@@ -502,7 +510,8 @@
                     "secret": secretValue,
                     "commentContents": contents,
                     "commentWriter": writerId,
-                    "id": commentId
+                    "id": commentId,
+                    "page" : currentPage
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);

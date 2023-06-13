@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
@@ -53,25 +54,24 @@ public class CommentController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
-	public String create(Model model ,@ModelAttribute CommentDTO commentDTO) {
+	@ResponseBody
+	public String create(Model model ,@ModelAttribute CommentDTO commentDTO, @RequestParam(defaultValue = "0") int page) {
 		Article article = rq.getArticle(commentDTO.getArticleId());
 		Account account = rq.getAccount();
+		// 부모댓글 생성
+		Comment comment = 	commentService.create(commentDTO.getCommentContents(), commentDTO.getSecret(), account, article);
 
-		if (commentDTO.getParentId() == null) {
-			// 부모 댓글 생성
-			commentService.create(commentDTO.getCommentContents(), commentDTO.getSecret(), account, article);
-		}
 		model.addAttribute("article", article);
 
-		List<Comment> commentList = commentService.getCommentList(article);
-		model.addAttribute("commentList", commentList);
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", paging);
 
-		return "comment/comment :: #comment-list";
+		return (comment.getId() +"");
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/reply/create")
-	public String replyCreate(Model model ,@ModelAttribute CommentDTO commentDTO) {
+	public String replyCreate(Model model ,@ModelAttribute CommentDTO commentDTO, @RequestParam(defaultValue = "0") int page) {
 		Article article = rq.getArticle(commentDTO.getArticleId());
 		Account account = rq.getAccount();
 
@@ -86,8 +86,8 @@ public class CommentController {
 
 		model.addAttribute("article", article);
 
-		List<Comment> commentList = commentService.getCommentList(article);
-		model.addAttribute("commentList", commentList);
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", paging);
 
 		return "comment/comment :: #comment-list";
 	}
@@ -95,7 +95,7 @@ public class CommentController {
 	// 답글 수정 + 댓글 수정 둘다
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify")
-	public String modify(CommentDTO commentDTO, Model model) {
+	public String modify(CommentDTO commentDTO, Model model, @RequestParam(defaultValue = "0") int page) {
 		Article article = rq.getArticle(commentDTO.getArticleId());
 		Account account = rq.getAccount();
 
@@ -111,8 +111,8 @@ public class CommentController {
 		commentService.modify(comment, commentDTO.getCommentContents().trim(), commentDTO.getSecret());
 
 		model.addAttribute("article", article);
-		List<Comment> commentList = commentService.getCommentList(article);
-		model.addAttribute("commentList", commentList);
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", paging);
 
 		return "comment/comment :: #comment-list";
 	}
@@ -120,7 +120,7 @@ public class CommentController {
 	// 댓글 삭제 메서드
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/delete")
-	public String delete(Model model, CommentDTO commentDTO) {
+	public String delete(Model model, CommentDTO commentDTO, @RequestParam(defaultValue = "0") int page) {
 		Article article = rq.getArticle(commentDTO.getArticleId());
 		Account account = rq.getAccount();
 
@@ -151,8 +151,8 @@ public class CommentController {
 		commentService.delete(comment);
 
 		model.addAttribute("article", article);
-		List<Comment> commentList = commentService.getCommentList(article);
-		model.addAttribute("commentList", commentList);
+		Page<Comment> paging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", paging);
 		return "comment/comment :: #comment-list";
 	}
 
