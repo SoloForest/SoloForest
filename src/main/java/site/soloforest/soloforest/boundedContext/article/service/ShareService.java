@@ -28,7 +28,7 @@ import site.soloforest.soloforest.boundedContext.article.repository.ShareReposit
 @Transactional(readOnly = true)
 public class ShareService {
 	private final ShareRepository shareRepository;
-	private final LikedRepository likeRepository;
+	private final LikedRepository likedRepository;
 	private final BookmarkRepository bookmarkRepository;
 
 	@Transactional
@@ -131,13 +131,19 @@ public class ShareService {
 		if (!Objects.equals(account.getId(), share.getAccount().getId()))
 			return RsData.of("F-2", "해당 게시글을 삭제할 권한이 없습니다.");
 
+		//게시글 삭제 전, 게시글과 관련된 좋아요와 즐겨찾기 삭제
+		List<Liked> likedList = likedRepository.findAllByArticle(share);
+		likedRepository.deleteAll(likedList);
+		List<Bookmark> bookmarkList = bookmarkRepository.findAllByArticle(share);
+		bookmarkRepository.deleteAll(bookmarkList);
+
 		shareRepository.delete(share);
 
 		return RsData.of("S-1", "게시글이 삭제되었습니다.");
 	}
 
 	public boolean findLike(Share share, Account account) {
-		Optional<Liked> likeOptional = likeRepository.findByArticleAndAccount(share, account);
+		Optional<Liked> likeOptional = likedRepository.findByArticleAndAccount(share, account);
 
 		return likeOptional.isPresent();
 	}
@@ -152,7 +158,7 @@ public class ShareService {
 		Share share = shareOptional.get();
 
 		if (findLike(share, account)) {
-			likeRepository.deleteByArticleAndAccount(share, account);
+			likedRepository.deleteByArticleAndAccount(share, account);
 			share.downLikes();
 
 			return false;
@@ -164,7 +170,7 @@ public class ShareService {
 			.account(account)
 			.build();
 
-		likeRepository.save(liked);
+		likedRepository.save(liked);
 		share.upLikes();
 
 		return true;

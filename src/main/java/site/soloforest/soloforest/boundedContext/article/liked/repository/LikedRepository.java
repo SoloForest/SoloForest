@@ -1,5 +1,6 @@
 package site.soloforest.soloforest.boundedContext.article.liked.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,4 +13,6 @@ public interface LikedRepository extends JpaRepository<Liked, Long> {
 	Optional<Liked> findByArticleAndAccount(Article article, Account account);
 
 	void deleteByArticleAndAccount(Article article, Account account);
+
+	List<Liked> findAllByArticle(Article article);
 }
