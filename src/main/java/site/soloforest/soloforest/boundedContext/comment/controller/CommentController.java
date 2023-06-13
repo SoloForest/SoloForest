@@ -1,7 +1,5 @@
 package site.soloforest.soloforest.boundedContext.comment.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.rq.Rq;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
-import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.dto.CommentDTO;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
@@ -131,7 +128,6 @@ public class CommentController {
 		}
 
 		Comment comment = commentService.getComment(commentDTO.getId());
-		System.out.println(comment);
 		// 부모(댓글)이 있을 경우 연관관계 끊어주기 -> 삭제되더라도 GET 등으로 새로 요청을 보내는 것이 아니기에
 		// 이 작업은 꼭 해줘야 대댓글 리스트도 수정된다!
 		// 부모 댓글이 삭제 상태이며, 부모의 자식이 1개(삭제하려는 자기 뿐)일 경우 연관관계 유지 시켜줘야
