@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +30,7 @@ public class BookmarkService {
 	private final ShareRepository shareRepository;
 	private final GroupRepository groupRepository;
 
-	public List<Article> getList(Account account) {
+	public Page<Article> getList(Account account, int page) {
 		List<Bookmark> bookmarkList = bookmarkRepository.findAllByAccount(account);
 
 		List<Article> articleList = new ArrayList<>();
@@ -42,6 +47,17 @@ public class BookmarkService {
 			}
 		}
 
-		return articleList;
+		List<Sort.Order> sorts = new ArrayList<>();
+		sorts.add(Sort.Order.desc("createDate"));
+
+		//페이징 처리
+		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		int start = Math.toIntExact(pageable.getOffset());
+		int end = Math.min((start + pageable.getPageSize()), articleList.size());
+		articleList.sort((a1, a2) -> a2.getCreateDate().compareTo(a1.getCreateDate()));
+
+		List<Article> pageableList = articleList.subList(start, end);
+
+		return new PageImpl<>(pageableList, pageable, articleList.size());
 	}
 }
