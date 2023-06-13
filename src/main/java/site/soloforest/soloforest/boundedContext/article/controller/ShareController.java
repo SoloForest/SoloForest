@@ -137,9 +137,26 @@ public class ShareController {
 		return rq.redirectWithMsg("/article/share/%s".formatted(type), deleteRsData);
 	}
 
+	@AllArgsConstructor
+	@Getter
+	public static class LikeResponse {
+		private boolean success;
+		private long newLikeCount;
+	}
+
 	@PostMapping("/like")
-	public @ResponseBody boolean like(Long shareId) {
-		return shareService.like(rq.getAccount(), shareId);
+	public @ResponseBody RsData<LikeResponse> like(Long shareId) {
+		boolean success = shareService.like(rq.getAccount(), shareId);
+
+		Optional<Share> share = shareService.findById(shareId);
+
+		if (share.isEmpty()) {
+			return RsData.of("F-1", "Fail");
+		}
+
+		long newLikeCount = share.get().getLikes();
+
+		return RsData.of("S-1", "Success", new LikeResponse(success, newLikeCount));
 	}
 
 	@PostMapping("/bookmark")

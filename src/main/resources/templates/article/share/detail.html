@@ -109,12 +109,15 @@
                 },
                 type: 'POST',
                 data: {'shareId': shareId},
-                success: function (data) {
-                    if (data) {
+                dataType: "json",
+                success: function (rsData) {
+                    if (rsData.data.success) {
                         $("#like_icon").attr("class", "fa-solid fa-thumbs-up");
                     } else {
                         $("#like_icon").attr("class", "fa-regular fa-thumbs-up");
                     }
+
+                    $('#like_count').text(rsData.data.newLikeCount);
                 }, error: function () {
                     location.href = "/main";
                 }
