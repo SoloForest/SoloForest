@@ -5,15 +5,19 @@
 
 <body>
 <main layout:fragment="main">
-    <div class="flex items-center relative">
-        <h1 class="mt-4 mb-4 font-semibold" th:text="${share.boardNumber == 0} ? '커뮤니티 게시판' : '프로그램 게시판'">
-        </h1>
-        <div class="ml-4 h-4 w-px bg-black"></div>
-        <div class="ml-auto flex gap-2">
+    <div class="flex items-center justify-center mt-4 mb-3 relative">
+        <div class="mr-auto flex justify-center items-center min-w-[150px]">
+            <h1 class="font-semibold" th:text="${share.boardNumber == 0} ? '커뮤니티 게시판' : '프로그램 게시판'">
+            </h1>
+            <span class="ml-4 h-4 w-px bg-black"></span>
+        </div>
+        <div class="ml-auto mr-3 flex gap-4" th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
             <a th:href="@{|/article/share/modify/${share.id}|}" role="button"
-               class="btn btn-outline btn-primary btn-sm">수정</a>
+               class="btn btn-outline btn-primary btn-sm"
+               th:if="${share.account != null and #authentication.getPrincipal().getUsername() == share.account.username}">수정</a>
             <form th:action="@{|/article/share/${share.getBoardType()}/delete/${share.id}|}" method="post">
                 <button type="submit" class="btn btn-outline btn-error btn-sm"
+                        th:if="${share.account != null and #authentication.getPrincipal().getUsername() == share.account.username}"
                         onclick="return confirm('이 글을 삭제하시겠습니까?');">삭제
                 </button>
             </form>
@@ -22,10 +26,18 @@
     <div class="container mx-auto">
         <div class="bg-white p-6 rounded-lg shadow-lg mb-6"
              style="min-height: 600px; max-height: auto; overflow: auto;">
-            <h1 class="text-3xl font-semibold mb-3 ml-2" th:text="${share.subject}"></h1>
-            <div class="mb-6 ml-6">
-                <span class="font-bold text-primary">관리자</span>
-                <span class="ml-3" th:text="${#temporals.format(share.createDate, 'MM.dd')}"></span>
+            <h1 class="text-3xl font-semibold ml-2" th:text="${share.subject}"></h1>
+            <div class="mb-3 ml-3">
+                <ul class="menu menu-horizontal menu-compact">
+                    <li tabindex="0">
+                        <span class="font-bold text-primary"
+                              th:text="${share.account.nickname}"></span>
+                        <ul class="bg-white">
+                            <li><a>신고하기</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <span th:text="${#temporals.format(share.createDate, 'MM.dd')}"></span>
                 <i class="ml-2 fa-solid fa-eye"></i>
                 <span class="gap-1" th:text="${share.viewed}"></span>
                 <!-- 즐겨찾기 -->
