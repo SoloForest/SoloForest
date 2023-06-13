@@ -1,6 +1,7 @@
 package site.soloforest.soloforest.boundedContext.account.service;
 
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.email.EmailDTO;
+import site.soloforest.soloforest.base.email.MailSenderRunner;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
@@ -27,8 +32,9 @@ import site.soloforest.soloforest.boundedContext.account.repository.AccountRepos
 public class AccountService {
 	private final AccountRepository accountRepository;
 	private final PasswordEncoder passwordEncoder;
-
 	private final AuthenticationManager authenticationManager;
+	private final MailSenderRunner mailSenderRunner;
+	private final TemplateEngine templateEngine;
 
 	public Account singup(AccountDTO dto) {
 		Account account = Account.builder()
@@ -230,5 +236,78 @@ public class AccountService {
 		accountRepository.save(target.get());
 
 		return new ResponseEntity<>("신고가 완료되었습니다.", HttpStatus.OK);
+	}
+
+	public String findUsername(String email) {
+		Optional<Account> sameEmailAccount = accountRepository.findByEmail(email);
+		if (sameEmailAccount.isEmpty()) {
+			return "존재하지 않는 회원입니다.";
+		}
+
+		sendUsernameEmail(sameEmailAccount.get());
+
+		return "입력된 이메일로 username을 발송했습니다.";
+	}
+
+	private void sendUsernameEmail(Account target) {
+		Context context = new Context();
+		context.setVariable("nickname", target.getNickname());
+		context.setVariable("username", target.getUsername());
+		String message = templateEngine.process("email/find_username", context);
+		EmailDTO emailDTO = EmailDTO.builder()
+			.to(target.getEmail())
+			.subject("[혼숲] Username 안내")
+			.message(message)
+			.build();
+
+		mailSenderRunner.sendMessage(emailDTO);
+	}
+
+	public String findPassword(String email, String username) {
+		Optional<Account> sameEmailAccount = accountRepository.findByEmail(email);
+		Optional<Account> sameUsernameAccount = accountRepository.findByUsername(username);
+
+		if (sameEmailAccount.isEmpty() || sameUsernameAccount.isEmpty()) {
+			return "존재하지 않는 회원입니다.";
+		}
+		if (!sameEmailAccount.get().getId().equals(sameUsernameAccount.get().getId())) {
+			return "일치하는 계정이 존재하지 않습니다.";
+		}
+
+		String temporarPassword = createRandomPassword();
+		sameEmailAccount.get().setPassword(temporarPassword);
+		accountRepository.save(sameEmailAccount.get());
+
+		sendPasswordEmail(sameEmailAccount.get(), temporarPassword);
+
+		return "입력된 이메일로 임시 비밀번호를 발송했습니다.";
+	}
+
+	private void sendPasswordEmail(Account target, String temporarPassword) {
+		Context context = new Context();
+		context.setVariable("nickname", target.getNickname());
+		context.setVariable("password", temporarPassword);
+		String message = templateEngine.process("email/find_password", context);
+		EmailDTO emailDTO = EmailDTO.builder()
+			.to(target.getEmail())
+			.subject("[혼숲] Password 안내")
+			.message(message)
+			.build();
+
+		mailSenderRunner.sendMessage(emailDTO);
+	}
+
+	private String createRandomPassword() {
+		int leftLimit = 48; // numeral '0'
+		int rightLimit = 122; // letter 'z'
+		int targetStringLength = 10;
+		Random random = new Random();
+		String generatedString = random.ints(leftLimit, rightLimit + 1)
+			.filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+			.limit(targetStringLength)
+			.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			.toString();
+
+		return generatedString;
 	}
 }
