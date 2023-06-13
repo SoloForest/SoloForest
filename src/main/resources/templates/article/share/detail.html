@@ -13,19 +13,17 @@
             </h1>
             <span class="ml-4 h-4 w-px bg-black"></span>
         </div>
-        <!-- 검색 시작-->
-        <div class="ml-auto mr-3 flex gap-4" th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
+        <div class="ml-auto mr-3 flex gap-4" th:if="${@rq.login}">
             <a th:href="@{|/article/share/modify/${article.id}|}" role="button"
                class="btn btn-outline btn-primary btn-sm"
-               th:if="${article.account != null and #authentication.getPrincipal().getUsername() == article.account.username}">수정</a>
+               th:if="${article.account != null and (@rq.account.username == article.account.username)}">수정</a>
             <form th:action="@{|/article/share/${article.boardType}/delete/${article.id}|}" method="post">
                 <button type="submit" class="btn btn-outline btn-error btn-sm"
-                        th:if="${article.account != null and #authentication.getPrincipal().getUsername() == article.account.username}"
+                        th:if="${article.account != null and ((@rq.account.username == article.account.username) or (@rq.account.admin))}"
                         onclick="return confirm('이 글을 삭제하시겠습니까?');">삭제
                 </button>
             </form>
         </div>
-        <!-- 검색 끝 -->
     </div>
     <div class="container mx-auto">
         <div class="bg-white p-6 rounded-lg shadow-lg mb-6"
@@ -46,7 +44,7 @@
                 <span class="gap-1" th:text="${article.viewed}"></span>
                 <!-- 즐겨찾기 시작-->
                 <button id="bookmark" class="mr-10" style="float: right; display: inline-block;"
-                        th:if="${@rq.isLogin()}" th:value="${bookmark} ? 1 : 0 ">
+                        th:if="${@rq.login}" th:value="${bookmark} ? 1 : 0 ">
                     <i id="bookmark_icon"></i>
                 </button>
                 <!-- 즐겨찾기 끝-->
@@ -57,12 +55,12 @@
             </div>
             <div class="mb-6 ml-6">
                 <!-- 좋아요 시작-->
-                <input type="hidden" id="shareId" th:value="${article.getId()}">
-                <input type="hidden" id="accountId" th:value="${@rq.isLogin()} ? ${@rq.getAccount().getId()} : null">
+                <input type="hidden" id="shareId" th:value="${article.id}">
+                <input type="hidden" id="accountId" th:value="${@rq.login} ? ${@rq.account.id} : null">
                 <button id="like_login" th:if="${@rq.isLogout()}">
                     <i class="fa-regular fa-thumbs-up"></i>
                 </button>
-                <button id="like" th:value="${like} ? 1 : 0" th:if="${@rq.isLogin()}">
+                <button id="like" th:value="${like} ? 1 : 0" th:if="${@rq.login}">
                     <i id="like_icon"></i>
                 </button>
                 <input type="hidden" id="share_likes" th:value="${article.likes}">
