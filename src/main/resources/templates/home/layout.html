@@ -33,8 +33,9 @@
             </ul>
         </div>
         <div class="flex-none">
+            <a href="/bookmark" th:if="${@rq.isLogin()}"><i class="fa-solid fa-star mr-3"></i></a>
             <a href="/account/login" sec:authorize="isAnonymous()" class="link link-hover">로그인</a>
-            <a href="/account/me" sec:authorize="isAuthenticated()" class="link link-hover">마이페이지</a>
+            <a href="/account/me" sec:authorize="isAuthenticated()" class="link link-hover mr-3">마이페이지</a>
             <form th:action="|/account/logout|" sec:authorize="isAuthenticated()" method="POST"
                   style="display: inline;">
                 <input class="link link-hover" type="submit" value="로그아웃">
