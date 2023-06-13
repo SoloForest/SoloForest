@@ -64,7 +64,7 @@
                     <i id="like_icon"></i>
                 </button>
                 <input type="hidden" id="share_likes" th:value="${share.likes}">
-                <span id="like_count" class="gap-1" th:value="${share.likes}"></span>
+                <span id="like_count" class="gap-1" th:text="${share.likes}"></span>
                 <!-- 좋아요 끝 -->
                 <i class="fa-regular fa-comment ml-3"></i>
                 <span class="gap-1" th:text="${share.comments.size()}"></span>
@@ -112,10 +112,8 @@
                 success: function (data) {
                     if (data) {
                         $("#like_icon").attr("class", "fa-solid fa-thumbs-up");
-                        $("#like_count").text(like_count);
                     } else {
                         $("#like_icon").attr("class", "fa-regular fa-thumbs-up");
-                        $("#like_count").text(like_count);
                     }
                 }, error: function () {
                     location.href = "/main";
