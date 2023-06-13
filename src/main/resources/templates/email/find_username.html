@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>find username | SoloForest</title>
+</head>
+<body>
+<div style="display:flex; justify-content: center; align-items: center; flex-direction: column;">
+    <h1>Solo Forest - Find Account</h1>
+    <div style="display:flex; justify-content: center; align-items: center; flex-direction: column;">
+        <p><span th:text="${nickname}"></span>님의 Username은</p>
+        <h3 th:text="${username}"
+            style="border-radius: 10px; border: 2px solid green; padding: 30px; width: 100%; text-align: center;"></h3>
+        <p>입니다.</p>
+        <a href="https://www.soloforest.site/account/login" target="_blank" style="color:green;">로그인하러 가기</a>
+    </div>
+</div>
+</body>
+</html>

@@ -14,10 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.email.EmailDTO;
 import site.soloforest.soloforest.base.email.MailSenderRunner;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
@@ -31,6 +34,7 @@ public class AccountService {
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
 	private final MailSenderRunner mailSenderRunner;
+	private final TemplateEngine templateEngine;
 
 	public Account singup(AccountDTO dto) {
 		Account account = Account.builder()
@@ -240,13 +244,23 @@ public class AccountService {
 			return "존재하지 않는 회원입니다.";
 		}
 
-		mailSenderRunner.sendMessage(email, "[혼숲] Username 안내",
-			sameEmailAccount.get().getNickname() + " 님의 혼숲(Solo Forest) username은\n"
-				+ sameEmailAccount.get().getUsername()
-				+ "\n입니다."
-		);
+		sendUsernameEmail(sameEmailAccount.get());
 
 		return "입력된 이메일로 username을 발송했습니다.";
+	}
+
+	private void sendUsernameEmail(Account target) {
+		Context context = new Context();
+		context.setVariable("nickname", target.getNickname());
+		context.setVariable("username", target.getUsername());
+		String message = templateEngine.process("email/find_username", context);
+		EmailDTO emailDTO = EmailDTO.builder()
+			.to(target.getEmail())
+			.subject("[혼숲] Username 안내")
+			.message(message)
+			.build();
+
+		mailSenderRunner.sendMessage(emailDTO);
 	}
 
 	public String findPassword(String email, String username) {
@@ -257,20 +271,30 @@ public class AccountService {
 			return "존재하지 않는 회원입니다.";
 		}
 		if (!sameEmailAccount.get().getId().equals(sameUsernameAccount.get().getId())) {
-			return "계정 정보가 일치하지 않습니다.";
+			return "일치하는 계정이 존재하지 않습니다.";
 		}
 
 		String temporarPassword = createRandomPassword();
 		sameEmailAccount.get().setPassword(temporarPassword);
 		accountRepository.save(sameEmailAccount.get());
 
-		mailSenderRunner.sendMessage(email, "[혼숲] Password 안내",
-			sameEmailAccount.get().getNickname() + " 님의 혼숲(Solo Forest) 임시 password는\n"
-				+ temporarPassword + "\n입니다."
-				+ "\n로그인 후 비밀번호를 변경해주세요."
-		);
+		sendPasswordEmail(sameEmailAccount.get(), temporarPassword);
 
 		return "입력된 이메일로 임시 비밀번호를 발송했습니다.";
+	}
+
+	private void sendPasswordEmail(Account target, String temporarPassword) {
+		Context context = new Context();
+		context.setVariable("nickname", target.getNickname());
+		context.setVariable("password", temporarPassword);
+		String message = templateEngine.process("email/find_password", context);
+		EmailDTO emailDTO = EmailDTO.builder()
+			.to(target.getEmail())
+			.subject("[혼숲] Password 안내")
+			.message(message)
+			.build();
+
+		mailSenderRunner.sendMessage(emailDTO);
 	}
 
 	private String createRandomPassword() {
