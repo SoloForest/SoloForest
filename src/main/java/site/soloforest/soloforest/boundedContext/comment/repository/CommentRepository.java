@@ -10,11 +10,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 
-
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 	Optional<Comment> findById(Long id);
 
 	List<Comment> findAllByArticle(Article article);
 
 	Page<Comment> findAllByArticle(Article article, Pageable pageable);
+
+	int countByArticle(Article article);
 }

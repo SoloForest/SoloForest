@@ -2,24 +2,24 @@
 <head>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
-    <title th:text="${share.subject}"></title>
+    <title th:text="${article.subject}"></title>
 </head>
 
 <body>
 <main layout:fragment="main">
     <div class="flex items-center justify-center mt-4 mb-3 relative">
         <div class="mr-auto flex justify-center items-center min-w-[150px]">
-            <h1 class="font-semibold" th:text="${share.boardNumber == 0} ? '커뮤니티 게시판' : '프로그램 게시판'">
+            <h1 class="font-semibold" th:text="${article.boardNumber == 0} ? '커뮤니티 게시판' : '프로그램 게시판'">
             </h1>
             <span class="ml-4 h-4 w-px bg-black"></span>
         </div>
-        <div class="ml-auto mr-3 flex gap-4" th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
-            <a th:href="@{|/article/share/modify/${share.id}|}" role="button"
+        <div class="ml-auto mr-3 flex gap-4" th:if="${@rq.login}">
+            <a th:href="@{|/article/share/modify/${article.id}|}" role="button"
                class="btn btn-outline btn-primary btn-sm"
-               th:if="${share.account != null and #authentication.getPrincipal().getUsername() == share.account.username}">수정</a>
-            <form th:action="@{|/article/share/${share.getBoardType()}/delete/${share.id}|}" method="post">
+               th:if="${article.account != null and (@rq.account.username == article.account.username)}">수정</a>
+            <form th:action="@{|/article/share/${article.boardType}/delete/${article.id}|}" method="post">
                 <button type="submit" class="btn btn-outline btn-error btn-sm"
-                        th:if="${share.account != null and #authentication.getPrincipal().getUsername() == share.account.username}"
+                        th:if="${article.account != null and ((@rq.account.username == article.account.username) or (@rq.account.admin))}"
                         onclick="return confirm('이 글을 삭제하시겠습니까?');">삭제
                 </button>
             </form>
@@ -28,49 +28,56 @@
     <div class="container mx-auto">
         <div class="bg-white p-6 rounded-lg shadow-lg mb-6"
              style="min-height: 600px; max-height: auto; overflow: auto;">
-            <h1 class="text-3xl font-semibold ml-2" th:text="${share.subject}"></h1>
+            <h1 class="text-3xl font-semibold ml-2" th:text="${article.subject}"></h1>
             <div class="mb-3 ml-3">
                 <ul class="menu menu-horizontal menu-compact">
                     <li tabindex="0">
                         <span class="font-bold text-primary"
-                              th:text="${share.account.nickname}"></span>
+                              th:text="${article.account.nickname}"></span>
                         <ul class="bg-white">
                             <li><a>신고하기</a></li>
                         </ul>
                     </li>
                 </ul>
-                <span th:text="${#temporals.format(share.createDate, 'MM.dd')}"></span>
+                <span th:text="${#temporals.format(article.createDate, 'MM.dd')}"></span>
                 <i class="ml-2 fa-solid fa-eye"></i>
-                <span class="gap-1" th:text="${share.viewed}"></span>
-                <!-- 즐겨찾기 -->
+                <span class="gap-1" th:text="${article.viewed}"></span>
+                <!-- 즐겨찾기 시작-->
                 <button id="bookmark" class="mr-10" style="float: right; display: inline-block;"
-                        th:if="${@rq.isLogin()}" th:value="${bookmark} ? 1 : 0 ">
+                        th:if="${@rq.login}" th:value="${bookmark} ? 1 : 0 ">
                     <i id="bookmark_icon"></i>
                 </button>
                 <!-- 즐겨찾기 끝-->
             </div>
             <hr class="mb-8" style="border: none; border-top: 1px solid;">
             <div class="mb-5 ml-5" style="height: 300px; max-height: auto; overflow: auto;">
-                <span class="text-xl" th:text="${share.content}"></span>
+                <span class="text-xl" th:text="${article.content}"></span>
             </div>
             <div class="mb-6 ml-6">
-                <!-- 좋아요 -->
-                <input type="hidden" id="shareId" th:value="${share.getId()}">
-                <input type="hidden" id="accountId" th:value="${@rq.isLogin()} ? ${@rq.getAccount().getId()} : null">
+                <!-- 좋아요 시작-->
+                <input type="hidden" id="shareId" th:value="${article.id}">
+                <input type="hidden" id="accountId" th:value="${@rq.login} ? ${@rq.account.id} : null">
                 <button id="like_login" th:if="${@rq.isLogout()}">
                     <i class="fa-regular fa-thumbs-up"></i>
                 </button>
-                <button id="like" th:value="${like} ? 1 : 0" th:if="${@rq.isLogin()}">
+                <button id="like" th:value="${like} ? 1 : 0" th:if="${@rq.login}">
                     <i id="like_icon"></i>
                 </button>
-                <input type="hidden" id="share_likes" th:value="${share.likes}">
-                <span id="like_count" class="gap-1" th:text="${share.likes}"></span>
+                <input type="hidden" id="share_likes" th:value="${article.likes}">
+                <span id="like_count" class="gap-1" th:text="${article.likes}"></span>
                 <!-- 좋아요 끝 -->
                 <i class="fa-regular fa-comment ml-3"></i>
-                <span class="gap-1" th:text="${share.comments.size()}"></span>
+                <span class="gap-1" th:text="${article.comments.size()}"></span>
             </div>
             <hr class="mb-8" style="border: none; border-top: 1px solid;">
         </div>
+        <!-- 댓글 시작 -->
+        <div class="comments">
+            <!-- comment.html Include -->
+            <div layout:include="comment/comment.html"></div>
+        </div>
+
+        <!-- 댓글 끝 -->
     </div>
     <script>
         document.getElementById("like_login").onclick = function () {
@@ -84,7 +91,6 @@
         const shareId = $("#shareId").val();
 
         const like = document.getElementById("like").value;
-        const like_count = document.getElementById("like_count").value;
         const like_icon = document.getElementById("like_icon");
         const bookmark = document.getElementById("bookmark").value;
         const bookmark_icon = document.getElementById("bookmark_icon");
