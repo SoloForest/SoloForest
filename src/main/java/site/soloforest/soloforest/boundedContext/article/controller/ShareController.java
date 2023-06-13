@@ -22,6 +22,7 @@ import site.soloforest.soloforest.base.rq.Rq;
 import site.soloforest.soloforest.base.rsData.RsData;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.service.ShareService;
+import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 
 @Controller
 @RequestMapping("/article/share")
@@ -79,7 +80,7 @@ public class ShareController {
 	}
 
 	@GetMapping("/detail/{id}")
-	public String detail(@PathVariable Long id, Model model) {
+	public String detail(@PathVariable Long id, Model model, @RequestParam(defaultValue = "0") int page) {
 		Optional<Share> share = shareService.findById(id);
 
 		if (share.isEmpty()) {
@@ -87,13 +88,17 @@ public class ShareController {
 		}
 
 		shareService.modifyViewed(share.get());
-		model.addAttribute("share", share.get());
+		model.addAttribute("article", share.get());
 
 		boolean like = shareService.findLike(share.get(), rq.getAccount());
 		model.addAttribute("like", like);
 
 		boolean bookmark = shareService.findBookmark(share.get(), rq.getAccount());
 		model.addAttribute("bookmark", bookmark);
+
+		Page<Comment> paging = rq.getPageByArticle(page, share.get());
+
+		model.addAttribute("paging", paging);
 
 		return "article/share/detail";
 	}

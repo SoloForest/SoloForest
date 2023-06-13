@@ -2,6 +2,7 @@ package site.soloforest.soloforest.base.rq;
 
 import java.util.Date;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +17,8 @@ import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
+import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
+import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 import site.soloforest.soloforest.standard.util.Ut;
 
 @Component
@@ -28,15 +31,16 @@ public class Rq {
 	private final HttpSession session;
 	private final User user;
 	private Account account = null; // 레이지 로딩, 처음부터 넣지 않고, 요청이 들어올 때 넣는다.
+	private final CommentService commentService;
 
-
-
-	public Rq(AccountService accountService, ArticleService articleService, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+	public Rq(AccountService accountService, ArticleService articleService, HttpServletRequest req,
+		HttpServletResponse resp, HttpSession session, CommentService commentService) {
 		this.accountService = accountService;
 		this.articleService = articleService;
 		this.req = req;
 		this.resp = resp;
 		this.session = session;
+		this.commentService = commentService;
 
 		// 현재 로그인한 회원의 인증정보를 가져옴
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -70,12 +74,10 @@ public class Rq {
 
 		return account;
 	}
+
 	public Article getArticle(Long articleId) {
 		return articleService.getArticle(articleId);
 	}
-
-
-
 
 	public String historyBack(String msg) {
 		String referer = req.getHeader("referer");
@@ -112,8 +114,13 @@ public class Rq {
 	}
 
 	public boolean isAdmin() {
-		if (isLogout()) return false;
+		if (isLogout())
+			return false;
 
 		return getAccount().isAdmin();
+	}
+
+	public Page<Comment> getPageByArticle(int page, Article article) {
+		return commentService.getCommentPage(page, article);
 	}
 }

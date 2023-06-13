@@ -1,14 +1,4 @@
-<html layout:decorate="~{home/layout.html}">
-<head>
-    <title>댓글테스트</title>
-    <!-- jQuery CDN -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-            integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <meta name="_csrf" th:content="${_csrf.token}">
-</head>
-<body>
-<main layout:fragment="main">
+<main>
     <!-- 댓글 작성 부분 -->
     <div id="write">
         <textarea th:if="${@rq.login}" placeholder="댓글을 입력해주세요." id="commentContents" columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full
@@ -24,13 +14,12 @@
             <span>댓글작성</span>
         </button>
     </div>
-
     <!-- 댓글 출력 부분, 일단 페이지 접속 했을때 보여지게!-->
     <div id="comment-list">
         <ul class="space-y-4">
             <li th:each="comment, commentIndex : ${paging}" th:if="${comment.parent == null}">
                 <div class="card bg-white border p-4 rounded-lg shadow-lg">
-                    <a th:id="|comment_${comment.id}|" ></a>
+                    <a th:id="|comment_${comment.id}|"></a>
                     <p class="text-lg font-bold" th:if="${!comment.deleted and !comment.secret}">
                         [[${comment.content}]]</p>
                     <p class="text-gray-200" th:if="${comment.deleted}"> 삭제된 댓글입니다.</p>
@@ -203,7 +192,7 @@
         <div class="btn-group flex justify-center" th:if="${!paging.isEmpty()}">
             <div class="btn" th:classappend="${paging.number == 0} ? 'btn-disabled' : ''"
                  th:attr="onclick='window.location.href=\'?page=0#comment-list\''">
-                    &laquo;
+                &laquo;
             </div>
             <div th:attr="onclick='window.location.href=\'?page=' + (${paging.number - 1}) + '#comment-list\''"
                  class="btn" th:classappend="${!paging.hasPrevious} ? 'btn-disabled' : ''">
@@ -213,15 +202,15 @@
                  th:classappend="${paging.number == page} ? 'btn-active' : ''"
                  th:if="${page >= paging.number - 5 and page <= paging.number + 5}"
                  th:attr="onclick='window.location.href=\'?page=' + (${page}) + '#comment-list\''"
-            th:text="${page}">
+                 th:text="${page}">
             </div>
             <div class="btn" th:classappend="${!paging.hasNext} ? 'btn-disabled' :''"
                  th:attr="onclick='window.location.href=\'?page=' + (${paging.number + 1}) + '#comment-list\''">
-                    다음
+                다음
             </div>
             <div th:attr="onclick='window.location.href=\'?page=' + (${paging.totalPages - 1}) + '#comment-list\''"
                  class="btn" th:classappend="${paging.number == paging.totalPages - 1} ? 'btn-disabled' : ''">
-                    &raquo;
+                &raquo;
             </div>
         </div>
     </div>
@@ -259,11 +248,20 @@
                     "articleId": articleId,
                     "secret": secretValue,
                     "commentContents": contents,
-                    "page" : lastPage
+                    "page": lastPage
                 },
                 success: function (response) {
-                    const newUrl = "/comment" + "?page=" + lastPage + "#comment_" + response ;
+                    const secret = document.getElementById("secret");
+                    const contents = document.getElementById("commentContents");
+                    const newUrl = "?page=" + lastPage + "#comment_" + response;
+
+                    // Reset comment form
+                    contents.value = "";
+                    secret.checked = false;
+
+                    // Refresh the page
                     window.location.href = newUrl;
+
                     toastNotice('댓글이 작성되었습니다');
                 },
                 error: function (err) {
@@ -381,7 +379,7 @@
                     "secret": secretValue,
                     "commentContents": contents,
                     "parentId": parentId,
-                    "page" : currentPage
+                    "page": currentPage
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
@@ -428,7 +426,7 @@
                     "commentContents": contents,
                     "commentWriter": writerId,
                     "id": commentId,
-                    "page" : currentPage
+                    "page": currentPage
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
@@ -461,7 +459,7 @@
                     "articleId": articleId,
                     "commentWriter": writerId,
                     "id": commentId,
-                    "page" : currentPage
+                    "page": currentPage
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
@@ -508,7 +506,7 @@
                     "commentContents": contents,
                     "commentWriter": writerId,
                     "id": commentId,
-                    "page" : currentPage
+                    "page": currentPage
                 },
                 success: function (fragment) {
                     $('#comment-list').replaceWith(fragment);
@@ -554,6 +552,3 @@
         }
     </script>
 </main>
-</body>
-
-</html>
