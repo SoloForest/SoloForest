@@ -32,8 +32,8 @@
                 <li><a href="#">소모임</a></li>
             </ul>
         </div>
-        <button class="btn btn-ghost btn-circle mr-3" th:if="${@rq.isLogin()}">
-            <a href="/bookmark"><i class="fa-solid fa-star"></i></a>
+        <button class="btn btn-ghost btn-circle mr-3" th:if="${@rq.isLogin()}" onclick="window.location.href='/bookmark'">
+            <i class="fa-solid fa-star"></i></a>
         </button>
         <div class="flex-none">
             <a href="/account/login" sec:authorize="isAnonymous()" class="link link-hover mr-3">로그인</a>
