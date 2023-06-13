@@ -125,3 +125,75 @@ function Withdraw__Submit(form) {
         }
     }
 }
+
+function FindUsernameForm__submit(form) {
+    form.email.value = form.email.value.trim();
+
+    if (!emailRegExp.test(form.email.value)) {
+        toastWarning('이메일 형식을 지켜야 합니다.');
+        form.email.focus();
+        return false;
+    }
+
+    debugger;
+    let header = $("meta[name='_csrf_header']").attr('content');
+    let token = $("meta[name='_csrf']").attr('content');
+
+    $.ajax({
+        url: form.action,
+        type: "POST",
+        data: {
+            _csrf: form._csrf.value,
+            email: form.email.value
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result) {
+            alert(result);
+        },
+        error: function (request, status, error) {
+            alert(error);
+        }
+    })
+}
+
+function FindPasswordForm__submit(form) {
+    form.email.value = form.email.value.trim();
+    form.username.value = form.username.value.trim();
+
+    if (!emailRegExp.test(form.email.value)) {
+        toastWarning('이메일 형식을 지켜야 합니다.');
+        form.email.focus();
+        return false;
+    }
+
+    if (form.username.value.length < usernameValueMinLength || usernameValueMaxLength < form.username.value.length) {
+        toastWarning('username은 공백 없이 4자 이상 16자 이하로 작성해야 합니다.');
+        form.username.focus();
+        return false;
+    }
+
+    debugger;
+    let header = $("meta[name='_csrf_header']").attr('content');
+    let token = $("meta[name='_csrf']").attr('content');
+
+    $.ajax({
+        url: form.action,
+        type: "POST",
+        data: {
+            _csrf: form._csrf.value,
+            email: form.email.value,
+            username: form.username.value
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (result) {
+            alert(result);
+        },
+        error: function (request, status, error) {
+            alert(error);
+        }
+    })
+}

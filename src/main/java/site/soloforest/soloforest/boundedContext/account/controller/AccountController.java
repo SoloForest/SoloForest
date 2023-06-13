@@ -21,6 +21,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.security.AccountAdapter;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
+import site.soloforest.soloforest.boundedContext.account.dto.FindPasswordForm;
+import site.soloforest.soloforest.boundedContext.account.dto.FindUsernameForm;
 import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.service.AccountService;
@@ -67,7 +69,7 @@ public class AccountController {
 
 	@PostMapping("/me/{id}")
 	@PreAuthorize("isAuthenticated()")
-	public String modifyMe(@PathVariable Long id, @ModelAttribute ModifyForm input,
+	public String modifyMe(@PathVariable Long id, @Valid @ModelAttribute ModifyForm input,
 		Model model, HttpServletRequest request) {
 		Account entity = accountService.modifyInfo(id, input, request);
 		if (entity == null)
@@ -102,5 +104,17 @@ public class AccountController {
 	@PreAuthorize("isAnonymous()")
 	public String find() {
 		return "account/find_account";
+	}
+
+	@PostMapping("/find/username")
+	@ResponseBody
+	public String findUsername(@Valid @ModelAttribute FindUsernameForm form) {
+		return accountService.findUsername(form.getEmail());
+	}
+
+	@PostMapping("/find/password")
+	@ResponseBody
+	public String findPassword(@Valid @ModelAttribute FindPasswordForm form) {
+		return accountService.findPassword(form.getEmail(), form.getUsername());
 	}
 }
