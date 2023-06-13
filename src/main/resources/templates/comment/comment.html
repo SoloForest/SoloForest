@@ -264,7 +264,6 @@
                 success: function (response) {
                     const newUrl = "/comment" + "?page=" + lastPage + "#comment_" + response ;
                     window.location.href = newUrl;
-                    // $('#comment-list').replaceWith(fragment);
                     document.getElementById("commentContents").value = ""; // 공백 설정
                     document.getElementById("secret").checked = false; // 공백 설정
                     toastNotice('댓글이 작성되었습니다');
