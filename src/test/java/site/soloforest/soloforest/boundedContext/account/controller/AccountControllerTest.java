@@ -336,5 +336,52 @@ public class AccountControllerTest {
 			.andExpect(status().is3xxRedirection())
 			.andExpect(redirectedUrl("/error/403"));
 	}
+	/*
+	@Test
+	@DisplayName("계정 찾기 폼 테스트")
+	void t015() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/account/find"))
+			.andDo(print());
 
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("find"))
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(view().name("account/find_account"));
+	}
+
+	@Test
+	@DisplayName("username 찾기 테스트")
+	void t016() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/find/username")
+				.with(csrf())
+				.param("email", "test@test.com")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("findUsername"))
+			.andExpect(status().is2xxSuccessful()); // 이메일 발송 : username 발송
+	}
+
+	@Test
+	@DisplayName("password 찾기 테스트")
+	void t017() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(post("/account/find/password")
+				.with(csrf())
+				.param("email", "test@test.com")
+				.param("username", "usertest")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(handler().handlerType(AccountController.class))
+			.andExpect(handler().methodName("findPassword"))
+			.andExpect(status().is2xxSuccessful()); // 이메일 발송 : 임시 비밀번호 생성 후 발송
+	}
+	*/
 }
