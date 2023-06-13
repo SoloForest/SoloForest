@@ -71,7 +71,6 @@ public class Rq {
 		return account;
 	}
 	public Article getArticle(Long articleId) {
-
 		return articleService.getArticle(articleId);
 	}
 

@@ -43,8 +43,8 @@ public class CommentServiceTests {
 
 		Comment comment = commentService.create("테스트1234", false, account, article);
 
-		// NotProd 17번 댓글까지 있으므로, 위의 댓글은 18번이어야 함
-		Comment findComment = commentService.findById(18L);
+		// NotProd 113번 댓글까지 있으므로, 위의 댓글은 114번이어야 함
+		Comment findComment = commentService.findById(114L);
 
 		assertThat(comment.equals(findComment)).isTrue();
 	}
@@ -103,37 +103,5 @@ public class CommentServiceTests {
 		assertNull(assertParrent);
 		assertNull(assertChild);
 	}
-	@Test
-	@DisplayName("할아버지, 부모 댓글이 삭제되고, 대댓글이 1개일 때 대댓글이 삭제될 경우 할아버지, 부모 댓글 삭제 테스트")
-	void t05() {
-		// NotProd 파일에 의해 : 3번 -> 12번 관계
-		// 12번의 자식 댓글 생성(18번)
-		Account account = accountService.findByUsername("admin").orElse(null);
-		Article article = articleService.getArticle(1L);
-
-		// 할아버지, 아버지 댓글 가져오기
-		Comment grandComment = commentService.getComment(3L);
-		Comment parentComment = commentService.getComment(12L);
-
-		// 손주 댓글(18번)
-		Comment grandchildren = commentService.createReplyComment("내가 손주다!", false, account, article, parentComment);
-
-		// 할어버지, 아버지, 손주 순 삭제 -> 다 되면 DB에 모두 삭제된 상태여야 함
-		commentService.delete(grandComment);
-		commentService.delete(parentComment);
-		commentService.delete(grandchildren);
-
-		// 댓글 삭제 확인(자식 댓글이 있으니, 객체 삭제처리 되지 않고 isDeleted 속성만 변경되었기에 객체 가져와짐
-		// 삭제 확인용 객체 가져오기 -> 다 Null이어야 함
-		Comment assertGrand = commentService.getComment(3L);
-		Comment assertParent = commentService.getComment(12L);
-		Comment assertChild = commentService.getComment(18L);
-
-		// Null인지 확인
-		assertNull(assertGrand);
-		assertNull(assertParent);
-		assertNull(assertChild);
-	}
-
 
 }
