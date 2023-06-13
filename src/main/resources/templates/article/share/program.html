@@ -42,7 +42,44 @@
                 </div>
             </div>
         </div>
+        <!-- 페이징 처리 시작 -->
     </div>
+    <div th:if="${!paging.isEmpty()}">
+        <div class="btn-group flex justify-center mt-4 mb-4">
+            <a href="javascript:void(0)" th:data-page="${paging.number-1}"
+               role="button" class="page-link btn" th:classappend="${!paging.hasPrevious} ? 'btn-disabled'">«
+            </a>
+            <a th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+               th:if="${page >= paging.number - 5 and page <= paging.number + 5}"
+               th:classappend="${page == paging.number} ? 'btn-active'"
+               class="page-link btn" th:text="${page + 1}" href="javascript:void(0)" th:data-page="${page}">
+            </a>
+            <a href="javascript:void(0)" th:data-page="${paging.number+1}" class="page-link btn"
+               th:classappend="${!paging.hasNext} ? 'btn-disabled'">
+                »
+            </a>
+        </div>
+    </div>
+    <!-- 페이징 처리 끝 -->
+    <form th:action="@{/article/share/program}" method="get" id="searchForm">
+        <input type="hidden" id="kw" name="kw" th:value="${kw}">
+        <input type="hidden" id="page" name="page" th:value="${paging.number}">
+    </form>
+    <script layout:fragment="script" type='text/javascript'>
+        const page_elements = document.getElementsByClassName("page-link");
+        Array.from(page_elements).forEach(function (element) {
+            element.addEventListener('click', function () {
+                document.getElementById('page').value = this.dataset.page;
+                document.getElementById('searchForm').submit();
+            });
+        });
+        const btn_search = document.getElementById("btn_search");
+        btn_search.addEventListener('click', function () {
+            document.getElementById('kw').value = document.getElementById('search_kw').value;
+            document.getElementById('page').value = 0;  // 검색버튼을 클릭할 경우 0페이지부터 조회한다.
+            document.getElementById('searchForm').submit();
+        });
+    </script>
 </main>
 </body>
 </html>

@@ -58,17 +58,20 @@ public class ShareService {
 
 	public Page<Share> getList(String type, String kw, int page) {
 		int boardNumber;
-		if ("community".equals(type))
+		int pageSize = 0;
+		if ("community".equals(type)) {
 			boardNumber = 0;
-		else if ("program".equals(type))
+			pageSize = 10;
+		} else if ("program".equals(type)) {
 			boardNumber = 1;
-		else
+			pageSize = 6;
+		} else
 			return null;
 
 		List<Sort.Order> sorts = new ArrayList<>();
 		sorts.add(Sort.Order.desc("createDate"));
 
-		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
+		Pageable pageable = PageRequest.of(page, pageSize, Sort.by(sorts));
 
 		return shareRepository.findByBoardNumberAndKeyword(boardNumber, kw, pageable);
 	}
