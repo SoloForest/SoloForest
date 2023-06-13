@@ -1,0 +1,79 @@
+<html layout:decorate="~{home/layout.html}">
+<head>
+    <title>login</title>
+    <script src="/common/validator.js"></script>
+    <style>
+        .input-group span {
+            width: 100px;
+        }
+
+        .tab-active {
+            backdrop-filter: blur(40px);
+            background-color: #0000 !important;
+        }
+
+        .card {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .card form {
+            height: 220px;
+        }
+
+        button:disabled {
+            cursor: default !important;
+        }
+    </style>
+</head>
+<body>
+<main layout:fragment="main" class="flex flex-col justify-center items-center flex-grow">
+    <script>
+        $(document).ready(function () {
+            $(".tab").click(function () {
+                $(".tab-active").removeClass("tab-active");
+                $(this).addClass("tab-active");
+
+                const tabIndex = $(this).data("tab");
+                $(".card:not(.hidden)").addClass("hidden");
+                $(`#tab-${tabIndex}`).removeClass("hidden");
+            });
+        });
+    </script>
+
+    <h1 class="text-3xl font-bold self-center mb-8">Find</h1>
+
+    <div class="tabs min-w-[420px]">
+        <button class="tab tab-lg tab-lifted tab-active flex-1" data-tab="0">Username</button>
+        <button class="tab tab-lg tab-lifted flex-1" data-tab="1">Password</button>
+    </div>
+    <div class="card glass" id="tab-0">
+        <form method="POST" th:action onsubmit="FindUsernameForm__submit(this); return false;" id="findUsername"
+              class="flex flex-col place-content-center gap-1 min-w-[420px] px-12">
+            <label class="input-group max-w-sm min-w-sm">
+                <span>Email</span>
+                <input class="input input-bordered" type="email" id="findUsernameEmail" name="email"
+                       placeholder="example@soloforest.com"/>
+            </label>
+            <button class="mt-3 btn w-[150px] btn-primary self-center">Username 찾기</button>
+        </form>
+    </div>
+    <div class="card glass hidden" id="tab-1">
+        <form method="POST" th:action onsubmit="FindPasswordForm__submit(this); return false;" id="findPassword"
+              class="flex flex-col place-content-center gap-1 min-w-[420px] px-12">
+            <label class="input-group max-w-sm min-w-sm">
+                <span>Email</span>
+                <input class="input input-bordered" type="email" id="findPasswordEmail" name="email"
+                       placeholder="example@soloforest.com"/>
+            </label>
+            <label class="input-group max-w-sm min-w-sm">
+                <span>Username</span>
+                <input class="input input-bordered" type="text" id="findPasswordUsername" name="username"
+                       placeholder="username"/>
+            </label>
+            <button class="mt-3 btn w-[150px] btn-primary self-center">Password 찾기</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

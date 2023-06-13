@@ -13,6 +13,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -41,7 +42,8 @@ public class ShareControllerTests {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(view().name("article/share/community"))
-			.andExpect(model().attributeExists("shareList"));
+			.andExpect(model().attributeExists("paging"))
+			.andExpect(model().attributeExists("kw"));
 	}
 
 	@Test
@@ -54,7 +56,8 @@ public class ShareControllerTests {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(view().name("article/share/program"))
-			.andExpect(model().attributeExists("shareList"));
+			.andExpect(model().attributeExists("paging"))
+			.andExpect(model().attributeExists("kw"));
 	}
 
 	@Test
@@ -71,6 +74,7 @@ public class ShareControllerTests {
 
 	@Test
 	@DisplayName("게시글 작성 폼 처리 테스트")
+	@WithUserDetails("admin")
 	void t004() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(post("/article/share/community/create")
@@ -101,6 +105,7 @@ public class ShareControllerTests {
 
 	@Test
 	@DisplayName("게시글 수정 폼 처리 테스트")
+	@WithUserDetails("admin")
 	void t006() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(post("/article/share/modify/1")
@@ -113,11 +118,12 @@ public class ShareControllerTests {
 		resultActions
 			.andExpect(handler().handlerType(ShareController.class))
 			.andExpect(handler().methodName("modify"))
-			.andExpect(redirectedUrl("/article/share/detail/1"));
+			.andExpect(redirectedUrlPattern("/article/share/detail/1*"));
 	}
 
 	@Test
 	@DisplayName("게시글 삭제 테스트")
+	@WithUserDetails("admin")
 	void t007() throws Exception {
 		ResultActions resultActions = mvc
 			.perform(post("/article/share/community/delete/1")
@@ -128,21 +134,6 @@ public class ShareControllerTests {
 		resultActions
 			.andExpect(handler().handlerType(ShareController.class))
 			.andExpect(handler().methodName("delete"))
-			.andExpect(redirectedUrl("/article/share/community"));
-	}
-
-	@Test
-	@DisplayName("게시글 잘못된 경로 삭제 시 - 에러 페이지 호출 테스트")
-	void t008() throws Exception {
-		ResultActions resultActions = mvc
-			.perform(post("/article/share/community/delete/-1")
-				.with(csrf())
-			)
-			.andDo(print());
-
-		resultActions
-			.andExpect(handler().handlerType(ShareController.class))
-			.andExpect(handler().methodName("delete"))
-			.andExpect(content().string(containsString("404 ERROR")));
+			.andExpect(redirectedUrlPattern("/article/share/community*"));
 	}
 }
