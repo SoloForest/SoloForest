@@ -47,7 +47,8 @@ public class CommentService {
 	}
 
 	@Transactional
-	public Comment createReplyComment(String content, boolean secret, Account account, Article article, Comment parentComment) {
+	public Comment createReplyComment(String content, boolean secret, Account account, Article article,
+		Comment parentComment) {
 		Comment newComment = Comment.builder()
 			.content(content)
 			.writer(account)
@@ -64,7 +65,6 @@ public class CommentService {
 
 		return newComment;
 	}
-
 
 	// 테스트용
 	public Comment getComment(Long commentId) {
@@ -92,8 +92,7 @@ public class CommentService {
 		if (comment.getChildren().size() != 0) {
 			// 자식이 있으면 삭제 상태만 변경
 			comment.deleteParent();
-		}
-		else { // 자식이 없다 -> 대댓글이 없다 -> 객체 그냥 삭제해도 된다.
+		} else { // 자식이 없다 -> 대댓글이 없다 -> 객체 그냥 삭제해도 된다.
 			// 삭제 가능한 조상 댓글을 구해서 삭제
 			// ex) 할아버지 - 아버지 - 대댓글, 3자라 했을 때 대댓글 입장에서 자식이 없으니 삭제 가능
 			// => 삭제하면 아버지도 삭제 가능 => 할아버지도 삭제 가능하니 이런식으로 조상 찾기 메서드
@@ -121,7 +120,7 @@ public class CommentService {
 
 	// 댓글 조회
 	public Comment findById(Long id) {
-			return commentRepository.findById(id).orElse(null);
+		return commentRepository.findById(id).orElse(null);
 	}
 
 	public List<Comment> getCommentList(Article article) {
@@ -135,6 +134,10 @@ public class CommentService {
 		return commentRepository.findAllByArticle(article, pageable);
 	}
 
-
-
+	public int getLastPageNumber(Article article) {
+		int commentCount = commentRepository.countByArticle(article);
+		int pageSize = 10; // 페이지 당 댓글 수 (조정 가능)
+		int lastPageNumber = (int)Math.ceil((double)commentCount / pageSize);
+		return lastPageNumber - 1;
+	}
 }

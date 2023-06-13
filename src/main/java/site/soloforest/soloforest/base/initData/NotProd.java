@@ -108,7 +108,7 @@ public class NotProd {
 				Comment replyComment1 = commentService.createReplyComment("신고하세요", false, accountAdmin1, community1,
 					comment3);
 				Comment replyComment2 = commentService.createReplyComment("네 맞습니다!", false, accounts.get(2),
-					community1, comment10);
+					community1, comment3);
 				Comment replyComment3 = commentService.createReplyComment("가시죠!!", false, accounts.get(1),
 					program1, comment8);
 				Comment replyComment4 = commentService.createReplyComment("가자구!", false, accounts.get(1),
@@ -116,11 +116,13 @@ public class NotProd {
 
 				Comment comment17 = commentService.create("부모 댓글 연쇄 삭제 테스트용", false, accountAdmin1, community1);
 				comment17.deleteParent();
-				Comment replyComment5 = commentService.createReplyComment("이녀석 삭제되면 위에 녀석 삭제되어야 함", false, accountAdmin1,
+				Comment replyComment5 = commentService.createReplyComment("이녀석 삭제되면 위에 녀석 삭제되어야 함", false,
+					accountAdmin1,
 					community1, comment17);
 
 				// 페이징 테스트용 댓글
-				IntStream.rangeClosed(5, 100).forEach(n -> commentService.create("테스트 데이터 %d".formatted(n), false, accountAdmin1, community1));
+				IntStream.rangeClosed(5, 100)
+					.forEach(n -> commentService.create("테스트 데이터 %d".formatted(n), false, accountAdmin1, community1));
 			}
 		};
 	}

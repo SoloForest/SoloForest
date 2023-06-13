@@ -1,23 +1,28 @@
 <main>
     <!-- 댓글 작성 부분 -->
     <div id="write">
-        <textarea th:if="${@rq.login}" placeholder="댓글을 입력해주세요." id="commentContents" columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full
+        <form th:action="@{|/comment/create|}" method="POST">
+            <input type="hidden" name="articleId" th:value="${article.id}">
+            <input type="hidden" name="page" th:value="${paging.totalPages-1}">
+            <textarea th:if="${@rq.login}" name="commentContents" placeholder="댓글을 입력해주세요." id="commentContents"
+                      columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full
         focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
-        <textarea th:unless="${@rq.login}" disabled placeholder="로그인 후 댓글 작성이 가능합니다." columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full
+            <textarea th:unless="${@rq.login}" disabled placeholder="로그인 후 댓글 작성이 가능합니다." columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full
         focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
-        <label class="label cursor-pointer flex space-x-2">
-            <span class="label-text">비밀 댓글</span>
-            <input type="checkbox" id="secret" class="mr-5"/>
-        </label>
-        <button id="comment-write-btn" onclick="commentWrite()" class="bg-blue-500 text-white py-2
+            <label class="label cursor-pointer flex space-x-2">
+                <span class="label-text">비밀 댓글</span>
+                <input type="checkbox" name="secret" id="secret"/>
+            </label>
+            <button inid="comment-write-btn" class="bg-blue-500 text-white py-2
         px-4 rounded-lg hover:bg-blue-600">
-            <span>댓글작성</span>
-        </button>
+                <span>댓글작성</span>
+            </button>
+        </form>
     </div>
     <!-- 댓글 출력 부분, 일단 페이지 접속 했을때 보여지게!-->
     <div id="comment-list">
         <ul class="space-y-4">
-            <li th:each="comment, commentIndex : ${paging}" th:if="${comment.parent == null}">
+            <li th:each="comment : ${paging}" th:if="${comment.parent == null}">
                 <div class="card bg-white border p-4 rounded-lg shadow-lg">
                     <a th:id="|comment_${comment.id}|"></a>
                     <p class="text-lg font-bold" th:if="${!comment.deleted and !comment.secret}">
@@ -26,9 +31,6 @@
                     <p class="text-lg font-bold"
                        th:if="${comment.secret and ((comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}">
                         [[${comment.content}]]</p>
-                    <p class="text-gray-200"
-                       th:if="${comment.secret and ! ((comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}">
-                        비밀 댓글로 댓글 작성자, 게시글 관리자만 볼 수 있습니다.</p>
                     <ul class="menu menu-horizontal bg-base-100">
                         <li tabindex="0">
                             <span>작성자 : [[${comment.writer.username}]] </span>
@@ -218,11 +220,9 @@
     <!-- 스크립트는 main 태그 안족에, 타임리프 레이아웃에 의해 body 밖은 무시됨-->
 
     <script th:inline="javascript">
-        const currentPage = [[${paging.number}]];
         // 댓글 작성
         const commentWrite = () => {
-            const secret = document.getElementById("secret");
-            const secretValue = secret.checked ? true : false;
+            const secretValue = document.getElementById("secret").checked ? true : false;
             const contents = document.getElementById("commentContents").value.trim();
             const articleId = [[${article.id}]];
             const lastPage = [[${paging.totalPages}]] - 1;
@@ -253,14 +253,22 @@
                 success: function (response) {
                     const secret = document.getElementById("secret");
                     const contents = document.getElementById("commentContents");
-                    const newUrl = "?page=" + lastPage + "#comment_" + response;
+                    const lastCommentId = "comment_" + ([[${#lists.size(article.comments)}]] - 1);
+                    const newComment = document.getElementById(lastCommentId);
+                    const newUrl = "?page=" + lastPage + "#comment_" + lastCommentId;
 
                     // Reset comment form
                     contents.value = "";
                     secret.checked = false;
 
-                    // Refresh the page
+                    // Refresh the page with anchor
                     window.location.href = newUrl;
+
+                    // Wait for a short delay before scrolling to the new comment
+                    setTimeout(function () {
+                        // Scroll to the new comment
+                        newComment.scrollIntoView();
+                    }, 3000); // Adjust the delay as needed
 
                     toastNotice('댓글이 작성되었습니다');
                 },
@@ -353,6 +361,7 @@
             const secretValue = replySecret.checked ? true : false;
             const contents = document.getElementById("replyCommentContents-" + commentIndex).value.trim();
             const articleId = [[${article.id}]];
+            const currentPage = [[${paging.number}]];
 
             if (contents.length == 0) {
                 toastWarning('답글을 입력해주세요');
@@ -397,6 +406,7 @@
             const contents = document.getElementById("modify-comment-contents-" + commentIndex).value.trim();
             ; // 내용
             const articleId = [[${article.id}]];
+            const currentPage = [[${paging.number}]];
 
             if (contents.length == 0) {
                 toastWarning('댓글을 입력해주세요');
@@ -443,7 +453,7 @@
             const articleId = [[${article.id}]];
             const commentId = document.getElementById("comment-" + commentIndex).value; // 댓글번호
             const writerId = document.getElementById("writer-" + commentIndex).value; // 작성자 ID
-
+            const currentPage = [[${paging.number}]];
             var header = $("meta[name='_csrf_header']").attr('content');
             var token = $("meta[name='_csrf']").attr('content');
 
@@ -480,7 +490,7 @@
             const articleId = [[${article.id}]];
             const writerId = document.getElementById("modify-reply-writer-" + childIndex).value; // 작성자 ID
             const commentId = document.getElementById("modify-reply-comment-" + childIndex).value; // 댓글번호
-
+            const currentPage = [[${paging.number}]];
             if (contents.length == 0) {
                 toastWarning('댓글을 입력해주세요');
                 return;

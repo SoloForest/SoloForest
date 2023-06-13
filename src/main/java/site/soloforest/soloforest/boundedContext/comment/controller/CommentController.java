@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,6 @@ public class CommentController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
-	@ResponseBody
 	public String create(Model model, @ModelAttribute CommentDTO commentDTO,
 		@RequestParam(defaultValue = "0") int page) {
 		Article article = rq.getArticle(commentDTO.getArticleId());
@@ -50,7 +48,15 @@ public class CommentController {
 		Page<Comment> paging = commentService.getCommentPage(page, article);
 		model.addAttribute("paging", paging);
 
-		return (comment.getId() - 1 + "");
+		int lastPage = commentService.getLastPageNumber(article);
+
+		if (article.getBoardNumber() < 2) {
+			return "redirect:/article/share/detail/" + article.getId() + "?page=" + lastPage + "#" + "comment_"
+				+ comment.getId();
+		}
+
+		return "redirect:/article/group/detail/" + article.getId() + "?page=" + lastPage + "#" + "comment_"
+			+ comment.getId();
 	}
 
 	@PreAuthorize("isAuthenticated()")
