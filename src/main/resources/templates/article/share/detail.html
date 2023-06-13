@@ -1,5 +1,7 @@
 <html layout:decorate="~{home/layout.html}">
 <head>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
     <title th:text="${share.subject}"></title>
 </head>
 
@@ -41,7 +43,10 @@
                 <i class="ml-2 fa-solid fa-eye"></i>
                 <span class="gap-1" th:text="${share.viewed}"></span>
                 <!-- 즐겨찾기 -->
-                <i class="fa-regular fa-bookmark mr-10" style="float: right; display: inline-block;"></i>
+                <button id="bookmark" class="mr-10" style="float: right; display: inline-block;"
+                        th:if="${@rq.isLogin()}" th:value="${bookmark} ? 1 : 0 ">
+                    <i id="bookmark_icon"></i>
+                </button>
                 <!-- 즐겨찾기 끝-->
             </div>
             <hr class="mb-8" style="border: none; border-top: 1px solid;">
@@ -49,14 +54,96 @@
                 <span class="text-xl" th:text="${share.content}"></span>
             </div>
             <div class="mb-6 ml-6">
-                <i class="fa-regular fa-thumbs-up"></i>
-                <span class="gap-1" th:text="${share.liked}"></span>
+                <!-- 좋아요 -->
+                <input type="hidden" id="shareId" th:value="${share.getId()}">
+                <input type="hidden" id="accountId" th:value="${@rq.isLogin()} ? ${@rq.getAccount().getId()} : null">
+                <button id="like_login" th:if="${@rq.isLogout()}">
+                    <i class="fa-regular fa-thumbs-up"></i>
+                </button>
+                <button id="like" th:value="${like} ? 1 : 0" th:if="${@rq.isLogin()}">
+                    <i id="like_icon"></i>
+                </button>
+                <input type="hidden" id="share_likes" th:value="${share.likes}">
+                <span id="like_count" class="gap-1" th:text="${share.likes}"></span>
+                <!-- 좋아요 끝 -->
                 <i class="fa-regular fa-comment ml-3"></i>
-                <span class="gap-1">4</span>
+                <span class="gap-1" th:text="${share.comments.size()}"></span>
             </div>
             <hr class="mb-8" style="border: none; border-top: 1px solid;">
         </div>
     </div>
+    <script>
+        document.getElementById("like_login").onclick = function () {
+            window.location.href = "/account/login";
+        }
+    </script>
+    <script>
+        const header = $("meta[name='_csrf_header']").attr('content');
+        const token = $("meta[name='_csrf']").attr('content');
+
+        const shareId = $("#shareId").val();
+
+        const like = document.getElementById("like").value;
+        const like_count = document.getElementById("like_count").value;
+        const like_icon = document.getElementById("like_icon");
+        const bookmark = document.getElementById("bookmark").value;
+        const bookmark_icon = document.getElementById("bookmark_icon");
+
+
+        if (like > 0) {
+            like_icon.className = "fa-solid fa-thumbs-up";
+        } else {
+            like_icon.className = "fa-regular fa-thumbs-up";
+        }
+        if (bookmark > 0) {
+            bookmark_icon.className = "fa-solid fa-bookmark";
+        } else {
+            bookmark_icon.className = "fa-regular fa-bookmark";
+        }
+        //좋아요 클릭 시
+        $("#like").on("click", function () {
+            $.ajax({
+                url: '/article/share/like',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                type: 'POST',
+                data: {'shareId': shareId},
+                dataType: "json",
+                success: function (rsData) {
+                    if (rsData.data.success) {
+                        $("#like_icon").attr("class", "fa-solid fa-thumbs-up");
+                    } else {
+                        $("#like_icon").attr("class", "fa-regular fa-thumbs-up");
+                    }
+
+                    $('#like_count').text(rsData.data.newLikeCount);
+                }, error: function () {
+                    location.href = "/main";
+                }
+            });
+        });
+        // 즐겨찾기 클릭 시
+        $("#bookmark").on("click", function () {
+            $.ajax({
+                url: '/article/share/bookmark',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                type: 'POST',
+                data: {'shareId': shareId},
+                success: function (data) {
+                    if (data) {
+                        $("#bookmark_icon").attr("class", "fa-solid fa-bookmark");
+                    } else {
+                        $("#bookmark_icon").attr("class", "fa-regular fa-bookmark");
+                    }
+                }, error: function () {
+                    location.href = "/main";
+                }
+            });
+        });
+    </script>
 </main>
 </body>
 </html>

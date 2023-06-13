@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -84,8 +85,15 @@ public class ShareController {
 		if (share.isEmpty()) {
 			return "error/404";
 		}
-		shareService.modifyViewd(share.get());
+
+		shareService.modifyViewed(share.get());
 		model.addAttribute("share", share.get());
+
+		boolean like = shareService.findLike(share.get(), rq.getAccount());
+		model.addAttribute("like", like);
+
+		boolean bookmark = shareService.findBookmark(share.get(), rq.getAccount());
+		model.addAttribute("bookmark", bookmark);
 
 		return "article/share/detail";
 	}
@@ -93,7 +101,7 @@ public class ShareController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify/{id}")
 	public String showModify(@PathVariable Long id, Model model) {
-		Share share = shareService.findById(id).orElseThrow();
+		Share share = shareService.findById(id).orElse(null);
 
 		RsData<Share> canModifyRsData = shareService.canModify(rq.getAccount(), share);
 
@@ -119,7 +127,7 @@ public class ShareController {
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{type}/delete/{id}")
 	public String delete(@PathVariable String type, @PathVariable Long id) {
-		Share share = shareService.findById(id).orElseThrow();
+		Share share = shareService.findById(id).orElse(null);
 
 		RsData<Share> deleteRsData = shareService.delete(rq.getAccount(), share);
 
@@ -127,5 +135,32 @@ public class ShareController {
 			return rq.historyBack(deleteRsData);
 
 		return rq.redirectWithMsg("/article/share/%s".formatted(type), deleteRsData);
+	}
+
+	@AllArgsConstructor
+	@Getter
+	public static class LikeResponse {
+		private boolean success;
+		private long newLikeCount;
+	}
+
+	@PostMapping("/like")
+	public @ResponseBody RsData<LikeResponse> like(Long shareId) {
+		boolean success = shareService.like(rq.getAccount(), shareId);
+
+		Optional<Share> share = shareService.findById(shareId);
+
+		if (share.isEmpty()) {
+			return RsData.of("F-1", "Fail");
+		}
+
+		long newLikeCount = share.get().getLikes();
+
+		return RsData.of("S-1", "Success", new LikeResponse(success, newLikeCount));
+	}
+
+	@PostMapping("/bookmark")
+	public @ResponseBody boolean bookmark(Long shareId) {
+		return shareService.bookmark(rq.getAccount(), shareId);
 	}
 }

@@ -16,10 +16,30 @@ toastr.options = {
     hideMethod: "fadeOut"
 };
 
+function parseMsg(msg) {
+    const [pureMsg, ttl] = msg.split(";ttl=");
+
+    const currentJsUnixTimestamp = new Date().getTime();
+
+    if (ttl && parseInt(ttl) + 5000 < currentJsUnixTimestamp) {
+        return [pureMsg, false];
+    }
+
+    return [pureMsg, true];
+}
+
 function toastNotice(msg) {
-    toastr["success"](msg, "알림");
+    const [pureMsg, needToShow] = parseMsg(msg);
+
+    if (needToShow) {
+        toastr["success"](pureMsg, "알림");
+    }
 }
 
 function toastWarning(msg) {
-    toastr["warning"](msg, "알림");
+    const [pureMsg, needToShow] = parseMsg(msg);
+
+    if (needToShow) {
+        toastr["warning"](pureMsg, "경고");
+    }
 }
