@@ -1,5 +1,6 @@
 package site.soloforest.soloforest.boundedContext.article.controller;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -64,14 +66,15 @@ public class ShareController {
 		private final String subject;
 		@NotBlank(message = "내용을 입력해주세요.")
 		private final String content;
-		private final String imageUrl;
 	}
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/{type}/create")
-	public String create(@PathVariable String type, @Valid Form form) {
+	public String create(@PathVariable String type, @Valid Form form,
+		@RequestParam(value = "file", defaultValue = "") MultipartFile multipartFile) throws
+		IOException {
 		RsData<Share> createRsData = shareService.create(type, rq.getAccount(), form.getSubject(), form.getContent(),
-			form.getImageUrl());
+			multipartFile);
 
 		if (createRsData.isFail())
 			return rq.historyBack(createRsData);

@@ -1,5 +1,6 @@
 package site.soloforest.soloforest.boundedContext.article.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.rsData.RsData;
@@ -22,6 +24,9 @@ import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.liked.entity.Liked;
 import site.soloforest.soloforest.boundedContext.article.liked.repository.LikedRepository;
 import site.soloforest.soloforest.boundedContext.article.repository.ShareRepository;
+import site.soloforest.soloforest.boundedContext.picture.entity.Picture;
+import site.soloforest.soloforest.boundedContext.picture.pictureHandler.PictureHandler;
+import site.soloforest.soloforest.boundedContext.picture.repository.PictureRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -30,9 +35,13 @@ public class ShareService {
 	private final ShareRepository shareRepository;
 	private final LikedRepository likedRepository;
 	private final BookmarkRepository bookmarkRepository;
+	private final PictureRepository pictureRepository;
+	private final PictureHandler pictureHandler;
 
 	@Transactional
-	public RsData<Share> create(String type, Account account, String subject, String content, String imageUrl) {
+	public RsData<Share> create(String type, Account account, String subject, String content,
+		MultipartFile multipartFile) throws
+		IOException {
 		int boardNumber = -1;
 
 		if ("community".equals(type))
@@ -48,11 +57,25 @@ public class ShareService {
 			.boardNumber(boardNumber)
 			.subject(subject)
 			.content(content)
-			.imageUrl(imageUrl)
 			.build();
 
 		shareRepository.save(share);
 
+		//사진 업로드
+		RsData<Picture> picture = pictureHandler.parseFileInfo(multipartFile);
+		if (picture != null) {
+			if (picture.isSuccess()) {
+				Share pictureShare = share.toBuilder()
+					.picture(picture.getData())
+					.build();
+
+				shareRepository.save(pictureShare);
+			} else { //사진 업로드 실패할 경우 알림 출력
+				String pictureResultCode = picture.getResultCode();
+				String pictureMsg = picture.getMsg();
+				return RsData.of(pictureResultCode, pictureMsg);
+			}
+		}
 		return RsData.of("S-1", "게시글이 등록되었습니다.", share);
 	}
 
@@ -134,12 +157,13 @@ public class ShareService {
 		if (!Objects.equals(account.getId(), share.getAccount().getId()))
 			return RsData.of("F-2", "해당 게시글을 삭제할 권한이 없습니다.");
 
-		//게시글 삭제 전, 게시글과 관련된 좋아요와 즐겨찾기 삭제
+		//게시글 삭제 전, 게시글과 관련된 좋아요, 즐겨찾기, 사진 삭제
 		List<Liked> likedList = likedRepository.findAllByArticle(share);
 		likedRepository.deleteAll(likedList);
 		List<Bookmark> bookmarkList = bookmarkRepository.findAllByArticle(share);
 		bookmarkRepository.deleteAll(bookmarkList);
-
+		Optional<Picture> picture = pictureRepository.findById(share.getPicture().getId());
+		picture.ifPresent(pictureRepository::delete);
 		shareRepository.delete(share);
 
 		return RsData.of("S-1", "게시글이 삭제되었습니다.");
