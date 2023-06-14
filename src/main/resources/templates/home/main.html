@@ -14,7 +14,7 @@
         <div id="program" class="flex flex-row w-full gap-5 justify-center flex-wrap">
             <div th:each="program : ${programList}">
                 <div class="card w-96 bg-base-100 shadow-xl">
-                    <figure><img class="w-full" th:src="${program.imageUrl}" alt="program banner"/></figure>
+                    <figure><img class="w-full" th:if="${program.picture} != null" th:src="${program.picture.FilePath}" alt="program banner"/></figure>
                     <div class="card-body flex flex-col justify-end hidden">
                         <h2 class="card-title" th:text="${program.subject}"></h2>
                         <div class="card-actions justify-end">
