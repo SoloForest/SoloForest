@@ -36,7 +36,6 @@
                              th:src="${article.picture.FilePath}" alt="Sample1"/></figure>
                 <div class="card-body flex flex-col items-center">
                     <h2 class="card-title" th:text="${article.subject}"></h2>
-                    <p class="font-semibold text-primary">일상</p>
                     <div class="card-actions">
                         <a th:href="@{|/article/share/detail/${article.id}|}" class="btn">자세히 보기</a>
                     </div>
