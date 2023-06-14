@@ -1,10 +1,99 @@
 <html layout:decorate="~{home/layout.html}">
 <head></head>
 <body>
-    <main layout:fragment="main">
-        <p>
-            main section
-        </p>
-    </main>
+<main layout:fragment="main">
+    <div class="flex items-center justify-center flex-wrap mt-4 mb-3 relative">
+        <div class="flex w-full">
+            <h1 class="font-semibold flex-grow">
+                프로그램
+            </h1>
+            <a class="link link-hover" href="/article/share/program">더보기 ></a>
+        </div>
+        <div class="my-3 w-full h-1 bg-primary"></div>
+
+        <div id="program" class="flex flex-row w-full gap-5 justify-center flex-wrap">
+            <div th:each="program : ${programList}">
+                <div class="card w-96 bg-base-100 shadow-xl">
+                    <figure><img class="w-full" th:src="${program.imageUrl}" alt="program banner"/></figure>
+                    <div class="card-body flex flex-col justify-end hidden">
+                        <h2 class="card-title" th:text="${program.subject}"></h2>
+                        <div class="card-actions justify-end">
+                            <a th:href="@{|/article/share/detail/${program.id}|}"
+                               class="btn btn-primary">자세히 보기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex items-center justify-center flex-wrap mt-4 mb-3 relative">
+        <div class="flex w-full grid grid-cols-12 gap-5">
+            <div class="col-span-12 md:col-span-4 flex flex-col justify-center items-center min-w-[180px]">
+                <div class="flex w-full">
+                    <h1 class="font-semibold flex-grow">
+                        커뮤니티
+                    </h1>
+                    <a class="link link-hover" href="/article/share/community">더보기 ></a>
+                </div>
+                <div class="my-3 w-full h-1 bg-primary col-span-4"></div>
+
+                <div class="w-full">
+                    <table class="table table-compact w-full">
+                        <tbody>
+                        <tr class="hover" th:each="community : ${communityList}" th:onclick="'location.href=\'/article/share/detail/' + ${community.id} + '\''">
+                            <td class="w-4/5" th:text="${community.subject}"></td>
+                            <td class="w-1/5 text-center"><i class="ml-2 fa-solid fa-eye"></i> <spna th:text="${community.viewed}"></spna></td>
+                        </tr>
+                        <tr th:if="${#lists.size(communityList) < 5}" th:each="i : ${#numbers.sequence(1, 5 - #lists.size(communityList))}" class="text-center hover">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-span-12 md:col-span-8 flex flex-col justify-center items-center min-w-[400px]">
+                <div class="flex w-full">
+                    <h1 class="font-semibold flex-grow">
+                        인원모집
+                    </h1>
+                    <a class="link link-hover" href="/article/group/list">더보기 ></a>
+                </div>
+                <div class="my-3 w-full h-1 bg-primary col-span-8"></div>
+
+                <div class="w-full">
+                    <table class="table table-compact w-full">
+                        <tbody>
+                        <tr class="hover" th:each="group : ${groupList}" th:onclick="'location.href=\'/article/group/detail/' + ${group.id} + '\''">
+                            <td class="w-7/12" th:text="${group.subject}"></td>
+                            <td class="w-1/12 text-center" th:text="${#temporals.format(group.startDate, 'yy.MM.dd')}"></td>
+                            <td class="w-1/12 text-center">~</td>
+                            <td class="w-1/12 text-center" th:text="${#temporals.format(group.endDate, 'yy.MM.dd')}"></td>
+                            <td class="w-1/12 text-center"><i class="fa-solid fa-user"></i> <span th:text="${group.member}"></span></td>
+                            <td class="w-1/12 text-center"><i class="ml-2 fa-solid fa-eye"></i> <span th:text="${group.viewed}"></span></td>
+                        </tr>
+                        <tr th:if="${#lists.size(groupList) < 5}" th:each="i : ${#numbers.sequence(1, 5 - #lists.size(groupList))}" class="text-center hover">
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    </div>
+    <script>
+        $("#program .card").hover(function () {
+            $(this).addClass("image-full");
+            $(this).children(".card-body").removeClass("hidden");
+        }, function () {
+            $(this).removeClass("image-full");
+            $(this).children(".card-body").addClass("hidden");
+        })
+    </script>
+</main>
 </body>
 </html>

@@ -73,7 +73,7 @@ public class NotProd {
 
 				List<Group> groups = List.of(
 					Group.builder()
-						.account(accounts.get(1)).subject("번개").content("용산에서 번개모임 가시죠!!").boardNumber(3)
+						.account(accounts.get(1)).subject("번개").content("용산에서 번개모임 가시죠!!").boardNumber(2)
 						.member(4).money(3000).location("서울시 용산구")
 						.startDate(LocalDateTime.of(2023, 6, 3, 12, 30))
 						.endDate(LocalDateTime.of(2023, 6, 3, 19, 0))
