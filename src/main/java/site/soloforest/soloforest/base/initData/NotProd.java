@@ -123,6 +123,9 @@ public class NotProd {
 				// 페이징 테스트용 댓글
 				IntStream.rangeClosed(5, 100)
 					.forEach(n -> commentService.create("테스트 데이터 %d".formatted(n), false, accountAdmin1, community1));
+
+				// 신고 알림 테스트용
+				accountService.report(accountAdmin1.getId());
 			}
 		};
 	}

@@ -317,4 +317,9 @@ public class AccountService {
 
 		return generatedString;
 	}
+
+	// notification에서 객체 정보 가져오기용
+	public Account findById(Long accountId) {
+		return accountRepository.findById(accountId).get();
+	}
 }

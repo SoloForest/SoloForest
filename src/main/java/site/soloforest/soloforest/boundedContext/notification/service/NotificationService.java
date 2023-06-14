@@ -24,9 +24,8 @@ public class NotificationService {
 
 		Notification notification = Notification.builder()
 			.content(content)
-			.event_type(0)
-			.account(account)
-			.event_id(comment.getId())
+			.eventType(0)
+			.eventId(comment.getId())
 			.build();
 
 		notificationRepository.save(notification);
@@ -39,9 +38,8 @@ public class NotificationService {
 
 		Notification notification = Notification.builder()
 			.content(content)
-			.event_type(0)
-			.account(account)
-			.event_id(replyComment.getId())
+			.eventType(0)
+			.eventId(replyComment.getId())
 			.build();
 
 		notificationRepository.save(notification);
@@ -58,7 +56,7 @@ public class NotificationService {
 	}
 
 	public List<Notification> getNotifications(Account account) {
-		return notificationRepository.findByAccountOrderByIdDesc(account);
+		return notificationRepository.findByEventIdOrderByIdDesc(account.getId());
 	}
 
 	public Notification getNotification(Long notificationId) {
@@ -69,11 +67,16 @@ public class NotificationService {
 		String content = "누군가 당신을 신고하였습니다. 누적 횟수 3회가 되면 3일간 로그인이 제한되니 주의해주세요(현재 %d회)".formatted(account.getReported());
 		Notification notification = Notification.builder()
 			.content(content)
-			.event_type(1)
-			.account(account)
-			.event_id(account.getId())
+			.eventType(1)
+			.eventId(account.getId())
 			.build();
 
 		notificationRepository.save(notification);
+	}
+
+	@Transactional
+	public void delete(Notification notification) {
+		if (notification.getEventType() == 0)
+			notificationRepository.delete(notification);
 	}
 }

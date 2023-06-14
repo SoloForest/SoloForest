@@ -1,5 +1,6 @@
 package site.soloforest.soloforest.boundedContext.comment.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,4 +19,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	Page<Comment> findAllByArticle(Article article, Pageable pageable);
 
 	int countByArticle(Article article);
+
+	int countByArticleAndCreateDateBefore(Article article, LocalDateTime createDate);
 }

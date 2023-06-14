@@ -75,6 +75,12 @@ public class Rq {
 		return account;
 	}
 
+	// 회원번호로 id 가져오기
+	public Account getAccountById(Long accountId) {
+		account = accountService.findById(accountId);
+		return account;
+	}
+
 	public Article getArticle(Long articleId) {
 		return articleService.getArticle(articleId);
 	}
@@ -122,5 +128,13 @@ public class Rq {
 
 	public Page<Comment> getPageByArticle(int page, Article article) {
 		return commentService.getCommentPage(page, article);
+	}
+
+	public Comment getCommentById(Long commentId) {
+		return commentService.getComment(commentId);
+	}
+
+	public int getPageNumberByComment(Comment comment) {
+		return commentService.getPage(comment);
 	}
 }
