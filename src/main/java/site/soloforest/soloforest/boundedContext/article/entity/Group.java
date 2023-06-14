@@ -15,7 +15,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -36,6 +36,5 @@ public class Group extends Article {
 	private String location;
 
 	@NotNull(message = "회비를 정해주세요.")
-	private int money; // 회비
-
+	private int money;
 }

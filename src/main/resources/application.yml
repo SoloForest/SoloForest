@@ -14,6 +14,8 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://127.0.0.1:3306/soloforest__dev?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    username: lldj
+    password: lldj123414
   jpa:
     hibernate:
       ddl-auto: create
@@ -22,14 +24,6 @@ spring:
         show_sql: true
         format_sql: true
         use_sql_comments: true
-
-  mail:
-    host: smtp.naver.com
-    port: 465
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true
-      mail.smtp.ssl.trust: smtp.naver.com
 logging:
   level:
     root: INFO

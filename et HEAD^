@@ -1,0 +1,1759 @@
+[33mcommit 4f3c554e56a22183e000a2e8400a76cf01aea2bf[m[33m ([m[1;36mHEAD -> [m[1;32menhancement67/Group[m[33m)[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Wed Jun 14 15:43:21 2023 +0900
+
+    test
+
+[33mcommit 2a8e626599d4af86c64d134b7a8b7d4204cba7f3[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Wed Jun 14 15:15:25 2023 +0900
+
+    feat :글작성, 수정, 삭제 구현
+
+[33mcommit 62bda9b66ba3eafae51fa42dce255ef01c788367[m
+Merge: e2b25c3 fe9ffba
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Wed Jun 14 02:18:11 2023 +0900
+
+    Merge pull request #81 from SoloForest/enhancement80/article
+    
+    feat : 게시글, 댓글 통합
+
+[33mcommit fe9ffba421cff725a6ccf92032b6f5d9a183bf22[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 14 02:17:03 2023 +0900
+
+    docs : 실수로 삭제한 secret template 복구
+
+[33mcommit 07180441c30b3977e37a1f76ce6717168fc2261c[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 14 01:49:22 2023 +0900
+
+    fix : logout 상태에서 게시글 조회 안되는 버그 수정
+
+[33mcommit acf619137402e713c10a45c73b339385502f3d6c[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 14 01:03:29 2023 +0900
+
+    docs : yml수정
+
+[33mcommit 14258ffa3685cb84bcfa06117609a04c56aa5325[m
+Merge: 1f47d87 e2b25c3
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 14 00:56:43 2023 +0900
+
+    Merge branch 'main' of https://github.com/SoloForest/SoloForest into enhancement80/article
+
+[33mcommit 1f47d87182d1c239b3f6555163fef217326d3ead[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 14 00:54:15 2023 +0900
+
+    fix : 댓글 작성 시 마지막 페이지 이동 안되던 버그 수정 + 1페이지 9개만 출력되는 버그 수정
+
+[33mcommit e2b25c30aabf11f1b25c238d83cb9a0e8d9d0b4f[m
+Merge: b26d730 5a86251
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Wed Jun 14 00:21:38 2023 +0900
+
+    Merge pull request #77 from SoloForest/enhancement73/findAccount
+    
+    Enhancement73/find account
+
+[33mcommit f39632a049f214337d8af70c8b750a64c7fc2649[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 21:11:49 2023 +0900
+
+    feat : 게시글, 댓글 통합
+
+[33mcommit b26d730e9861c72d8ced4d32f83b5c12bc73ac60[m
+Merge: 55acb62 c4e5989
+Author: Chan0521 <125876633+Chan0521@users.noreply.github.com>
+Date:   Tue Jun 13 17:38:20 2023 +0900
+
+    Merge pull request #78 from SoloForest/enhancement70/article
+    
+    Enhancement70/article
+
+[33mcommit 55acb6215b7f82627069a8668f8494e04526c20c[m
+Merge: 4de770e a96eaca
+Author: cheorhyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue Jun 13 17:18:52 2023 +0900
+
+    Merge pull request #76 from SoloForest/enhancement58/comment
+    
+    Enhancement58/comment
+
+[33mcommit a96eaca207cf1b7c1f1db48d6d007f6aa40c9874[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 13 16:29:06 2023 +0900
+
+    refactor : println 코드 삭제
+
+[33mcommit 7a1043328d7cdad5ba4153196b25afa4457492c3[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 13 16:23:38 2023 +0900
+
+    test : test case 수정
+
+[33mcommit a74294af31fd0a2ba53188f1d976d078589b0942[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 13 16:19:16 2023 +0900
+
+    refactor : 댓글 작성 시 마지막 페이지 이동, NotProd 파일 수정
+
+[33mcommit c2a562458557cf4d030de5fb6dca112e1b489121[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 13 16:04:46 2023 +0900
+
+    fix : ã충돌 수정
+
+[33mcommit c4e5989505d88bc58d14683498cbfdb8c0f5a39e[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 16:04:30 2023 +0900
+
+    feat : 게시글 좋아요 수 AJAX 요청 시 업데이트
+
+[33mcommit 2ebd80854c46ff1bf9ed0ad58901c4dbc320e48b[m
+Merge: d393349 f96b10f
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 13 15:51:11 2023 +0900
+
+    Merge branch 'enhancement58/comment' of https://github.com/SoloForest/SoloForest into enhancement58/comment
+
+[33mcommit d393349350cbf6a9b92187ad48e0f5668020cfa2[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 13 15:50:50 2023 +0900
+
+    feat : 댓글 작성 시 마지막 페이지로 이동하여 해당 댓글 앵커 도입
+
+[33mcommit bd204f86ef8ffb6e8239ba1a7864978188f0d576[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 15:08:36 2023 +0900
+
+    design : 좋아요 수 업데이트
+
+[33mcommit f96b10f539dd5e355fea91ce380c3636e74e0b29[m
+Merge: cf2a1ac 4de770e
+Author: cheorhyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue Jun 13 13:46:14 2023 +0900
+
+    Merge branch 'main' into enhancement58/comment
+
+[33mcommit 5a862517ff0612666cddd69e9986b0b1c6749b6e[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue Jun 13 13:33:02 2023 +0900
+
+    feat: email에 html과 css 입혀서 발송처리
+
+[33mcommit d6f2240d7d17daee86dd03ff4b313f6641e78f23[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue Jun 13 13:32:17 2023 +0900
+
+    docs: application-secreat.yml 템플릿 설명 추가
+
+[33mcommit f994198e88bfc79661d29ed5c3a1251772f2a348[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue Jun 13 04:49:11 2023 +0900
+
+    comment: TDD-green 상태인 테스트 주석 해제
+
+[33mcommit fae2a6278000a95bdb41e5ad0eba392e0b2c0992[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue Jun 13 04:46:48 2023 +0900
+
+    feat: email발송처리 완료
+
+[33mcommit 22758594c28b7366071c815394beac6224e7b220[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue Jun 13 04:40:55 2023 +0900
+
+    feat: email전송을 위한 설정 추가
+
+[33mcommit 05661e3fdfc187d12d69181b4697910edd4df32a[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 12 23:02:04 2023 +0900
+
+    feat: id/pw찾기 구현, email 발송 처리 제외
+
+[33mcommit 7e1751f998d1af36494d8ad829129663b8a5a64f[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 12 22:58:40 2023 +0900
+
+    fix: ModifyForm의 email 정규식 오류 정정
+
+[33mcommit 130cc8a773c316833675d17241e3d9f694e0bcdf[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 12 22:56:35 2023 +0900
+
+    feat : id/pw찾기 입력 데이터 검증
+
+[33mcommit 68f2155ba89d0957a93e147304461d31591ee6c8[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 12 22:34:58 2023 +0900
+
+    fix: id/pw찾기 폼 action 정정
+
+[33mcommit 4de770e396636fe9b7ef71dfcb430004ef958e49[m
+Merge: 984f9a5 5832fe9
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Tue Jun 13 13:08:15 2023 +0900
+
+    Merge pull request #72 from SoloForest/enhancement52/findAccount
+    
+    Enhancement52/find account
+
+[33mcommit 984f9a5ee96080857cdb24a9c43bd915c6e75051[m
+Merge: 86dfea5 f343f48
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Tue Jun 13 13:07:57 2023 +0900
+
+    Merge pull request #71 from SoloForest/enhancement56/article
+    
+    Enhancement56/article
+
+[33mcommit 5f1d0db81e19355e3df76fc6688cf6bb92712527[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 12:56:36 2023 +0900
+
+    design : 게시글 작성 취소 시 뒤로가기 이동
+
+[33mcommit 494bfc7239f3ca1d6c7ee1c39d88bfa8c8e73537[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 11:31:25 2023 +0900
+
+    feat : 프로그램 게시판 페이징 처리
+
+[33mcommit eedf69e8403c6a598df44733b46cded0b0a0762c[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 11:23:22 2023 +0900
+
+    design : 즐겨찾기 버튼 클릭 시 url 이동
+
+[33mcommit f7299f5f781427afcf374bc79a5755b30540594f[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 11:04:37 2023 +0900
+
+    design : 즐겨찾기 버튼 간격 조정
+
+[33mcommit b88c71a0116735f2443cc91d24429bead29ea004[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 10:59:13 2023 +0900
+
+    feat : 즐겨찾기 조회 페이징 처리
+
+[33mcommit 7248cf3c30dba250d76a69364fcae58ab6d61358[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 10:17:29 2023 +0900
+
+    fix : 좋아요, 즐겨찾기 후 게시글 삭제 시 오류 해결
+
+[33mcommit f8579534525a0840490ce1feb189d0f299085f26[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 10:16:59 2023 +0900
+
+    design : nav 바에 즐겨찾기 추가
+
+[33mcommit a4422959ef2ddff4980f1b4a1dc3b4f60df52873[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 10:15:50 2023 +0900
+
+    feat : 즐겨찾기 조회 기능 구현
+
+[33mcommit cf2a1ac3b1ab0521da647531b9719313375785a5[m
+Author: cheorhyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue Jun 13 02:18:06 2023 +0900
+
+    fix : 이상한 코드 삭제
+
+[33mcommit 8fbb1cbe450f54651dfe4ae80de3c18bfe672c4a[m
+Merge: 9316282 86dfea5
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 13 02:01:12 2023 +0900
+
+    Merge branch 'main' of https://github.com/SoloForest/SoloForest into enhancement58/comment
+
+[33mcommit 931628286280cd7b28e02e0b8503fc5e9c6d01bd[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 13 02:00:32 2023 +0900
+
+    feat : 댓글 페이징 구현
+
+[33mcommit 3a2762471114a24b48429911ccb24b561135b03c[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 13 00:09:24 2023 +0900
+
+    design : AJAX href 반환 삭제
+
+[33mcommit b89aeb3c1562848420e50f457b35cc302d705f92[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 21:16:34 2023 +0900
+
+    refactor : controller에서 .orElseThrow() -> .orElse(null)로 수정
+
+[33mcommit 87c7633d6e861d63d1a9b16755a1aa615b6c4769[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 20:35:57 2023 +0900
+
+    feat : 게시글 즐겨찾기 기능 구현
+
+[33mcommit 9c8550c3209052bfd58bc62a197e0bb7b370b951[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 20:35:35 2023 +0900
+
+    feat : 게시글 즐겨찾기 - Bookmark Entity 작성
+
+[33mcommit f0f56eb18ccb86ceafb04c875f35f997086f1eb6[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 17:25:41 2023 +0900
+
+    feat : 게시글 좋아요 기능 구현
+
+[33mcommit 74d5f95d60ab6091f40567ff31e30969674f3aab[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 17:25:09 2023 +0900
+
+    design : 로그인 시 좋아요 표시 가능 - AJAX 적용
+
+[33mcommit 086a5ed91e59d870c0d5a65036756736ba42806f[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 17:23:59 2023 +0900
+
+    feat : 게시글 좋아요 - Liked Entity 작성
+
+[33mcommit 5832fe977b5078773e279589631fbbdf6f43de70[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 12 15:40:39 2023 +0900
+
+    fix: /account/find로 url 수정
+
+[33mcommit fbfb9069d8782be33482ba7945ac45e29a25b81e[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 12 15:36:39 2023 +0900
+
+    comment : TDD-red상태인 test 주석처리
+
+[33mcommit 1da00192ffd164d51eb5e8f48d4a18837db4445c[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 12 14:43:45 2023 +0900
+
+    design : id/pw찾기 페이지 작성
+
+[33mcommit 67c6ac64b3840f26860ebbcd41f7d949410de062[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 12 02:18:35 2023 +0900
+
+    test : id/pw찾기 테스트 추가
+
+[33mcommit a862d1efee02ebd66b196d81a9c791d116b17577[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Mon Jun 12 13:30:16 2023 +0900
+
+    test : commentServiceTest 수정
+
+[33mcommit 86dfea518c3c76d4945b737eba809a2c56fc19dd[m
+Merge: 7dc6c17 6687957
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Mon Jun 12 09:53:28 2023 +0900
+
+    Merge pull request #69 from SoloForest/enhancement68/report
+
+[33mcommit 7be660a0768297b4a38ed005bb4082c52334b15a[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 03:16:19 2023 +0900
+
+    design : toastr 알림 시 ttl 문자 분리
+
+[33mcommit f343f48ce9b37c0d9f9be8591d2250417e2edca0[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 02:53:48 2023 +0900
+
+    feat : imageUrl 저장 추가
+
+[33mcommit f2bcecf96c9292a5256064e4bc99f7555725a02c[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 02:51:30 2023 +0900
+
+    feat : 정보 공유성 게시글 NotProd 수정
+
+[33mcommit 573014a6a88c5d17921df498ca9d62531c063f7a[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 02:50:21 2023 +0900
+
+    design : 프로그램 게시판 폼 연결
+
+[33mcommit bd26255ff5721238df48a00563b5c10595a98173[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 02:04:41 2023 +0900
+
+    design : 게시글 상세 폼에서 닉네임에 신고하기 버튼 추가
+
+[33mcommit 1cefd9261ca053925bafd64064b5e290a1dfe027[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Mon Jun 12 01:54:54 2023 +0900
+
+    feat : toastr 메세지 도입
+
+[33mcommit c7ab21fe885456b73fbd03c728208aaf5bdfa785[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 01:35:35 2023 +0900
+
+    test : @WithUserDetails 적용
+
+[33mcommit 26ab04a55aa64622fd1538288c583e4cdb44965f[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Mon Jun 12 01:28:28 2023 +0900
+
+    feat : 관리자 댓글 삭제, 수정 기능 추가 + fix : 삭제 모든 케이스 동작하도록 수정
+
+[33mcommit e5d7d912dce70d85464c65dfc15cf5d8a4eca8b9[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 00:42:18 2023 +0900
+
+    feat : 게시글 삭제 RsData, Rq 적용
+
+[33mcommit 3edb39bc9b4e21251cc9ebbc09296d1c834f2544[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 12 00:31:13 2023 +0900
+
+    feat : 게시글 수정 RsData, Rq 적용
+
+[33mcommit 7069022f8a6b1031bc7a37a6e2396c30e3fbee01[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 11 22:28:08 2023 +0900
+
+    fix : 수객체 생성 시 수정일 생성 버그 수정
+
+[33mcommit 52e227ca2124cbd2893255c57ef8c11d08dd8e37[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Sun Jun 11 22:16:47 2023 +0900
+
+    feat : 게시글 작성 RsData, Rq 적용
+
+[33mcommit 18ef39205b0053c4d61af36b11365a9ae1813432[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 11 22:09:56 2023 +0900
+
+    fix : ë 부모 댓글 삭제 상태가 아닐 때 대댓글 삭제 시 리스트 사라지지 않는 버그 수정
+
+[33mcommit 6ff952d59f5f11c3a93c48856bb748a02ed014b6[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 11 22:01:30 2023 +0900
+
+    feat : rq도입
+
+[33mcommit 589c4b3ea921686434a2d7c3ea4728ea020323eb[m
+Merge: da39d1e 7dc6c17
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 11 21:52:03 2023 +0900
+
+    Merge branch 'main' of https://github.com/SoloForest/SoloForest into enhancement58/comment
+
+[33mcommit da39d1ee7ed417a6c408c3dea2cb2390b0c150c7[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 11 20:35:59 2023 +0900
+
+    fix : 부모 댓글 삭제 상태에서 자식 댓글 삭제 시 부모 댓글 삭제 안되는 버그 수정
+
+[33mcommit 55fda296317b6f65387c2ffe65fef59b5a7903a8[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 11 17:18:11 2023 +0900
+
+    fix : 댓글 작성 후 댓글 작성창 초기화 안되던 버그 수정
+
+[33mcommit ed67c9a5064f8ca98a2dced868ff5de8aed0e742[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Sat Jun 10 22:47:51 2023 +0900
+
+    design : 게시판 폼  수정
+
+[33mcommit f31a4de4c0ece396817ad9fd2f25d9a39028e8f9[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Sat Jun 10 18:34:33 2023 +0900
+
+    feat : 게시글 검색 기능 구현
+
+[33mcommit 1b5d6e1d154b7744c2e813cf08be98af5203cc4a[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 9 15:33:25 2023 +0900
+
+    feat : 게시글 페이징 처리
+
+[33mcommit dba7f8f31aa8dd3817b991de0936fe3d217f113e[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 9 02:03:48 2023 +0900
+
+    feat : 게시글 작성, 수정, 삭제에 @PreAuthorize 설정
+
+[33mcommit efeff9f98bb6f5debf267a8f441af17f9d596f2a[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 11 16:05:39 2023 +0900
+
+    fix : 대댓글 삭제 시 리스트 갱신 안되는 버그 수정
+
+[33mcommit 668795759707220963766002240f9724a07bd8e6[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 11 05:13:17 2023 +0900
+
+    refactor : AccountAdapter에서 Account가 아닌 Account id만을 조회할 수 있도록 변경
+
+[33mcommit 2ae24beda37af1a350380245c032b4a684acbc8f[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 11 05:11:44 2023 +0900
+
+    feat : 신고 제재받은 사용자의 로그인 끊기
+
+[33mcommit a05223411185a6c707b2ee2aeb47c6a5aece5da3[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 11 01:34:48 2023 +0900
+
+    feat : 신고 3번 받으면 로그인시 제재
+
+[33mcommit e8497736083835363f7c330c4dbff2f440d3e7a0[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 11 01:33:03 2023 +0900
+
+    feat : 신고하기 기능 구현
+
+[33mcommit 4517bab0735d04859bfe2b1da18908c36876d6f0[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 11 01:28:20 2023 +0900
+
+    design : 403 forbidden 페이지와 컨트롤러 생성
+
+[33mcommit 4ca5c0fefc819cf34ff90a7025f0eb49feaaf980[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 11 01:26:31 2023 +0900
+
+    test : 신고하기 테스트 추가
+
+[33mcommit 7dc6c17937544861384014580cbae60ba1a2ebff[m
+Merge: df2350e a77007d
+Author: cheorhyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Sun Jun 11 02:40:17 2023 +0900
+
+    Merge pull request #66 from SoloForest/enhancement53/withdraw
+    
+    Enhancement53/withdraw
+
+[33mcommit df2350e42fd5a1b894259bb639ffc96d54a9d574[m
+Merge: 6908ce9 4c516a8
+Author: cheorhyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Sun Jun 11 02:36:48 2023 +0900
+
+    Merge pull request #65 from SoloForest/enhancement40/base
+    
+    Enhancement40/base
+
+[33mcommit 44f47f4c63dc16c3541babd89d75ace65820cfab[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sat Jun 10 23:10:47 2023 +0900
+
+    feat : 댓글 삭제 Ajax화
+
+[33mcommit 2f2a34e235e30331e497f8ddc86f496ff4140556[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sat Jun 10 21:30:26 2023 +0900
+
+    feat : 대댓글 수정 구현
+
+[33mcommit b2bf2e95d082996cf9cf03800c9f89a7f7d4a764[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sat Jun 10 19:55:00 2023 +0900
+
+    feat : 댓글 수정 Ajax 도입
+
+[33mcommit 3d8e385e047a62a53f6dca1e4e2ad15259c4cf13[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Fri Jun 9 23:06:14 2023 +0900
+
+    feat : Ajax 댓글, 대댓글 작성까지 도입
+
+[33mcommit a77007d185657b56601b2c8dca6924c152775a15[m[33m ([m[1;31morigin/enhancement53/withdraw[m[33m)[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri Jun 9 03:04:34 2023 +0900
+
+    fix : 비밀번호 변경시 세션에 저장된 로그인 정보도 업데이트 되도록 수정
+
+[33mcommit 8ab6eeeefcc47733b50c186c4469648984b7fcc1[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri Jun 9 03:01:50 2023 +0900
+
+    feat : 회원탈퇴 기능 구현
+
+[33mcommit 92ceaf414fffa830a99fdee62eeb1692d07103b8[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri Jun 9 02:54:24 2023 +0900
+
+    chore : Account 데이터 테이블 컬럼 추가
+
+[33mcommit d305660929c0a709c0b82d1992ea6fc39daba196[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri Jun 9 02:50:44 2023 +0900
+
+    feat : 회원탈퇴 폼 완성
+
+[33mcommit 0a1a1ee1111184bf50490abdbc4cb1318ce886a0[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri Jun 9 01:33:26 2023 +0900
+
+    test : 회원탈퇴 테스트 추가
+
+[33mcommit 4c516a840d22c29e11194e8cab2770b96574ce1d[m[33m ([m[1;31morigin/enhancement40/base[m[33m)[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Thu Jun 8 21:58:42 2023 +0900
+
+    feat : 로그인된 회원 객체
+
+[33mcommit 5006aa1fd367024143e0bf273d601b763c8304f0[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 6 00:35:22 2023 +0900
+
+    feat : RsData, Rq 도입
+
+[33mcommit 6908ce90c3da02ca8e76f07355a800bb275acc50[m
+Merge: 346f26c 1f3ab02
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Fri Jun 9 01:18:09 2023 +0900
+
+    Merge pull request #64 from SoloForest/enhancement2/Group
+    
+    fix: conflict
+
+[33mcommit 1f3ab02bc04e0d6fdac9f9b44381c4339ff5a442[m[33m ([m[1;31morigin/enhancement2/Group[m[33m, [m[1;32menhancement2/Group[m[33m)[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Fri Jun 9 00:06:07 2023 +0900
+
+    fix: 컨플릭트수정3
+
+[33mcommit 3d5b8fa01dbfa32c36f659cb9e696a0ea502ced7[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Thu Jun 8 23:57:08 2023 +0900
+
+    fix: 컨플릭트수정2
+
+[33mcommit 7c6e6854f67f2ae691bace3bbe81d382dbb2a444[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Thu Jun 8 23:54:57 2023 +0900
+
+    fix: 컨플릭트수정
+
+[33mcommit 346f26c234a09276f41994eb44b33e8a3fc461ea[m
+Merge: 7c198f9 63985de
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Fri Jun 9 00:03:06 2023 +0900
+
+    Merge pull request #62 from SoloForest/bug61/comment
+    
+    fix : comment account 관련 메서드 수정
+
+[33mcommit 7c198f953142da0967eb89973a23364aff95618c[m
+Merge: 878cb18 fa2f48f
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Thu Jun 8 22:00:09 2023 +0900
+
+    Merge pull request #49 from SoloForest/enhancement2/Group
+    
+    Enhancement2/group #29
+
+[33mcommit 63985de2359b771511a0e188b5f1715c1fd574e4[m[33m ([m[1;31morigin/bug61/comment[m[33m)[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu Jun 8 20:38:07 2023 +0900
+
+    fix : comment account 관련 메서드 수정
+
+[33mcommit d0a7fd49f69db6fb4aba426dae861e20d6b9ce62[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu Jun 8 20:31:07 2023 +0900
+
+    docs : branch 변경을 위한 임시 commit
+
+[33mcommit 878cb18701926010829cea5cac4d17945ec9c231[m
+Merge: f5b70bb 9094c47
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Thu Jun 8 17:53:27 2023 +0900
+
+    Merge pull request #60 from SoloForest/enhancement59/modifyInfo
+    
+    Enhancement59/modify info
+
+[33mcommit 9b0e9182f6ff4e9a9ad36119780c5dcb4a239d57[m
+Merge: dd52321 f5b70bb
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu Jun 8 15:34:59 2023 +0900
+
+    docs : pull용 커밋
+
+[33mcommit f5b70bb76584f2a8c832768fc3efd73074262dc5[m
+Merge: 95a6f77 cff73c2
+Author: cheorhyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Thu Jun 8 15:26:22 2023 +0900
+
+    Merge pull request #57 from SoloForest/enhancement28/comment
+    
+    Enhancement28/comment
+
+[33mcommit dd5232144785ca8b505a6498c96ed2c6c694b8d7[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu Jun 8 15:14:34 2023 +0900
+
+    docs : main pull 용 커밋
+
+[33mcommit 9094c4700518d93314ed974598f279847d85ff59[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 8 15:09:25 2023 +0900
+
+    fix : 컨벤션에 맞춰 함수명 변경
+
+[33mcommit fa2f48f1016083065a9fc21ca19ef802e5f1f5ab[m
+Author: Chan0521 <125876633+Chan0521@users.noreply.github.com>
+Date:   Thu Jun 8 14:36:06 2023 +0900
+
+    Update gradlew.bat
+
+[33mcommit 65be00d6cc7cbd1285d57335527a16d5545f0b15[m
+Merge: e827361 95a6f77
+Author: Chan0521 <125876633+Chan0521@users.noreply.github.com>
+Date:   Thu Jun 8 14:35:21 2023 +0900
+
+    Merge branch 'main' into enhancement2/Group
+
+[33mcommit e827361c56ced45b48442c6d696f68efbd270033[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Thu Jun 8 14:33:31 2023 +0900
+
+    fix: @RequiredArgsConstructor추가
+
+[33mcommit 95a6f77118c095d9c8100572cf37c2a95f46b01f[m
+Merge: b875b66 17de229
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Thu Jun 8 14:29:47 2023 +0900
+
+    Merge pull request #55 from SoloForest/enhancement36/article
+    
+    Enhancement36/article
+
+[33mcommit 3920e385817e8c5091818b3a045b3908d3ffd5a8[m[33m ([m[1;31morigin/enhancement59/modifyInfo[m[33m)[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 8 13:51:35 2023 +0900
+
+    feat : 정보 변경 기능 및 입력 데이터 검증 구현
+
+[33mcommit 67ea068dda00b96c40fade5e7a7bf2146404190e[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 8 13:51:00 2023 +0900
+
+    test : 정보 변경 테스트
+
+[33mcommit 1f224a7c2d62d15676bbc6ace07e79fe83fb6a53[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 8 10:05:39 2023 +0900
+
+    design : 마이메이지 회원정보 변경 폼에 name속성 추가
+
+[33mcommit cff73c209fb5f625749c0c7d57f49a9756b141ba[m[33m ([m[1;31morigin/enhancement28/comment[m[33m)[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu Jun 8 10:42:26 2023 +0900
+
+    refactor : notification 페이지 자손 선택자로 변경
+
+[33mcommit a42dc9a0aaaad6f9395435e057ac3824e64dceac[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu Jun 8 10:30:00 2023 +0900
+
+    feat : 알림 객체 생성 시 해당 게시글 페이지로 이동 구현(미완)
+
+[33mcommit 33e2811241e80cd119a0f458b186b61400bb7514[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu Jun 8 01:55:34 2023 +0900
+
+    refactor : comment - accountService 활용으로 메서드 변경
+
+[33mcommit 0f01af510cb1a3d05e9155d15487eb4b48aa907f[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu Jun 8 01:43:15 2023 +0900
+
+    feat : 알림 페이지 구현
+
+[33mcommit 17de229fce21df0de4b45d2eeecf8da20bc0ce1f[m[33m ([m[1;31morigin/enhancement36/article[m[33m)[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Thu Jun 8 00:39:17 2023 +0900
+
+    design : 게시글 작성 폼, 수정 폼 title 설정
+
+[33mcommit b8a97ed294be8db75ce3e8371066a8c98754ed94[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 7 22:41:09 2023 +0900
+
+    feat : 알림 페이지 제작
+
+[33mcommit 99a864f99fb8e945fb2893d446c622d4335dee18[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 7 19:50:21 2023 +0900
+
+    refactor : Notification 읽음 표시 처리를 위한 속성 추가
+
+[33mcommit 99cb08f8be1b897c05367a13f95b8c5e29d0e842[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 7 14:44:42 2023 +0900
+
+    test : NotProd 수정하여 Notification 객체 생성 확인
+
+[33mcommit e8042653db8d44e47eaf64d163eaeff641826cae[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed Jun 7 14:19:38 2023 +0900
+
+    feat : 대댓글 이벤트 발생 및 알림 객체 생성
+
+[33mcommit 383c73bb94e2b82ab5a1b9151f3897476276d0a4[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 6 23:39:32 2023 +0900
+
+    feat : 댓글 생성 시 알림 객체 자동 생성 기능 추가
+
+[33mcommit 190acd201662bbaca649f3ac94822969f0abc27f[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue Jun 6 14:32:56 2023 +0900
+
+    test : CommentService test case 추가 및 메서드 약간 수정
+
+[33mcommit 90b15635636e6e4928a495b410b5fc6d05ed88be[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Wed Jun 7 17:14:44 2023 +0900
+
+    design: 템플릿적용
+
+[33mcommit 61bad11e9840498ed3dfd4f1ae992fd5f17e9680[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 15:53:00 2023 +0900
+
+    refactor : 게시글 삭제 Test, get -> post 변경
+
+[33mcommit d7941f9cb80faf5f1b0a87859745d6f7e44fd619[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 15:04:28 2023 +0900
+
+    refactor : 삭제 시 Get -> Post 변경
+
+[33mcommit f57f7bf55b3278a761fdc7cd42cc57fb5c21db7f[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Wed Jun 7 11:21:38 2023 +0900
+
+    fix: conflicts
+
+[33mcommit fa9518b4d6cad6e34fee96ede6ec46a0a3adc209[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 02:50:55 2023 +0900
+
+    test : share controller 게시글 삭제 테스트
+
+[33mcommit 5fc3f5d216ff2cee2029d63892a9949b64c2fa78[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 02:41:06 2023 +0900
+
+    feat : share article 게시글 삭제 기능 구현
+
+[33mcommit f49565a17b59093c68d9b26485fc879ee8918ac8[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 02:40:04 2023 +0900
+
+    design : 삭제 button url 수정
+
+[33mcommit 358ddff5b96f976a1659ffba9c39e1e12d669a72[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 01:31:58 2023 +0900
+
+    test : share controller 게시글 수정 테스트
+
+[33mcommit 9ab795f3d1bebc8be6965528a38779e34b9085bd[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 01:18:30 2023 +0900
+
+    feat : share article 수정 기능 구현
+
+[33mcommit 5248a75e7f18a0ebd675db2f5d4dc4a900bcfd76[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 01:16:46 2023 +0900
+
+    design : share article 수정 form 구현
+
+[33mcommit d34d34bb3951d6121bb65e3addc63741947d95ed[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed Jun 7 01:14:36 2023 +0900
+
+    feat : Entity에 toBuilder = true 적용
+
+[33mcommit db925e9b0351342b0e07c73dacb73ddd35b3dee3[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Tue Jun 6 22:18:50 2023 +0900
+
+    feat : Article Entity에 comment 속성 추가
+
+[33mcommit b875b66dcae03e168f23cd4a7b509a82a8beeccf[m[33m ([m[1;31morigin/enhancement56/article[m[33m)[m
+Merge: 893961c 19c5cdd
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Tue Jun 6 20:12:23 2023 +0900
+
+    Merge pull request #54 from SoloForest/enhancement46/mypage
+    
+    Enhancement46/mypage
+
+[33mcommit 19c5cdd73a0045f346c2c3face35d521ff40fde5[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue Jun 6 03:46:18 2023 +0900
+
+    feat : 마이페이지 html 작성
+
+[33mcommit 2f7e229e15a48f873db8b4d7fe20eea3b50d16ee[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue Jun 6 03:45:19 2023 +0900
+
+    test : 테스트용 이미지 저장
+
+[33mcommit 5ca257039fc7aefea0a285cb57f486c5eb55de19[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue Jun 6 03:44:43 2023 +0900
+
+    refactor : 주소 선택 form을 조작하는 js를 분리
+
+[33mcommit cb8a4decc48cf37d9ef50917fd911327c01523c3[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 5 23:45:18 2023 +0900
+
+    feat : 로그인한 사용자의  마이페이지 연결
+
+[33mcommit 893961c9b20ea741726a46979ced0503669f8d55[m
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Mon Jun 5 22:18:57 2023 +0900
+
+    fix : Account 컨트롤러 테스트 변경
+
+[33mcommit 7968cea5ccc12fbeb110e84c77bddea33c20a818[m
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Mon Jun 5 20:30:41 2023 +0900
+
+    fix : account 주소
+
+[33mcommit b1264fd05f8a920b4fa34e6384256555591908f2[m
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Mon Jun 5 17:23:11 2023 +0900
+
+    Update application-prod.yml
+
+[33mcommit 5bc438720c86ed3b37c73a8b169d5d453cf80bcc[m
+Merge: d2dc7aa 019a2b3
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Mon Jun 5 16:49:25 2023 +0900
+
+    Merge pull request #50 from SoloForest/enhancement33/signup
+    
+    Enhancement33/signup
+
+[33mcommit 019a2b37b3c4fdd699e284c5539843831484a548[m
+Merge: 285cf76 d2dc7aa
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Mon Jun 5 16:41:20 2023 +0900
+
+    Merge branch 'main' into enhancement33/signup
+
+[33mcommit 285cf76fbcb01619c15053e7fa830ab3b5ed2af6[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 5 16:00:36 2023 +0900
+
+    feat : 회원가입 하기 전 약관 동의 페이지 설정
+
+[33mcommit 19399cacff02acf3f2dcae8f958dae522032ce19[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 5 15:55:33 2023 +0900
+
+    feat : 회원가입 입력 데이터 검증
+
+[33mcommit d2dc7aab84009eaf8b729f10fc3763bb173caafa[m
+Merge: 53e15bc 2be33f5
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Mon Jun 5 15:38:49 2023 +0900
+
+    Merge pull request #48 from SoloForest/enhancement35/article
+    
+    Enhancement35/article
+
+[33mcommit 53e15bcbb99cc5b672d045fb7dde9e8b2522d862[m
+Merge: ce8a8c8 23ba9ae
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Mon Jun 5 15:37:36 2023 +0900
+
+    Merge pull request #45 from SoloForest/enhancement39/data
+    
+    Enhancement39/data
+
+[33mcommit ce8a8c839384ee14079c92eb13454030faef566e[m
+Merge: a1bdf09 425f457
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Mon Jun 5 15:37:01 2023 +0900
+
+    Merge pull request #44 from SoloForest/enhancement32/signup
+    
+    Enhancement32/signup
+
+[33mcommit a1bdf09e9b24d944463fc6dfc07acaff3badfb03[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Mon Jun 5 14:44:31 2023 +0900
+
+    feat : test시 test 프로필 활성화 추가
+
+[33mcommit 0ff79dd4af0857105291f0bae192d5a1fae7bc01[m
+Merge: eda057d 99796c4
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Mon Jun 5 13:46:18 2023 +0900
+
+    Merge pull request #37 from SoloForest/enhancement28/comment
+    
+    enhancement28/comment
+
+[33mcommit eda057db29f0cbb52dcb08cf0170152542ae232f[m
+Merge: 51e3c3c f0dc1af
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Mon Jun 5 13:38:05 2023 +0900
+
+    Merge pull request #43 from SoloForest/enhancement41/comment
+    
+    feat : 배포 자동화를 위한 prod.yml, 세션 외부 저장을 위한 redis 도입
+
+[33mcommit 2be33f55fe775966c6d66be15b39206b3659c4f4[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 5 10:49:51 2023 +0900
+
+    rename : 조회수 메소드 이름 변경
+
+[33mcommit 2d2754805a2d08911031c43ce9cd514d6715f164[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 5 10:22:55 2023 +0900
+
+    fix : 게시글 작성 페이지 잘못된 경로 연결 시 에러 페이지 호출
+
+[33mcommit 2e3c392ed87262a3dbf28a18da1f4d83aef105b3[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 5 09:52:03 2023 +0900
+
+    feat : 조회수 기능 구현
+
+[33mcommit 8a676c389f2c7f8c2341f66e5859c747aaeed285[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 5 03:07:59 2023 +0900
+
+    test : share controller 게시글 작성 테스트
+
+[33mcommit 6462ec31dcc251bfce12641bee97969ab17aa63e[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 5 02:48:21 2023 +0900
+
+    fix : 게시글 상세 페이지 잘못된 경로 조회 시 에러 페이지 호출
+
+[33mcommit 88289ec646b02b4c1217b1371a95f01fb18c8339[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon Jun 5 02:44:19 2023 +0900
+
+    design : 404 에러 form 구현
+
+[33mcommit 23ba9ae71f38a54e18ae96ef8800e44cb190a19a[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 5 01:38:23 2023 +0900
+
+    fix : AccountControllerTest와 initData/NotProd의 테스트 데이터가 겹치지 않도록 변경
+
+[33mcommit 8b0382cbcaace3236407075306456fd25fd9d61f[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 5 01:38:07 2023 +0900
+
+    test : Account 테스트 데이터를 AccountService를 통해 생성하도록 변경
+
+[33mcommit d4ebe5f742f908c43dd215496a40ba808efaadfb[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 5 01:20:43 2023 +0900
+
+    refactor : Account 빌더를 호출할 때 자동으로 비밀번호를 인코딩하도록 변경
+
+[33mcommit 81950aefeb6a68741c44f4facf9e8edaa8ee620e[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 5 00:15:24 2023 +0900
+
+    fix : int와 LocalDateTime에 NotBlank를 NotNull로 변경
+
+[33mcommit d559b06bd554d41d336ebeef936ee17921a44720[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Mon Jun 5 00:14:42 2023 +0900
+
+    test : 테스트용 데이터셋 생성
+
+[33mcommit 425f457b01ed315fbe59592869df160e1704a923[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 4 20:32:05 2023 +0900
+
+    fix : 사용자 세션에 Security Context를 저장하도록 변경
+
+[33mcommit 1f9e9d1fbb98fe75a9586e487d723926805185e6[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 4 20:18:02 2023 +0900
+
+    fix : 평문 정보로 UsernamePasswordAuthenticationToken 생성하도록 변경
+
+[33mcommit db035a3db0b58e6d50bd9c255057e10258877c81[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 4 18:53:20 2023 +0900
+
+    test : 회원가입 후 로그인 테스트 추가
+
+[33mcommit e9750c0ce1f73077352f69b35f4ab94279b2bf86[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 4 17:48:52 2023 +0900
+
+    fix : 의미없는 코드 삭제
+
+[33mcommit 039a227f0231010303b24a1c2ebc94796a268939[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sat Jun 3 14:51:10 2023 +0900
+
+    bug : (진행중) 회원가입 즉시 로그인세션 생성 안되는 문제
+
+[33mcommit f0dc1afdeb29430fbae825250375b1c60452374a[m
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Sun Jun 4 17:19:57 2023 +0900
+
+    Update Dockerfile
+
+[33mcommit 95670db639f87aaaf0a94cd10b282aaf631e40d1[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 4 17:18:36 2023 +0900
+
+    feat : Dockerfile ë°  jar enabled 속성 끄기
+
+[33mcommit 51e3c3cf2202742deb83d9e2195a0a6253b2e866[m
+Merge: 08e2c88 5336957
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Sun Jun 4 16:32:14 2023 +0900
+
+    Merge pull request #38 from SoloForest/enhancement31/signup
+    
+    Enhancement31/signup
+
+[33mcommit 53369571136837745f3a3dee1d163e276ab8ec01[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 4 15:49:35 2023 +0900
+
+    fix : 컨트롤러에서 사용하지 않는 모델 파라미터 삭제
+
+[33mcommit e60f09ad0c03cc56288eae01c6a054291c2403a1[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sun Jun 4 15:42:18 2023 +0900
+
+    fix : @Builder로 관리되는 엔티티에 defualt값 설정할 수 있도록 @Builder.Default 추가
+
+[33mcommit bb11538c0ddd64bed6e848ed113e35a4417aa390[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Sun Jun 4 15:25:05 2023 +0900
+
+    feat : 배포 자동화를 위한 prod.yml, 세션 외부 저장을 위한 redis 도입
+
+[33mcommit 41e7d9ae6a1648fea7c0e46112a52d4bac6a5597[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Sun Jun 4 00:57:03 2023 +0900
+
+    share article 상세페이지 조회 기능 구현
+
+[33mcommit 7ae6e0a623572c4b5430ad3f1b3514a69f993d89[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Sat Jun 3 19:00:18 2023 +0900
+
+    design : share article  상세페이지 form 구현
+
+[33mcommit 93c6f795571b01927062a6156bdbcec94ce76d46[m
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Sat Jun 3 15:28:44 2023 +0900
+
+    fix : account 엔티티에서 default값 설정 제거
+
+[33mcommit 1fc1bef408e7909654b3d16106f1b0faa2c47b24[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sat Jun 3 03:18:44 2023 +0900
+
+    feat : 회원가입 기능 구현
+
+[33mcommit bef99c6222b395be5a3a602c51f26e9e743820a7[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sat Jun 3 03:17:42 2023 +0900
+
+    design : 회원가입 폼 구현
+
+[33mcommit 4b6b45b948e6bdad7972d420df1bb3358dbcd757[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Sat Jun 3 03:15:35 2023 +0900
+
+    test : 회원가입 폼 컨트롤러 테스트
+
+[33mcommit 7377017cada389cc71b5d8a8ea3044297b9c440e[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Sat Jun 3 01:07:25 2023 +0900
+
+    design : 폰트어썸 및 title 패턴 적용
+
+[33mcommit 99796c4a94f16b32264aa35b69b9609a0ce1020a[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Fri Jun 2 22:28:12 2023 +0900
+
+    refactor : comment 수정 메서드 매개변수 수정
+
+[33mcommit b3275aa13bc621289db5cf0d34e4cb30530812f8[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Fri Jun 2 21:48:09 2023 +0900
+
+    feat : comment Create기능 구현,
+
+[33mcommit 18164f5f66d2d89d572022c6279ce2aca93f73f2[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Fri Jun 2 17:36:02 2023 +0900
+
+    feat : comment에서 account 객체 가져오기 위한 accountService 생성
+
+[33mcommit c31a86869712259256113fb53177480ae26e879e[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Fri Jun 2 17:19:40 2023 +0900
+
+    feat : 댓글 Update, Delete 기능 구현
+
+[33mcommit 08e2c88cbe8bda305f869a99a017f2f93f6ca5c7[m
+Merge: a369d62 58332e9
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Fri Jun 2 16:51:39 2023 +0900
+
+    Merge pull request #34 from SoloForest/enhancement20/article
+    
+    Enhancement20/article
+
+[33mcommit 58332e97a73b3c299b568302a2953b2fd33d856e[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 2 14:44:12 2023 +0900
+
+    feat : 커뮤니티 게시판, 프로그램 게시판 게시글 작성 기능 구현
+
+[33mcommit 2ff3f7878d61410ccbee5fee23c946b116407998[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 2 14:29:47 2023 +0900
+
+    design : community, program url 수정
+
+[33mcommit aecc5beea26c4a3b3ebb27d4347594e44b2a542d[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 22:55:29 2023 +0900
+
+    style : 필요없는 코드 삭제
+
+[33mcommit f30d91c6fbab06a3855f0ed3d2421b8bdbc1b856[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 22:45:30 2023 +0900
+
+    design : login, logout이 알맞은 상황 에 표시되도록 변경
+
+[33mcommit ba61fe3e85b1305e976c5746d121996a88ee6d21[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 22:09:17 2023 +0900
+
+    feat : account의 username속성에 길이제한 추가
+
+[33mcommit 510356b02eb1c8fbc5a6eee71dc0efb5a32e828a[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 17:43:39 2023 +0900
+
+    feat : login 입력 데이터 검증
+
+[33mcommit 6491f2293ed651a0ce02b839de9642f44968d7ee[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 17:41:19 2023 +0900
+
+    feat : toastr 도입
+
+[33mcommit c0043edf906e58b1cfe5b1e3d4639b8ae19b9b35[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 2 14:21:06 2023 +0900
+
+    comment : boardNumber 변수 주석 변경
+
+[33mcommit a369d62dfc4d645cfa2c2e89eee1db3ee8111822[m
+Merge: bc820db 9cce44d
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Fri Jun 2 14:15:48 2023 +0900
+
+    Merge pull request #30 from SoloForest/enhancement27/login
+    
+    Enhancement27/login
+
+[33mcommit 6471a9d16aa46328bba7683d96863c1757ecae1e[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 2 11:52:23 2023 +0900
+
+    feat : 커뮤니티 게시판 프로그램 게시판 조회 기능 구현
+
+[33mcommit 433f7e2ebe31284984ffb38b2201e7352735dbe2[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 2 11:48:35 2023 +0900
+
+    test : share controller 게시판 조회 테스트
+
+[33mcommit 3475c87b4d778280c307e3c042a2f3571252d65e[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 2 02:30:32 2023 +0900
+
+    design : 커뮤니티 게시판 글쓰기 button url 수정
+
+[33mcommit a51abfa913628766fab6379073b593d603851aef[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 2 00:38:31 2023 +0900
+
+    design : community, program url 설정
+
+[33mcommit 37d1433ceb35aaa3a4eedc1cc0bcf9a8df1f2dfa[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Fri Jun 2 00:36:51 2023 +0900
+
+    design : 프로그램 게시판 form 구현
+
+[33mcommit 9cce44d31f7e82c6be218a36e38bd29a51e08a46[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 22:55:29 2023 +0900
+
+    style : 필요없는 코드 삭제
+
+[33mcommit e7af6296993d4883fb20ed0c11c3a02422cf298b[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 22:45:30 2023 +0900
+
+    design : login, logout이 알맞은 상황 에 표시되도록 변경
+
+[33mcommit ec2e1cbfa1aebaa98d462d5d55aec6bd2720e88f[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 22:09:17 2023 +0900
+
+    feat : account의 username속성에 길이제한 추가
+
+[33mcommit a43e729e7e953908648047a23cbadaf5bc1336c6[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 17:43:39 2023 +0900
+
+    feat : login 입력 데이터 검증
+
+[33mcommit 421d535ff0680d0341b4a27f9e21f68922ba4934[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 17:41:19 2023 +0900
+
+    feat : toastr 도입
+
+[33mcommit 6740546d8430145b9cb92509753c2b8d3d8b6edd[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Thu Jun 1 15:54:07 2023 +0900
+
+    feat : share article 작성 기능 구현
+
+[33mcommit 96ec56bd1f297264cf03dc8d29b2c722afa91605[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Thu Jun 1 15:52:43 2023 +0900
+
+    design : share article 작성 form 구현
+
+[33mcommit 37b656430dc0cbaa95b795ccec1a99c8bc739363[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Thu Jun 1 14:36:54 2023 +0900
+
+    feat : share controller 작성
+
+[33mcommit bc820dbffcffea6f9156f3afefe32fba05ffc5c3[m
+Merge: a68a482 a60a712
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Thu Jun 1 14:01:13 2023 +0900
+
+    Merge pull request #26 from SoloForest/enhancement14/login
+    
+    Enhancement14/login
+
+[33mcommit a68a482009312e835a8206164b5988f4ea060050[m
+Merge: 2afbe11 ab75ab5
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Thu Jun 1 13:59:09 2023 +0900
+
+    Merge pull request #25 from SoloForest/enhancement/15
+    
+    feat : 댓글 CRUD 간단하게 구현, 댓글 입력창 구현
+
+[33mcommit a60a7121586c92f12ddd08b3de4e1be5da9f1599[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 04:51:36 2023 +0900
+
+    test : localhost ui 테스트용 계정 생성 가능
+
+[33mcommit 8077342395d4623090c04be801c3d57c70c2df03[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 04:49:13 2023 +0900
+
+    design : login, logout url 변경
+
+[33mcommit f90db4e56074f62c0b1df30444013ff5e8995b93[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 04:46:10 2023 +0900
+
+    feat : spring security의 User를 Account로 대체
+
+[33mcommit 6d324f41a10b25aeb003868d6bbaf627fe7ea45f[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 04:40:37 2023 +0900
+
+    feat : spring security의 로그인, 로그아웃 경로 설정
+
+[33mcommit 3e5dd10f0a70a52015069e512ff28646983c7fa5[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Thu Jun 1 04:38:27 2023 +0900
+
+    test : account controller 로그인 성공, 실패 테스트 추가
+
+[33mcommit ab75ab5e0eb4eeeaae1dd09d040f2a2acba60dfc[m
+Merge: 235d034 2afbe11
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed May 31 15:41:05 2023 +0900
+
+    Merge branch 'main' of https://github.com/SoloForest/SoloForest into enhancement/15
+
+[33mcommit 235d0342ec696aece33f734ce8924760ddae59d3[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed May 31 15:39:37 2023 +0900
+
+    수정
+
+[33mcommit c61dca24677ddf8053cde6f6d85a9cef5ffad345[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Wed May 31 15:23:44 2023 +0900
+
+    feat : 댓글 CRUD 간단하게 우선 구현
+
+[33mcommit 2afbe1172893ae995d499a25a8ed05394f675bfc[m
+Merge: 2b0dbdb a86b767
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Wed May 31 13:10:54 2023 +0900
+
+    Merge pull request #24 from SoloForest/fix
+    
+    fix : yml 파일 수정하여 엔티티 테이블 생성되도록 수정
+
+[33mcommit 9c458e57a986741fc0f914c483d3bbe090dec6bd[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 21:14:09 2023 +0900
+
+    버그 수정
+
+[33mcommit bd8c95c2cc7ee2c328eecdaf6e38da851c7de784[m
+Merge: 244d9c3 2b0dbdb
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 20:04:48 2023 +0900
+
+    Merge branch 'main' of https://github.com/SoloForest/SoloForest into enhancement/15
+
+[33mcommit 244d9c340be730e1d3ef5cea358613a898eb8ef2[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 20:04:30 2023 +0900
+
+    yml 수정
+
+[33mcommit 2b0dbdb4ee26719388a8b36991cbe991ca71be79[m
+Merge: 497ed98 2e3d8b7
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue May 30 20:03:20 2023 +0900
+
+    Merge pull request #23 from SoloForest/enhancement13/login
+    
+    Enhancement13/login
+
+[33mcommit a86b767557ac539abf709c624ed227f817b1936a[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 19:58:14 2023 +0900
+
+    fix : yml 파일 수정하여 엔티티 테이블 생성되도록 수정
+
+[33mcommit ac647d1c44188c0983e35166de9a4764ceb5eebb[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 19:54:28 2023 +0900
+
+    fix : .yml 파일comment 수정필요
+
+[33mcommit 2e3d8b7c04d8dec4cdad6924cc1c0bde42cf611b[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue May 30 17:18:07 2023 +0900
+
+    test : account controller 로그인 폼 테스트 강화
+
+[33mcommit ca365c6969a79a79e749908a01ab2876a1e3f3f5[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue May 30 17:16:28 2023 +0900
+
+    design : login form 디자인 완성
+
+[33mcommit ebabcd03f1fca7f651a03941a25f983aca96d9e5[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue May 30 15:05:25 2023 +0900
+
+    feat : account controller 작성
+
+[33mcommit 330510d05794aed7e9d6d82c6f38124e45fb95bb[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue May 30 15:03:59 2023 +0900
+
+    test : account controller 테스트 추가
+
+[33mcommit 592a813551a782dc6151e6a295f5e5624d568551[m
+Merge: 3f0e799 497ed98
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 15:32:07 2023 +0900
+
+    Merge branch 'main' of https://github.com/SoloForest/SoloForest into enhancement/15
+
+[33mcommit 497ed98ea529ddda155e848762090dfd1a790e98[m
+Merge: 75fdf07 7de21a1
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue May 30 15:31:49 2023 +0900
+
+    Merge pull request #22 from SoloForest/enhancement17/account
+    
+    fix : @OneToMany에 mappedBy 삭제
+
+[33mcommit 3f0e799287a334be4b32df996b9622406d5281a5[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 15:29:21 2023 +0900
+
+    컨comment 컨트롤러 파일 생성
+
+[33mcommit 7de21a1ead1f0042db810934b3dfedc095d4c73f[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue May 30 15:27:46 2023 +0900
+
+    fix : @OneToMany에 mappedBy 삭제
+
+[33mcommit 75fdf079f102fb0b7d5ed7f47de3e028743647c8[m
+Merge: 801fd82 933339f
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Tue May 30 15:17:59 2023 +0900
+
+    Merge pull request #21 from SoloForest/fix
+    
+    fix : comment 수정
+
+[33mcommit 801fd8201c2ec7bf2dbf28e0e62e07cf1f7af368[m
+Merge: a01ef24 925db24
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Tue May 30 15:17:40 2023 +0900
+
+    Merge pull request #18 from SoloForest/enhancement17/account
+    
+    feat : account entity와 notification entitiy 연결하는 변수 생성(account)
+
+[33mcommit 933339f094a39525c2b818fd76917b58b1a8af47[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 15:15:12 2023 +0900
+
+    fix : comment 수정
+
+[33mcommit a01ef2427081dc85fdee3dc7dcdad1edb9457967[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 14:47:06 2023 +0900
+
+    feat : crnotification에 eated Date 적용  임포트 추가
+
+[33mcommit 6c8b4e123792cb5155cf236095b26d4d69fad58f[m
+Merge: 915cc0e 2d83480
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue May 30 14:45:06 2023 +0900
+
+    Merge pull request #16 from SoloForest/comment
+    
+    feat : comment, notification 엔티티 수정(OneToOne)
+
+[33mcommit 925db24f3f759a0578c323140ddcf4467be777fc[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Tue May 30 14:44:36 2023 +0900
+
+    feat : account entity와 notification entitiy 연결하는 변수 생성(account)
+
+[33mcommit 2d83480b018a7781f922b4284d2348fd4ad2d5a2[m
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue May 30 14:43:08 2023 +0900
+
+    Update Notification.java
+
+[33mcommit ee9ccebe5ef74f5333d91384716f668c396e1b09[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 14:37:38 2023 +0900
+
+    feat : comment, notification oneã 엔티티에 ê´ oneTentity에 oone 관계 추가
+
+[33mcommit 915cc0ed1740c9952248785c0ca4e56f27124af0[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Tue May 30 14:27:23 2023 +0900
+
+    feat : Group엔티티 NotBlank 적용을 위한 import 추가
+
+[33mcommit 8a48436e2c91eb5c4c9bd2972a9830763b23d61b[m
+Merge: 5e781d1 535e21f
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Tue May 30 13:15:40 2023 +0900
+
+    커ë°enhancement/2
+
+[33mcommit 65938a86487164c165d3bc96e4cb96eee81b721c[m
+Merge: 3fb9e93 0767c11
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue May 30 13:12:24 2023 +0900
+
+    Merge pull request #12 from SoloForest/enhancement7/article
+    
+    feat : article - share 엔티티 작성
+
+[33mcommit 3fb9e937a62b3014d314a80ec2d80ec6dade499a[m
+Merge: 6ab961b da52e5f
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue May 30 13:10:28 2023 +0900
+
+    Merge pull request #10 from SoloForest/enhancement4/article
+    
+    feat : article - group 엔티티 작성
+
+[33mcommit da52e5f09d132a9defcad7b849aba341b40f03c2[m
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue May 30 13:10:07 2023 +0900
+
+    Update Group.java
+
+[33mcommit 30fcd67584b9a09c2d21be8baf222d4b356ee788[m
+Author: Park Cheor Hyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Tue May 30 13:08:38 2023 +0900
+
+    feat:Update Group 엔티티 파일 수정
+
+[33mcommit 0767c11645a69f565d0879f71ce77f6a5ac2de19[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Mon May 29 23:29:08 2023 +0900
+
+    feat : article - share 엔티티 작성
+
+[33mcommit 6ab961b150d95791fb634141d6e4b93cc48e194f[m
+Merge: 90f9572 3e0c034
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Sat May 27 20:31:29 2023 +0900
+
+    Merge pull request #11 from SoloForest/enhancement5/comment
+    
+    feat : comment, notification 엔티티 작성
+
+[33mcommit 90f95720f76501edc99799188b3f8ea5969dbe27[m
+Merge: bc1ca50 19e9a1b
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Sat May 27 20:31:03 2023 +0900
+
+    Merge pull request #9 from SoloForest/enhancement6/article
+    
+    feat : article 엔티티 작성
+
+[33mcommit 3e0c03475d0a9e35e58aa8478073996c55c1c200[m
+Author: CheorHyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Sat May 27 18:18:08 2023 +0900
+
+    feat : 알림 객체 속성 변경(private 지정)
+
+[33mcommit bc1ca501d0d07b57cc6349e7890a898b3a5695d3[m
+Merge: 535e21f 25be5d5
+Author: CheorHyeon <126079049+CheorHyeon@users.noreply.github.com>
+Date:   Sat May 27 18:03:13 2023 +0900
+
+    Merge pull request #8 from SoloForest/enhancement3/account
+    
+    Feat: account 엔티티 추가
+
+[33mcommit 6b1091a78299071f23dc6605200ac888479ba51e[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri May 26 18:51:47 2023 +0900
+
+    feat : comment, notification 엔티티 작성
+
+[33mcommit e5657619ec0db0e04939492ca72fe7809f6e2c5d[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri May 26 18:47:41 2023 +0900
+
+    feat : article - group 엔티티 작성
+
+[33mcommit 19e9a1b83ccc2f9e2ea3a3156e6ee5f8334d14a4[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri May 26 18:42:38 2023 +0900
+
+    feat : article 엔티티 작성
+
+[33mcommit 25be5d5e8b3d372dc185bcac9681ba22cf9975d7[m
+Author: elephantLikesApple <elephant890@naver.com>
+Date:   Fri May 26 18:31:12 2023 +0900
+
+    Feat: account 엔티티 추가
+
+[33mcommit 5e781d116abeb35a5097f1c00c2fb4e704cd9ab4[m
+Author: 깃chan0521 <깃허aflpq369@gmail.com>
+Date:   Thu May 25 18:46:24 2023 +0900
+
+    메Main
+
+[33mcommit 535e21ff8fd50811367f289cd0a701c83d8aad7e[m
+Merge: 4c1817e db7e503
+Author: elephantLikesApple <47274472+elephantLikesApple@users.noreply.github.com>
+Date:   Thu May 25 17:54:55 2023 +0900
+
+    Merge pull request #2 from SoloForest/enhancement1/template
+    
+    Enhancement1/template
+
+[33mcommit db7e503bfbb4e262e50cdc1fbabb2c01918a3fde[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu May 25 17:51:15 2023 +0900
+
+    fix : HomeControllerTest 그 수정, main.html에 navbar.html 링크를 layout.html로 변경
+
+[33mcommit 4f3137060d0a36488c02d1e0832615058f185b47[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu May 25 17:42:53 2023 +0900
+
+    feat : html 템플릿 작성
+
+[33mcommit c96f270aef630d9fff1ea72077ddeae0e5ac7f61[m
+Merge: 6c8f520 4c1817e
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu May 25 14:27:22 2023 +0900
+
+    Merge branch 'main' of https://github.com/SoloForest/SoloForest into enhancement1/template
+
+[33mcommit 6c8f520f6cf456343493aba6225a9c743b631454[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu May 25 14:24:04 2023 +0900
+
+    feat : HomeController 작성
+
+[33mcommit b4df211aff08ae8eb62345d380a24b6b9061ff25[m
+Author: 깃ChertHyeon <r4560798@naver.com>
+Date:   Thu May 25 14:12:15 2023 +0900
+
+    test : HomeController 테스트 작성
+
+[33mcommit 4c1817ea43e73f0654a601e2c725372e2e9dbd4b[m
+Author: U Jineeee <80236952+u-jineeee@users.noreply.github.com>
+Date:   Thu May 25 13:59:36 2023 +0900
+
+    docs : issue templates 작성
+
+[33mcommit a5d00c551738e6f4e6d7f1a4765136ae7a1bd38f[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed May 24 17:47:18 2023 +0900
+
+    docs : ReadMe.md 작성
+
+[33mcommit 175c8052d73f9e8226cfb30078bd92c4a0dbd86b[m
+Author: ujineeee <yujin11006@naver.com>
+Date:   Wed May 24 16:07:23 2023 +0900
+
+    init
