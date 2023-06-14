@@ -83,10 +83,10 @@ public class NotificationController {
 
 	@PostMapping("/notification/deleteAll")
 	@PreAuthorize("isAuthenticated()")
-	public String deleteAllNotification(Model model, @RequestParam Long accountId) {
+	public String deleteAllNotification(@RequestParam Long accountId) {
 
 		notificationService.deleteAll(accountId);
 
-		return "redirect:/notification";
+		return rq.redirectWithMsg("/notification", "전체 삭제 되었습니다.");
 	}
 }

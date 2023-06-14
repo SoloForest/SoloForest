@@ -14,14 +14,16 @@
                     <h5 class="border-bottom my-3 py-2 font-bold"
                         th:text="|${#lists.size(notifications)}|"></h5>
                     <h5 class="border-bottom my-3 py-2"> 개의 알림이 있습니다.</h5>
-                    <button class="btn border-bottom mx-2 my-1 py-2" onclick="$(this).children('form').submit();"> 전부삭제
+                    <button class="btn border-bottom mx-2 my-1 py-2" th:classappend="${#lists.size(notifications) == 0} ? 'btn-disabled' : ''"
+                            onclick="$(this).children('form').submit();"> 전부삭제
                         <form hidden th:action="@{|/notification/deleteAll|}" method="POST">
                             <input type="hidden" name="accountId" th:value="${@rq.account.id}">
                         </form>
                     </button>
                 </div>
                 <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
-                    <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
+                    <i class="fa-regular fa-face-laugh"></i>
+                    최근에 받은 알림이 없습니다.
                 </div>
                 <div class="card bg-white shadow-xl m-3" th:each="notification, notificationIndex : ${notifications}">
                     <div class="card-body cursor-pointer rounded-lg"
