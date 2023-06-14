@@ -53,9 +53,11 @@ public class GroupController {
 
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
-	public String create(String subject, String content, int member, LocalDateTime startDate, LocalDateTime endDate) {
+	public String create(String subject, String content, int member, LocalDateTime startDate, LocalDateTime endDate,
+		int money, String location) {
 
-		Group group = groupService.create(subject, content, member, startDate, endDate, rq.getAccount());
+		Group group = groupService.create(subject, content, member, startDate, endDate, money, location,
+			rq.getAccount());
 
 		return "redirect:/article/group/detail/%d".formatted(group.getId());
 	}

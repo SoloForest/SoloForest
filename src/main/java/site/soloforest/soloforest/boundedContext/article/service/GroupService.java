@@ -107,8 +107,8 @@ public class GroupService {
 	}
 
 	@Transactional
-	public Group create(String subject, String content, int member, LocalDateTime startDate, LocalDateTime endDate,
-		Account account) {
+	public Group create(String subject, String content, int member, LocalDateTime startDate, LocalDateTime endDate
+		, int money, String location, Account account) {
 		Group group = Group.builder()
 			.account(account)
 			.subject(subject)
@@ -116,6 +116,8 @@ public class GroupService {
 			.member(member)
 			.startDate(startDate)
 			.endDate(endDate)
+			.money(money)
+			.location(location)
 			.boardNumber(2)
 			.build();
 		groupRepository.save(group);
