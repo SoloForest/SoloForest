@@ -80,4 +80,13 @@ public class NotificationController {
 		model.addAttribute("notifications", notifications);
 		return "notification/notification :: #notification-list";
 	}
+
+	@PostMapping("/notification/deleteAll")
+	@PreAuthorize("isAuthenticated()")
+	public String deleteAllNotification(Model model, @RequestParam Long accountId) {
+
+		notificationService.deleteAll(accountId);
+
+		return "redirect:/notification";
+	}
 }

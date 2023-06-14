@@ -79,4 +79,9 @@ public class NotificationService {
 		if (notification.getEventType() == 0)
 			notificationRepository.delete(notification);
 	}
+
+	@Transactional
+	public void deleteAll(Long accountId) {
+		notificationRepository.deleteAllByEventIdAndEventType(accountId, 0);
+	}
 }
