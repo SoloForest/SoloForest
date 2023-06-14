@@ -107,8 +107,8 @@ public class GroupService {
 	}
 
 	@Transactional
-	public Group create(String subject, String content, int member, LocalDateTime startDate, LocalDateTime endDate,
-		Account account) {
+	public Group create(String subject, String content, int member, LocalDateTime startDate, LocalDateTime endDate
+		, int money, String location, Account account) {
 		Group group = Group.builder()
 			.account(account)
 			.subject(subject)
@@ -116,6 +116,8 @@ public class GroupService {
 			.member(member)
 			.startDate(startDate)
 			.endDate(endDate)
+			.money(money)
+			.location(location)
 			.boardNumber(2)
 			.build();
 		groupRepository.save(group);
@@ -130,7 +132,6 @@ public class GroupService {
 	}
 
 	public void delete(Group group) {
-		//게시글 삭제 전, 게시글과 관련된 좋아요와 즐겨찾기 삭제
 		List<Liked> likedList = likedRepository.findAllByArticle(group);
 		likedRepository.deleteAll(likedList);
 		List<Bookmark> bookmarkList = bookmarkRepository.findAllByArticle(group);
