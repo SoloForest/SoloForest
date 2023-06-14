@@ -40,7 +40,7 @@ public class GroupController {
 
 		boolean bookmark = groupService.alreadyBookmarked(group, rq.getAccount());
 		model.addAttribute("bookmark", bookmark);
-		return "article/group";
+		return "article/group/detail";
 	}
 
 	@GetMapping("/create")
@@ -48,7 +48,7 @@ public class GroupController {
 	public String createget(Model model) {
 		model.addAttribute("groupForm", new groupForm());
 
-		return "article/group_write";
+		return "article/group/write";
 	}
 
 	@PostMapping("/create")
@@ -70,7 +70,7 @@ public class GroupController {
 		}
 
 		model.addAttribute("groupForm", group);
-		return "article/group_write";
+		return "article/group/write";
 	}
 
 	@PostMapping("/modify/{id}")
@@ -113,7 +113,7 @@ public class GroupController {
 		model.addAttribute("paging", paging);
 		model.addAttribute("kw", kw);
 
-		return "article/group_list";
+		return "article/group/list";
 	}
 
 	@AllArgsConstructor

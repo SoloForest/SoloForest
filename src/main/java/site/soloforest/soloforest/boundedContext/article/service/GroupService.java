@@ -130,7 +130,6 @@ public class GroupService {
 	}
 
 	public void delete(Group group) {
-		//게시글 삭제 전, 게시글과 관련된 좋아요와 즐겨찾기 삭제
 		List<Liked> likedList = likedRepository.findAllByArticle(group);
 		likedRepository.deleteAll(likedList);
 		List<Bookmark> bookmarkList = bookmarkRepository.findAllByArticle(group);
