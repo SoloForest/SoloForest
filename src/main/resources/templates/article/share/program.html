@@ -32,7 +32,8 @@
     <div class="overflow-x-auto flex flex-wrap justify-center space-x-5">
         <div th:each="article, loop : ${paging}">
             <div class="card card-compact w-96 bg-base-100 shadow-xl mb-10">
-                <figure><img th:src="${article.imageUrl}" alt="Sample1"/></figure>
+                <figure><img th:if="${article.picture} != null"
+                             th:src="${article.picture.FilePath}" alt="Sample1"/></figure>
                 <div class="card-body flex flex-col items-center">
                     <h2 class="card-title" th:text="${article.subject}"></h2>
                     <p class="font-semibold text-primary">일상</p>
