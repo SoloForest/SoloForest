@@ -15,7 +15,6 @@ import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 import site.soloforest.soloforest.boundedContext.article.entity.Group;
 import site.soloforest.soloforest.boundedContext.article.entity.Share;
 import site.soloforest.soloforest.boundedContext.article.repository.GroupRepository;
-import site.soloforest.soloforest.boundedContext.article.repository.ShareRepository;
 import site.soloforest.soloforest.boundedContext.article.service.ShareService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepository;
@@ -27,7 +26,6 @@ public class NotProd {
 	@Bean
 	CommandLineRunner initData(
 		AccountService accountService,
-		ShareRepository shareRepository,
 		ShareService shareService,
 		GroupRepository groupRepository,
 		CommentRepository commentRepository,
@@ -64,12 +62,11 @@ public class NotProd {
 					.getData();
 				//프로그램 게시판 게시글 생성
 				Share program1 = shareService.create("program", accounts.get(0), "[서울 광진구] 취준백서",
-					"광진구에서 취업 준비 중인 천년 1인가구를 위한 프로그램이 열린다고 합니다! 기간은 2023-05-26 ~ 2023-06-09라고 합니다.",
-					"/share/sample1.jpg").getData();
+					"광진구에서 취업 준비 중인 천년 1인가구를 위한 프로그램이 열린다고 합니다! 기간은 2023-05-26 ~ 2023-06-09라고 합니다.", null).getData();
 				Share program2 = shareService.create("program", accounts.get(1), "[서울 동대문구] 동일이의 득심득심",
-					"힐링 명상을 통해 함께 마음 수련을 해보아요.", "/share/sample2.png").getData();
+					"힐링 명상을 통해 함께 마음 수련을 해보아요.", null).getData();
 				Share program3 = shareService.create("program", accounts.get(2), "[서울 강북구] 1인가구 개인상담",
-					"상담 전문가와 함께 1인 가구를 위한 상담을 진행한다고 하네요. 관심있으신 분은 신청하세요.", "/share/sample3.png").getData();
+					"상담 전문가와 함께 1인 가구를 위한 상담을 진행한다고 하네요. 관심있으신 분은 신청하세요.", null).getData();
 
 				List<Group> groups = List.of(
 					Group.builder()

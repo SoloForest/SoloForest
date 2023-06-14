@@ -50,7 +50,12 @@
                 <!-- 즐겨찾기 끝-->
             </div>
             <hr class="mb-8" style="border: none; border-top: 1px solid;">
-            <div class="mb-5 ml-5" style="height: 300px; max-height: auto; overflow: auto;">
+            <div class="mb-5 ml-5 min-h-[300px] overflow-auto">
+                <div class="flex justify-center">
+                    <img th:if="${article.picture} != null"
+                         th:src="${article.picture.FilePath}"
+                         alt="image" class="flex justify-center max-w-[400px]"/>
+                </div>
                 <span class="text-xl" th:text="${article.content}"></span>
             </div>
             <div class="mb-6 ml-6">
