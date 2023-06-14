@@ -3,6 +3,7 @@ package site.soloforest.soloforest.boundedContext.account.service;
 import java.util.Optional;
 import java.util.Random;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.email.EmailDTO;
 import site.soloforest.soloforest.base.email.MailSenderRunner;
+import site.soloforest.soloforest.base.event.EventReport;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
@@ -35,6 +37,7 @@ public class AccountService {
 	private final AuthenticationManager authenticationManager;
 	private final MailSenderRunner mailSenderRunner;
 	private final TemplateEngine templateEngine;
+	private final ApplicationEventPublisher publisher;
 
 	public Account singup(AccountDTO dto) {
 		Account account = Account.builder()
@@ -228,6 +231,10 @@ public class AccountService {
 		}
 
 		int reported = target.get().reportUp();
+
+		// 알림 객체 생성 이벤트 발생
+		publisher.publishEvent(new EventReport(this, target.get()));
+
 		if ((reported / 3 > 0) && (reported % 3 == 0)) {
 			target.get().loginReject();
 			// target의 session을 끊어줘야 함....

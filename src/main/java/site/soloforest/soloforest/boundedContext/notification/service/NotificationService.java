@@ -16,6 +16,7 @@ import site.soloforest.soloforest.boundedContext.notification.repository.Notific
 @Transactional(readOnly = true)
 public class NotificationService {
 	private final NotificationRepository notificationRepository;
+
 	@Transactional
 	public void whenCreateComment(Comment comment) {
 		String content = comment.getWriter().getUsername() + "님이 회원님의 게시글에 댓글을 남겼습니다.";
@@ -62,5 +63,17 @@ public class NotificationService {
 
 	public Notification getNotification(Long notificationId) {
 		return notificationRepository.findById(notificationId).orElse(null);
+	}
+
+	public void whenReportSubmit(Account account) {
+		String content = "누군가 당신을 신고하였습니다. 누적 횟수 3회가 되면 3일간 로그인이 제한되니 주의해주세요(현재 %d회)".formatted(account.getReported());
+		Notification notification = Notification.builder()
+			.content(content)
+			.event_type(1)
+			.account(account)
+			.event_id(account.getId())
+			.build();
+
+		notificationRepository.save(notification);
 	}
 }
