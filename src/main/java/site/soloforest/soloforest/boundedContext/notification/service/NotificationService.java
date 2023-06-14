@@ -83,4 +83,8 @@ public class NotificationService {
 	public void deleteAll(Long accountId) {
 		notificationRepository.deleteAllByEventId(accountId);
 	}
+
+	public boolean countUnreadNotifications(Long accountId) {
+		return notificationRepository.countByEventIdAndReadDateIsNull(accountId) > 0;
+	}
 }

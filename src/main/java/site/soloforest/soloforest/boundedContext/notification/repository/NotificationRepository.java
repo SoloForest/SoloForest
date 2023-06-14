@@ -10,4 +10,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	List<Notification> findByEventIdOrderByIdDesc(Long eventId);
 
 	void deleteAllByEventId(Long accountId);
+
+	Long countByEventIdAndReadDateIsNull(Long accountId);
 }

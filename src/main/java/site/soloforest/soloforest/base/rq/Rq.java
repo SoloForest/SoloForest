@@ -19,6 +19,7 @@ import site.soloforest.soloforest.boundedContext.article.entity.Article;
 import site.soloforest.soloforest.boundedContext.article.service.ArticleService;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
+import site.soloforest.soloforest.boundedContext.notification.service.NotificationService;
 import site.soloforest.soloforest.standard.util.Ut;
 
 @Component
@@ -33,14 +34,18 @@ public class Rq {
 	private Account account = null; // 레이지 로딩, 처음부터 넣지 않고, 요청이 들어올 때 넣는다.
 	private final CommentService commentService;
 
+	private final NotificationService notificationService;
+
 	public Rq(AccountService accountService, ArticleService articleService, HttpServletRequest req,
-		HttpServletResponse resp, HttpSession session, CommentService commentService) {
+		HttpServletResponse resp, HttpSession session, CommentService commentService,
+		NotificationService notificationService) {
 		this.accountService = accountService;
 		this.articleService = articleService;
 		this.req = req;
 		this.resp = resp;
 		this.session = session;
 		this.commentService = commentService;
+		this.notificationService = notificationService;
 
 		// 현재 로그인한 회원의 인증정보를 가져옴
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -136,5 +141,14 @@ public class Rq {
 
 	public int getPageNumberByComment(Comment comment) {
 		return commentService.getPage(comment);
+	}
+
+	public boolean hasUnreadNotifications() {
+		if (isLogout())
+			return false;
+
+		Account actor = getAccount();
+
+		return notificationService.countUnreadNotifications(actor.getId());
 	}
 }
