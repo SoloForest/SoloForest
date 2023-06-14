@@ -61,13 +61,13 @@ public class Article {
 	 * 게시판 성격을 알려주는 변수
 	 * 0 : 커뮤니티 게시판
 	 * 1 : 프로그램 게시판
-	 * 2 : 이벤트/특가 게시판
-	 * 3 : 소모임 게시판 **/
+	 * 2 : 인원모집 게시판 **/
 	private int boardNumber;
 
 	public String getBoardType() {
 		return switch (boardNumber) {
 			case 1 -> "program";
+			case 2 -> "group";
 			default -> "community";
 		};
 	}
