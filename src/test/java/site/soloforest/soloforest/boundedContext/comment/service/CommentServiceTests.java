@@ -76,32 +76,31 @@ public class CommentServiceTests {
 
 	}
 
-	// 배포가 안되어 우선 수정
-	// @Test
-	// @DisplayName("부모 댓글이 삭제되고, 대댓글이 1개일 때 대댓글이 삭제될 경우 부모 댓글 삭제 테스트")
-	// void t04() {
-	// 	Comment comment = commentService.getComment(3L);
-	//
-	// 	// 부모 댓글 먼저 지우기
-	// 	commentService.delete(comment);
-	//
-	// 	// 댓글 삭제 확인(자식 댓글이 있으니, 객체 삭제처리 되지 않고 isDeleted 속성만 변경
-	// 	Comment deletedComment = commentService.getComment(3L);
-	//
-	// 	// 댓글 상태가 삭제로 변경되었는지 확인
-	// 	assertThat(deletedComment.isDeleted()==true);
-	//
-	// 	// 자식 댓글 삭제(3번의 댓글의 대댓글 id는 12번)
-	// 	Comment delComment = comment.getChildren().get(0);
-	// 	commentService.delete(delComment);
-	//
-	// 	// 삭제 확인용 객체 가져오기 -> 다 Null이어야 함
-	// 	Comment assertParrent = commentService.getComment(3L);
-	// 	Comment assertChild = commentService.getComment(12L);
-	//
-	// 	// Null인지 확인
-	// 	assertNull(assertParrent);
-	// 	assertNull(assertChild);
-	// }
+	@Test
+	@DisplayName("부모 댓글이 삭제되고, 대댓글이 1개일 때 대댓글이 삭제될 경우 부모 댓글 삭제 테스트")
+	void t04() {
+		Comment comment = commentService.getComment(16L);
+
+		// 부모 댓글 먼저 지우기
+		commentService.delete(comment);
+
+		// 댓글 삭제 확인(자식 댓글이 있으니, 객체 삭제처리 되지 않고 isDeleted 속성만 변경
+		Comment deletedComment = commentService.getComment(16L);
+
+		// 댓글 상태가 삭제로 변경되었는지 확인
+		assertThat(deletedComment.isDeleted() == true);
+
+		// 자식 댓글 삭제(16번의 댓글의 대댓글 id는 17번)
+		Comment delComment = comment.getChildren().get(0);
+		commentService.delete(delComment);
+
+		// 삭제 확인용 객체 가져오기 -> 다 Null이어야 함
+		Comment assertParrent = commentService.getComment(16L);
+		Comment assertChild = commentService.getComment(17L);
+
+		// Null인지 확인
+		assertNull(assertParrent);
+		assertNull(assertChild);
+	}
 
 }
