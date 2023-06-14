@@ -76,6 +76,7 @@ public class CommentServiceTests {
 
 	}
 
+	// 배포가 안되어 우선 수정
 	// @Test
 	// @DisplayName("부모 댓글이 삭제되고, 대댓글이 1개일 때 대댓글이 삭제될 경우 부모 댓글 삭제 테스트")
 	// void t04() {

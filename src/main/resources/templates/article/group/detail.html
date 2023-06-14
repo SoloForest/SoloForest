@@ -1,0 +1,171 @@
+<html data-theme="garden" lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{home/layout.html}"
+>
+
+<head>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <title th:text="${article.subject}"></title>
+</head>
+<body>
+<main layout:fragment="main" class="flex flex-col justify-start items-start flex-grow">
+    <div class="flex items-center justify-center mt-4 mb-3 relative w-full">
+        <div class="ml-2 mr-auto flex justify-start items-center min-w-[150px] flex-grow">
+            <h1 class="font-semibold">
+                인원모집 게시판
+            </h1>
+            <span class="ml-4 h-4 w-px bg-black"></span>
+        </div>
+        <div class="ml-auto mr-3 flex gap-4" th:if="${#authentication.getPrincipal() != 'anonymousUser'}">
+            <a th:href="@{/article/group/modify/{id}(id=${article.id})}" role="button"
+               class="btn btn-outline btn-primary btn-sm"
+               th:if="${article.account != null and #authentication.getPrincipal().getUsername() == article.account.username}"
+            >수정</a>
+            <a th:href="@{/article/group/delete/{id}(id=${article.id})}" role="button"
+               class="btn btn-outline btn-error btn-sm"
+               th:if="${article.account != null and #authentication.getPrincipal().getUsername() == article.account.username}"
+               onclick="return confirm('게시글을 삭제하시겠습니까?');">삭제</a>
+        </div>
+    </div>
+    <div class="container mx-auto">
+        <div class="bg-white p-6 rounded-lg shadow-lg mb-6"
+             style="min-height: 600px; max-height: auto; overflow: auto;">
+            <div style="">
+                <div class="border-y-2 border-gray-400 indigo-500/50 bg-zinc-400/[.08]">
+                    <div class="m-3 px-2">
+                        <span class="text-3xl font-semibold" th:text="${article.subject}"></span>
+                        <div class="flex justify-between">
+                            <div>
+                                <a>작성자 <span th:text="${article.account.username}"></span></a>
+                                <a>작성일 <span
+                                        th:text="${#temporals.format(article.createDate, 'YYYY.MM.dd (HH:mm)')}"></span></a>
+                            </div>
+                            <div>
+                                <a>조회수: <span th:text="${article.viewed}"></span></a>
+                                <a>댓글: <span th:text="${article.comments.size()}"></span></a>
+                                <button id="bookmark" class="mx-4" style="float: right; display: inline-block;"
+                                        th:if="${@rq.isLogin()}" th:value="${bookmark} ? 1 : 0 ">
+                                    <i id="bookmark_icon"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-grow">
+                <div class="m-4">
+                    <span class="text-xl" th:text="${article.content}"></span>
+                </div>
+                <div class="ml-4 w-1/3 min-w-[400px] border-y-2 border-gray-500 indigo-500/50 bg-zinc-400/[.08]">
+                    <div class="m-5 flex flex-col space-y-1">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-user-group fa-xs"></i>
+                            <spna>최대</spna>
+                            <span th:text="${article.member}"></span>
+                            <spna>명</spna>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-coins fa-sm"></i>
+                            <span th:text="${article.money}"></span><span>원</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-calendar-days fa-xs"></i>
+                            <span th:text="${#temporals.format(article.startDate, 'YYYY-MM-dd HH:mm')}"></span>~<span
+                                th:text="${#temporals.format(article.endDate, 'YYYY-MM-dd HH:mm')}"></span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-location-dot" style="color: #1f1f1f;"></i>
+                            <span th:text="${article.location}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-8 space-y-2.5 space-x-1 flex justify-center" style="margin-left: 230px;">
+                    <input type="hidden" id="id" th:value="${article.id}">
+                    <input type="hidden" id="accountId"
+                           th:value="${@rq.isLogin()} ? ${@rq.getAccount().getId()} : null">
+                    <button id="like_login" th:if="${@rq.isLogout()}">
+                        <i class="fa-regular fa-thumbs-up"></i>
+                    </button>
+                    <button id="like" th:value="${like} ? 1 : 0" th:if="${@rq.isLogin()}">
+                        <i id="like_icon"></i>
+                    </button>
+                    <input type="hidden" id="group_likes" th:value="${article.likes}">
+                    <span id="like_count" class="gap-1" th:text="${article.likes}"></span>
+                </div>
+            </div>
+        </div>
+        <script>
+            document.getElementById("like_login").onclick = function () {
+                window.location.href = "/account/login";
+            }
+        </script>
+        <script>
+            const header = $("meta[name='_csrf_header']").attr('content');
+            const token = $("meta[name='_csrf']").attr('content');
+
+            const id = $("#id").val();
+
+            const like = document.getElementById("like").value;
+            const like_count = document.getElementById("like_count").value;
+            const like_icon = document.getElementById("like_icon");
+            const bookmark = document.getElementById("bookmark").value;
+            const bookmark_icon = document.getElementById("bookmark_icon");
+
+            if (like > 0) {
+                like_icon.className = "fa-solid fa-thumbs-up";
+            } else {
+                like_icon.className = "fa-regular fa-thumbs-up";
+            }
+            if (bookmark > 0) {
+                bookmark_icon.className = "fa-solid fa-bookmark";
+            } else {
+                bookmark_icon.className = "fa-regular fa-bookmark";
+            }
+
+            $("#like").on("click", function () {
+                $.ajax({
+                    url: '/article/group/like',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    type: 'POST',
+                    data: {'id': id},
+                    dataType: "json",
+                    success: function (rsData) {
+                        if (rsData.data.success) {
+                            $("#like_icon").attr("class", "fa-solid fa-thumbs-up");
+                        } else {
+                            $("#like_icon").attr("class", "fa-regular fa-thumbs-up");
+                        }
+
+                        $('#like_count').text(rsData.data.newLikeCount);
+                    }, error: function () {
+                        location.href = "/main";
+                    }
+                });
+            });
+            $("#bookmark").on("click", function () {
+                $.ajax({
+                    url: '/article/group/bookmark',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    type: 'POST',
+                    data: {'id': id},
+                    success: function (data) {
+                        if (data) {
+                            $("#bookmark_icon").attr("class", "fa-solid fa-bookmark");
+                        } else {
+                            $("#bookmark_icon").attr("class", "fa-regular fa-bookmark");
+                        }
+                    }, error: function () {
+                        location.href = "/main";
+                    }
+                });
+            });
+        </script>
+    </div>
+</main>
+
+</body>
