@@ -9,10 +9,6 @@
 <main layout:fragment="main">
     <div id="notification-list">
         <div class="max-w-full w-full">
-            <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
-                <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
-            </div>
-
             <div class="flex flex-col gap-4">
                 <div class="flex">
                     <h5 class="border-bottom my-3 py-2 font-bold"
@@ -23,6 +19,9 @@
                             <input type="hidden" name="accountId" th:value="${@rq.account.id}">
                         </form>
                     </button>
+                </div>
+                <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
+                    <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
                 </div>
                 <div class="card bg-white shadow-xl m-3" th:each="notification, notificationIndex : ${notifications}">
                     <div class="card-body cursor-pointer rounded-lg"
@@ -53,10 +52,7 @@
                                     <input type="hidden" name="notificationId" th:value="${notification.id}">
                                 </form>
                             </button>
-                            <span class="font-bold text-red-600"
-                                  th:if="${notification.eventType == 1}">!해당 알림은 삭제가 불가능 합니다!</span>
-                            <button class="btn" th:if="${!(notification.eventType == 1)}"
-                                    th:data-notification="${notification.id}"
+                            <button class="btn" th:data-notification="${notification.id}"
                                     onclick="deleteNotification(this.getAttribute('data-notification'))">
                                 삭제
                             </button>

@@ -9,5 +9,5 @@ import site.soloforest.soloforest.boundedContext.notification.entity.Notificatio
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 	List<Notification> findByEventIdOrderByIdDesc(Long eventId);
 
-	void deleteAllByEventIdAndEventType(Long accountId, int i);
+	void deleteAllByEventId(Long accountId);
 }

@@ -76,12 +76,11 @@ public class NotificationService {
 
 	@Transactional
 	public void delete(Notification notification) {
-		if (notification.getEventType() == 0)
-			notificationRepository.delete(notification);
+		notificationRepository.delete(notification);
 	}
 
 	@Transactional
 	public void deleteAll(Long accountId) {
-		notificationRepository.deleteAllByEventIdAndEventType(accountId, 0);
+		notificationRepository.deleteAllByEventId(accountId);
 	}
 }
