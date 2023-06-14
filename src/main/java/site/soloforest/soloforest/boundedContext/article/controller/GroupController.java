@@ -51,6 +51,7 @@ public class GroupController {
 		return "article/group/write";
 	}
 
+	//글작성
 	@PostMapping("/create")
 	@PreAuthorize("isAuthenticated()")
 	public String create(String subject, String content, int member, LocalDateTime startDate,
