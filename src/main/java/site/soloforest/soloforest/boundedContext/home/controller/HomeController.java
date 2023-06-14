@@ -16,15 +16,15 @@ public class HomeController {
 	private final ArticleService articleService;
 
 	@GetMapping("/")
-	public String root() {
-		return "redirect:/main";
+	public String root(Model model) {
+		return showMain(model);
 	}
 
 	@GetMapping("/main")
 	public String showMain(Model model) {
-		List<Article> communityList = articleService.findByBoardNumber(0);
-		List<Article> programList = articleService.findByBoardNumber(1);
-		List<Article> groupList = articleService.findByBoardNumber(2);
+		List<Article> communityList = articleService.findTop5LatestByBoardNumber(0);
+		List<Article> programList = articleService.findTop3LatestByBoardNumber(1);
+		List<Article> groupList = articleService.findTop5LatestByBoardNumber(2);
 
 		model.addAttribute("communityList", communityList);
 		model.addAttribute("programList", programList);

@@ -20,4 +20,12 @@ public class ArticleService {
 	public List<Article> findByBoardNumber(int boardNumber) {
 		return articleRepository.findAllByBoardNumber(boardNumber);
 	}
+
+	public List<Article> findTop3LatestByBoardNumber(int boardNumber) {
+		return articleRepository.findTop3ByBoardNumberOrderByCreateDateDesc(boardNumber);
+	}
+
+	public List<Article> findTop5LatestByBoardNumber(int boardNumber) {
+		return articleRepository.findTop5ByBoardNumberOrderByCreateDateDesc(boardNumber);
+	}
 }

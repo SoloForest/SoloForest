@@ -8,5 +8,9 @@ import site.soloforest.soloforest.boundedContext.article.entity.Article;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 	List<Article> findAllByBoardNumber(int boardNumber);
+
+	List<Article> findTop3ByBoardNumberOrderByCreateDateDesc(int boardNumber);
+
+	List<Article> findTop5ByBoardNumberOrderByCreateDateDesc(int boardNumber);
 }
 
