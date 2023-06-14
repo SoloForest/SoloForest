@@ -123,8 +123,10 @@ public class ShareController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/modify/{id}")
-	public String modify(@PathVariable Long id, @Valid Form form) {
-		RsData<Share> modifyRsData = shareService.modify(rq.getAccount(), id, form.subject, form.content);
+	public String modify(@PathVariable Long id, @Valid Form form,
+		@RequestParam(value = "file", defaultValue = "") MultipartFile multipartFile) throws IOException {
+		RsData<Share> modifyRsData = shareService.modify(rq.getAccount(), id, form.subject, form.content,
+			multipartFile);
 
 		if (modifyRsData.isFail())
 			return rq.historyBack(modifyRsData);

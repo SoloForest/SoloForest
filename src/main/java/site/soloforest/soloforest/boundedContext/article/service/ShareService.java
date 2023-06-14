@@ -81,7 +81,7 @@ public class ShareService {
 
 	public Page<Share> getList(String type, String kw, int page) {
 		int boardNumber;
-		int pageSize = 0;
+		int pageSize;
 		if ("community".equals(type)) {
 			boardNumber = 0;
 			pageSize = 10;
@@ -118,7 +118,9 @@ public class ShareService {
 	}
 
 	@Transactional
-	public RsData<Share> modify(Account account, Long id, String subject, String content) {
+	public RsData<Share> modify(Account account, Long id, String subject, String content,
+		MultipartFile multipartFile) throws
+		IOException {
 		Optional<Share> shareOptional = findById(id);
 
 		if (shareOptional.isEmpty()) {
@@ -127,11 +129,12 @@ public class ShareService {
 
 		Share share = shareOptional.get();
 
-		return modify(account, share, subject, content);
+		return modify(account, share, subject, content, multipartFile);
 	}
 
 	@Transactional
-	public RsData<Share> modify(Account account, Share share, String subject, String content) {
+	public RsData<Share> modify(Account account, Share share, String subject, String content,
+		MultipartFile multipartFile) throws IOException {
 		RsData<Share> canModifyRsData = canModify(account, share);
 
 		if (canModifyRsData.isFail())
@@ -142,6 +145,24 @@ public class ShareService {
 			.content(content)
 			.modifyDate(LocalDateTime.now())
 			.build();
+
+		//사진 업로드
+		RsData<Picture> picture = pictureHandler.parseFileInfo(multipartFile);
+		if (picture != null) {
+			if (picture.isSuccess()) {
+				if (share.getPicture() != null) {
+					pictureRepository.delete(share.getPicture());
+				}
+				modifyShare = share.toBuilder()
+					.picture(picture.getData())
+					.build();
+
+			} else { //사진 업로드 실패할 경우 알림 출력
+				String pictureResultCode = picture.getResultCode();
+				String pictureMsg = picture.getMsg();
+				return RsData.of(pictureResultCode, pictureMsg);
+			}
+		}
 
 		shareRepository.save(modifyShare);
 
