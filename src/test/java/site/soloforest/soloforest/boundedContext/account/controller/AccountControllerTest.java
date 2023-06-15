@@ -17,6 +17,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.test.context.support.WithUserDetails;
@@ -26,7 +27,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.servlet.http.HttpSession;
-import site.soloforest.soloforest.base.security.CustomAuthenticationSuccessHandler;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
 
@@ -40,8 +40,17 @@ public class AccountControllerTest {
 	private MockMvc mvc;
 	@Autowired
 	private AccountRepository accountRepository;
-	@Autowired
-	private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+	private MockMultipartFile nullFile;
+
+	@BeforeEach
+	void setNullFile() {
+		nullFile = new MockMultipartFile(
+			"file",
+			"test.png",
+			"image/png",
+			"Spring Framework".getBytes()
+		);
+	}
 
 	@BeforeEach
 	void initData() {
@@ -193,7 +202,8 @@ public class AccountControllerTest {
 	void t008() throws Exception {
 		String oldPassword = accountRepository.findById(2l).get().getPassword();
 		ResultActions resultActions = mvc
-			.perform(post("/account/me/2")
+			.perform(multipart("/account/me/2")
+				.file(nullFile)
 				.with(csrf())
 				.param("password", "bbosong1")
 				.param("passwordCheck", "bbosong2")
@@ -206,8 +216,7 @@ public class AccountControllerTest {
 		resultActions
 			.andExpect(handler().handlerType(AccountController.class))
 			.andExpect(handler().methodName("modifyMe"))
-			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/account/me"));
+			.andExpect(status().is4xxClientError());
 
 		assertThat(oldPassword).isEqualTo(accountRepository.findById(2L).get().getPassword());
 	}
@@ -218,7 +227,8 @@ public class AccountControllerTest {
 	void t009() throws Exception {
 		String oldPassword = accountRepository.findById(2l).get().getPassword();
 		ResultActions resultActions = mvc
-			.perform(post("/account/me/2")
+			.perform(multipart("/account/me/2")
+				.file(nullFile)
 				.with(csrf())
 				.param("password", "bbosong1")
 				.param("passwordCheck", "bbosong1")
@@ -232,7 +242,7 @@ public class AccountControllerTest {
 			.andExpect(handler().handlerType(AccountController.class))
 			.andExpect(handler().methodName("modifyMe"))
 			.andExpect(status().is3xxRedirection())
-			.andExpect(redirectedUrl("/account/me"));
+			.andExpect(redirectedUrlPattern("/account/me*"));
 
 		assertThat(accountRepository.findById(2L).get().getNickname()).isEqualTo("somsom");
 		assertThat(oldPassword).isNotEqualTo(accountRepository.findById(2L).get().getPassword());
