@@ -1,5 +1,6 @@
 package site.soloforest.soloforest.boundedContext.account.service;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.Random;
 
@@ -23,11 +24,18 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.email.EmailDTO;
 import site.soloforest.soloforest.base.email.MailSenderRunner;
+<<<<<<< HEAD
 import site.soloforest.soloforest.base.event.EventReport;
+=======
+import site.soloforest.soloforest.base.rsData.RsData;
+>>>>>>> 845a6e8 (feat: 마이페이지 프로필 이미지 수정 기능 구현)
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.account.repository.AccountRepository;
+import site.soloforest.soloforest.boundedContext.picture.entity.Picture;
+import site.soloforest.soloforest.boundedContext.picture.pictureHandler.PictureHandler;
+import site.soloforest.soloforest.boundedContext.picture.repository.PictureRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +46,8 @@ public class AccountService {
 	private final MailSenderRunner mailSenderRunner;
 	private final TemplateEngine templateEngine;
 	private final ApplicationEventPublisher publisher;
+	private final PictureHandler pictureHandler;
+	private final PictureRepository pictureRepository;
 
 	public Account singup(AccountDTO dto) {
 		Account account = Account.builder()
@@ -84,12 +94,7 @@ public class AccountService {
 	}
 
 	public Account getAccountFromUsername(String username) {
-		Optional<Account> findAccount = accountRepository.findByUsername(username);
-		if (!findAccount.isPresent()) {
-			// TODO : RsData가 추가되면 F-1을 내보냅니다
-			return null;
-		}
-		return findAccount.get();
+		return accountRepository.findByUsername(username).orElse(null);
 	}
 
 	public Optional<Account> findByUsername(String username) {
@@ -97,27 +102,70 @@ public class AccountService {
 	}
 
 	@SuppressWarnings("checkstyle:WhitespaceAround")
-	public Account modifyInfo(Long id, ModifyForm input, HttpServletRequest request) {
+	public RsData<Account> modifyInfo(Long id, ModifyForm input, HttpServletRequest request) throws IOException {
 		Account target = accountRepository.findById(id).orElse(null);
 		if (target == null) {
-			return null;
+			return RsData.of("F-1", "대상을 찾을 수 없습니다.");
+		}
+		RsData<Account> result;
+
+		/* 프로필 이미지 변경 */
+		result = canModifyPicture(target, input);
+		if (result.isSuccess()) {
+			// 사진 업로드
+			RsData<Picture> picture = pictureHandler.parseFileInfo(input.getFile());
+			if (picture.isSuccess()) {
+				if (target.getPicture() != null) {
+					Picture oldPicture = target.getPicture();
+					target.setPicture(null);
+					accountRepository.save(target);
+					pictureRepository.delete(oldPicture);
+				}
+				target.setPicture(picture.getData());
+
+			} else { // 사진 업로드 실패할 경우 알림 출력
+				String pictureResultCode = picture.getResultCode();
+				String pictureMsg = picture.getMsg();
+				return RsData.of(pictureResultCode, pictureMsg);
+			}
+		} else if (!result.getResultCode().equals("F-1")) {
+			return result;
 		}
 
-		if (canModifyPassword(input)) {
+		/* 비밀번호 변경 */
+		result = canModifyPassword(input);
+		if (result.isSuccess()) {
 			target.setPassword(input.getPassword());
 			modifyLoginSetSession(target, input.getPassword(), request);
-		}
-		if (canModifyNickname(target, input)) {
-			target.setNickname(input.getNickname());
-		}
-		if (canModifyEmail(target, input)) {
-			target.setEmail(input.getEmail());
-		}
-		if (canModifyAddress(target, input)) {
-			target.setAddress(input.getAddress());
+		} else if (!result.getResultCode().equals("F-1")) {
+			return result;
 		}
 
-		return accountRepository.save(target);
+		/* 닉네임 변경 */
+		result = canModifyNickname(target, input);
+		if (result.isSuccess()) {
+			target.setNickname(input.getNickname());
+		} else if (!result.getResultCode().equals("F-1")) {
+			return result;
+		}
+
+		/* 이메일 변경 */
+		result = canModifyEmail(target, input);
+		if (result.isSuccess()) {
+			target.setEmail(input.getEmail());
+		} else if (!result.getResultCode().equals("F-1")) {
+			return result;
+		}
+
+		/* 주소지 변경 */
+		result = canModifyAddress(target, input);
+		if (result.isSuccess()) {
+			target.setAddress(input.getAddress());
+		} else if (!result.getResultCode().equals("F-1")) {
+			return result;
+		}
+
+		return RsData.of("S-1", "계정정보가 수정되었습니다.", accountRepository.save(target));
 	}
 
 	private void modifyLoginSetSession(Account account, String password, HttpServletRequest request) {
@@ -149,44 +197,57 @@ public class AccountService {
 		}
 	}
 
-	private boolean canModifyNickname(Account target, ModifyForm input) {
+	private RsData<Account> canModifyPicture(Account target, ModifyForm input) {
+		if (input.getFile() == null) {
+			return RsData.of("F-1", "변경 사항이 없습니다.");
+		}
+		return RsData.of("S-1", "프로필 사진을 변경할 수 있습니다.");
+	}
+
+	private RsData<Account> canModifyNickname(Account target, ModifyForm input) {
 		if (input.getNickname().isBlank()) {
-			return false;
+			return RsData.of("F-2", "닉네임이 반드시 입력되어야 합니다.");
 		}
 		if (input.getNickname().equals(target.getNickname())) {
-			return false;
+			return RsData.of("F-1", "변경 사항이 없습니다.");
 		}
-		return true;
+		if (accountRepository.findByNickname(input.getNickname()).isPresent()) {
+			return RsData.of("F-3", "이미 존재하는 닉네임입니다.");
+		}
+		return RsData.of("S-1", "닉네임을 변경할 수 있습니다.");
 	}
 
-	private boolean canModifyEmail(Account target, ModifyForm input) {
+	private RsData<Account> canModifyEmail(Account target, ModifyForm input) {
 		if (input.getEmail().isBlank()) {
-			return false;
+			return RsData.of("F-2", "이메일이 반드시 입력되어야 합니다.");
 		}
 		if (input.getEmail().equals(target.getEmail())) {
-			return false;
+			return RsData.of("F-1", "변경 사항이 없습니다.");
 		}
-		return true;
+		if (accountRepository.findByEmail(input.getEmail()).isPresent()) {
+			return RsData.of("F-3", "이미 존재하는 이메일입니다.");
+		}
+		return RsData.of("S-1", "이메일을 변경할 수 있습니다.");
 	}
 
-	private boolean canModifyPassword(ModifyForm input) {
+	private RsData<Account> canModifyPassword(ModifyForm input) {
 		if (input.getPassword().isBlank()) {
-			return false;
+			return RsData.of("F-1", "변경 사항이 없습니다.");
 		}
 		if (!input.getPassword().equals(input.getPasswordCheck())) {
-			return false;
+			return RsData.of("F-2", "동일한 비밀번호가 입력되어야 합니다.");
 		}
-		return true;
+		return RsData.of("S-1", "비밀번호를 변경할 수 있습니다.");
 	}
 
-	private boolean canModifyAddress(Account target, ModifyForm input) {
+	private RsData<Account> canModifyAddress(Account target, ModifyForm input) {
 		if (input.getAddress().isBlank()) {
-			return false;
+			return RsData.of("F-1", "변경 사항이 없습니다.");
 		}
 		if (input.getAddress().equals(target.getAddress())) {
-			return false;
+			return RsData.of("F-1", "변경 사항이 없습니다.");
 		}
-		return true;
+		return RsData.of("S-1", "주소를 변경할 수 있습니다.");
 	}
 
 	public ResponseEntity<String> withdraw(Long id, String password, HttpServletRequest request) {
@@ -197,7 +258,7 @@ public class AccountService {
 				account.setNickname(null);
 				account.setEmail(null);
 				account.setAddress(null);
-				account.setImageUrl(null);
+				account.setPicture(null);
 				account.setDeleted(true);
 
 				accountRepository.save(account);
@@ -237,7 +298,6 @@ public class AccountService {
 
 		if ((reported / 3 > 0) && (reported % 3 == 0)) {
 			target.get().loginReject();
-			// target의 session을 끊어줘야 함....
 		}
 
 		accountRepository.save(target.get());

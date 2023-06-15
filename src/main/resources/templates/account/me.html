@@ -37,11 +37,18 @@
     </script>
     <div class="my-16 flex flex-col justify-center items-center flex-grow">
         <form method="POST" th:action="|/account/me/${account.id}|" onsubmit="ModifyForm__submit(this); return false;"
+              enctype="multipart/form-data"
               class="gap-5 flex flex-col justify-center items-center flex-grow">
             <h1 class="text-xl font-bold">My Account</h1>
-            <img id="profile" class="max-w-[250px] min-w-[250px] mask mask-circle shadow-2xl"
-                 src="/profile-00000001.jpg"/>
-            <input id="imageUrl" name="imageUrl" type="file"
+
+            <div id="profile" class="w-64 h-64 overflow-hidden">
+                <img class="mask mask-circle shadow-2xl w-full h-full"
+                     th:if="${account.picture == null}" src="/profile-00000001.jpg" alt="profile"/>
+                <img class="mask mask-circle shadow-2xl w-full h-full"
+                     th:if="${account.picture != null}" th:src="${account.picture.filePath}" alt="profile"/>
+            </div>
+
+            <input id="imageUrl" name="file" type="file"
                    class="file-input file-input-bordered file-input-primary w-full max-w-xs hidden-input"/>
 
             <div id="passwordText" class="form-control hidden-input">
