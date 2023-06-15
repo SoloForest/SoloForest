@@ -176,7 +176,7 @@ public class ShareService {
 			return RsData.of("F-1", "이미 삭제된 게시글 입니다.");
 
 		// 관리자도 아니고 게시글 작성자도 아니면 거절
-		if (Objects.equals(account.getId(), share.getAccount().getId()) && !(account.isAdmin()))
+		if (!Objects.equals(account.getId(), share.getAccount().getId()) && !(account.isAdmin()))
 			return RsData.of("F-2", "해당 게시글을 삭제할 권한이 없습니다.");
 
 		//게시글 삭제 전, 게시글과 관련된 좋아요, 즐겨찾기, 사진 삭제
