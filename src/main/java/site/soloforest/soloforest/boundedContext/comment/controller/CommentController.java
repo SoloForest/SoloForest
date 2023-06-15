@@ -39,8 +39,14 @@ public class CommentController {
 		@RequestParam(defaultValue = "0") int page) {
 		Article article = rq.getArticle(commentDTO.getArticleId());
 		Account account = rq.getAccount();
+
+		String content = commentDTO.getCommentContents().trim();
+
+		if (content.isBlank()) {
+			return rq.redirectWithMsg("redirect:/article/share/detail/" + article.getId(), "내용을 입력해주세요");
+		}
 		// 부모댓글 생성
-		Comment comment = commentService.create(commentDTO.getCommentContents(), commentDTO.getSecret(), account,
+		Comment comment = commentService.create(commentDTO.getCommentContents().trim(), commentDTO.getSecret(), account,
 			article);
 
 		model.addAttribute("article", article);

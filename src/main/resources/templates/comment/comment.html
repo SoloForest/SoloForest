@@ -1,7 +1,8 @@
 <main>
+
     <!-- 댓글 작성 부분 -->
     <div id="write">
-        <form th:action="@{|/comment/create|}" method="POST">
+        <form th:action="@{|/comment/create|}" method="POST" onsubmit="CommentForm__submit(this); return false;">
             <input type="hidden" name="articleId" th:value="${article.id}">
             <input type="hidden" name="page" th:value="${paging.totalPages-1 < 0 ? 0 : paging.totalPages-1}">
             <div class="flex justify-end">
@@ -595,6 +596,19 @@
                     console.log("요청 실패", err);
                 }
             });
+        }
+
+        function CommentForm__submit(form) {
+            // username 이(가) 올바른지 체크
+
+            form.commentContents.value = form.commentContents.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
+
+            if (form.commentContents.value.length === 0) {
+                toastWarning('내용을 입력해주세요');
+                form.commentContents.focus();
+                return;
+            }
+            form.submit(); // 폼 발송
         }
     </script>
 </main>
