@@ -37,3 +37,5 @@ logging:
     com.ll.soloForest: INFO
     org.hibernate.orm.jdbc.bind: INFO
     org.hibernate.orm.jdbc.extract: INFO
+custom:
+  genFileDirPath: /gen
