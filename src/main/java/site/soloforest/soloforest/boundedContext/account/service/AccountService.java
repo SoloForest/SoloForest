@@ -24,11 +24,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import site.soloforest.soloforest.base.email.EmailDTO;
 import site.soloforest.soloforest.base.email.MailSenderRunner;
-<<<<<<< HEAD
 import site.soloforest.soloforest.base.event.EventReport;
-=======
 import site.soloforest.soloforest.base.rsData.RsData;
->>>>>>> 845a6e8 (feat: 마이페이지 프로필 이미지 수정 기능 구현)
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.dto.ModifyForm;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
