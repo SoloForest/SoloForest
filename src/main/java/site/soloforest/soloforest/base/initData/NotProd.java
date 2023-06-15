@@ -108,8 +108,8 @@ public class NotProd {
 					community1, comment3);
 				Comment replyComment3 = commentService.createReplyComment("가시죠!!", false, accounts.get(1),
 					program1, comment8);
-				Comment replyComment4 = commentService.createReplyComment("가자구!", false, accounts.get(1),
-					program1, comment3);
+				Comment replyComment4 = commentService.createReplyComment("신고하세요22", false, accountAdmin1, community1,
+					comment3);
 
 				Comment comment17 = commentService.create("부모 댓글 연쇄 삭제 테스트용", false, accountAdmin1, community1);
 				comment17.deleteParent();

@@ -127,24 +127,29 @@ public class CommentController {
 		}
 
 		Comment comment = commentService.getComment(commentDTO.getId());
+		Comment parent = comment.getParent();
 		// 부모(댓글)이 있을 경우 연관관계 끊어주기 -> 삭제되더라도 GET 등으로 새로 요청을 보내는 것이 아니기에
 		// 이 작업은 꼭 해줘야 대댓글 리스트도 수정된다!
-
 		// 부모댓글이 삭제 되지 않았다면 연관관계 끊어주기만 하면 됨
 		// => Ajax 비동기 리스트화를 위해 리스트에서 명시적 삭제
-		if (comment.getParent() != null && !comment.getParent().isDeleted()) {
+		if (parent != null && !parent.isDeleted()) {
 			comment.getParent().getChildren().remove(comment);
 		}
 		// 부모댓글이 삭제 상태이고 부모의 자식 댓글이 본인 포함 2개 이상이라면
 		// 자식 댓글의 삭제가 부모 댓글 객체 삭제에 영향을 주지 않으니 연관관계만 끊어주기
 		// => Ajax 비동기 리스트화를 위해 리스트에서 명시적 삭제
-		else if (comment.getParent() != null && comment.getParent().isDeleted()
-			&& comment.getParent().getChildren().size() > 1) {
+		else if (parent != null && parent.isDeleted()
+			// size를 3부터 하는 이유는, 여기서 remove를 해줘도 comment객체 자체는 남기에,
+			// size가 2라면, 서비스로 넘어갈때는 1로 줄어든 상태로 넘어간다.
+			// 그러면 서비스에서는 자식이 1개니까 지워버리면 될 것이라 판단하기에 size가 3부터 처리해야 함
+			// 어차피 서비스 내부에서 remove(comment) 해도 이미 삭제되어 오류가 뜨지 않으니까 그냥 무시되니 괜찮음
+			// 하지만 Ajax를 쓰기 때문에 사이즈가 2일때는 리스트 최신화를 위해 연관관계를 끊어줘야 함
+			&& parent.getChildren().size() > 2) {
 			comment.getParent().getChildren().remove(comment);
 		}
 
 		commentService.delete(comment);
-
+		
 		model.addAttribute("article", article);
 		Page<Comment> paging = commentService.getCommentPage(page, article);
 		model.addAttribute("paging", paging);
