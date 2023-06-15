@@ -177,10 +177,14 @@
                                     [[${childComment.content}]]</p>
                                 <div th:if="${@rq.login}">
                                     <p class="text-lg font-bold"
-                                       th:if="${childComment.secret and ((childComment.writer.username eq @rq.account.username) or (article.account.username eq @rq.account.username) or @rq.account.admin)}">
+                                       th:if="${childComment.secret and ((comment.writer.username eq @rq.account.username) or (childComment.writer.username eq @rq.account.username) or (article.account.username eq @rq.account.username) or @rq.account.admin)}">
                                         [[${childComment.content}]]</p>
                                     <p class="text-lg font-bold"
-                                       th:if="${childComment.secret and !((childComment.writer.username eq @rq.account.username) or (article.account.username eq @rq.account.username) or @rq.account.admin)}">
+                                       th:if="${childComment.secret and !((comment.writer.username eq @rq.account.username) or (childComment.writer.username eq @rq.account.username) or (article.account.username eq @rq.account.username) or @rq.account.admin)}">
+                                        비밀 댓글입니다.</p>
+                                </div>
+                                <div th:if="${@rq.logout}">
+                                    <p class="text-lg font-bold" th:if="${childComment.secret}">
                                         비밀 댓글입니다.</p>
                                 </div>
 
