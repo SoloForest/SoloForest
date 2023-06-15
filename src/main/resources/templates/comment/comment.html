@@ -50,9 +50,18 @@
                         <p class="text-lg font-bold" th:if="${!comment.deleted and !comment.secret}">
                             [[${comment.content}]]</p>
                         <p class="text-gray-200" th:if="${comment.deleted}"> 삭제된 댓글입니다.</p>
-                        <p class="text-lg font-bold"
-                           th:if="${comment.secret and ((comment.writer.username == @rq.account.username) or (article.account.username == @rq.account.username) or @rq.account.admin)}">
-                            [[${comment.content}]]</p>
+                        <div th:if="${@rq.login}">
+                            <p class="text-lg font-bold"
+                               th:if="${comment.secret and ((comment.writer.username eq @rq.account.username) or (article.account.username eq @rq.account.username) or @rq.account.admin)}">
+                                [[${comment.content}]]</p>
+                            <p class="text-lg font-bold"
+                               th:if="${comment.secret and !((comment.writer.username eq @rq.account.username) or (article.account.username eq @rq.account.username) or @rq.account.admin)}">
+                                비밀 댓글입니다.</p>
+                        </div>
+                        <div th:if="${@rq.logout}">
+                            <p class="text-lg font-bold" th:if="${comment.secret}">
+                                비밀 댓글입니다.</p>
+                        </div>
                         <div class="flex flex-col items-end justify-center gap-3">
                             <div class="badge badge-outline gap-3">
                                 <i class="fa-regular fa-clock"></i>
@@ -611,4 +620,5 @@
             form.submit(); // 폼 발송
         }
     </script>
+
 </main>

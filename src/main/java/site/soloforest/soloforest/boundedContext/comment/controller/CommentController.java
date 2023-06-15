@@ -46,7 +46,8 @@ public class CommentController {
 			return rq.redirectWithMsg("redirect:/article/share/detail/" + article.getId(), "내용을 입력해주세요");
 		}
 		// 부모댓글 생성
-		Comment comment = commentService.create(content, commentDTO.getSecret(), account, article);
+		Comment comment = commentService.create(content, commentDTO.getSecret(), account,
+			article);
 
 		model.addAttribute("article", article);
 
