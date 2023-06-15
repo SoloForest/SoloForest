@@ -1,5 +1,7 @@
 package site.soloforest.soloforest.boundedContext.account.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -8,10 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ModifyForm {
-	String imageUrl;
-	@Size(min = 4, max = 16)
+	MultipartFile file;
 	String password;
-	@Size(min = 4, max = 16)
 	String passwordCheck;
 	@Size(min = 2, max = 32)
 	String nickname;

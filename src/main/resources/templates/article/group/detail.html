@@ -80,6 +80,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="m-8 space-y-2.5 space-x-1 flex justify-center" style="margin-left: 230px;">
                     <input type="hidden" id="id" th:value="${article.id}">
                     <input type="hidden" id="accountId"
@@ -92,6 +93,14 @@
                     </button>
                     <input type="hidden" id="group_likes" th:value="${article.likes}">
                     <span id="like_count" class="gap-1" th:text="${article.likes}"></span>
+                    <i class="fa-regular fa-comment ml-3"></i>
+                    <span class="gap-1" th:text="${article.comments.size()}"></span>
+                </div>
+                <hr style="border: none; border-top: 1px solid;">
+                <!-- 댓글 시작 -->
+                <div class="comments">
+                    <!-- comment.html Include -->
+                    <div layout:include="comment/comment.html"></div>
                 </div>
             </div>
         </div>

@@ -19,6 +19,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import site.soloforest.soloforest.boundedContext.notification.entity.Notification;
+import site.soloforest.soloforest.boundedContext.picture.entity.Picture;
 
 @Entity
 @Getter
@@ -52,7 +54,8 @@ public class Account {
 	private String nickname;
 	@Column(unique = true)
 	private String email;
-	private String imageUrl;
+	@OneToOne(orphanRemoval = true)
+	private Picture picture;
 	private String address;
 
 	/**
@@ -74,7 +77,7 @@ public class Account {
 	private List<Notification> Notifications;
 
 	public boolean isAdmin() {
-		return this.authority ==0;
+		return this.authority == 0;
 	}
 
 	public static class AccountBuilder {

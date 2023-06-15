@@ -1,5 +1,6 @@
 package site.soloforest.soloforest.boundedContext.account.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import site.soloforest.soloforest.base.rq.Rq;
+import site.soloforest.soloforest.base.rsData.RsData;
 import site.soloforest.soloforest.base.security.AccountAdapter;
 import site.soloforest.soloforest.boundedContext.account.dto.AccountDTO;
 import site.soloforest.soloforest.boundedContext.account.dto.FindPasswordForm;
@@ -32,6 +35,7 @@ import site.soloforest.soloforest.boundedContext.account.service.AccountService;
 @RequestMapping("/account")
 public class AccountController {
 	private final AccountService accountService;
+	private final Rq rq;
 
 	@GetMapping("/login")
 	@PreAuthorize("isAnonymous()")
@@ -70,12 +74,13 @@ public class AccountController {
 	@PostMapping("/me/{id}")
 	@PreAuthorize("isAuthenticated()")
 	public String modifyMe(@PathVariable Long id, @Valid @ModelAttribute ModifyForm input,
-		Model model, HttpServletRequest request) {
-		Account entity = accountService.modifyInfo(id, input, request);
-		if (entity == null)
-			return "redirect:/account/me?error=true";
-		model.addAttribute("account", entity);
-		return "redirect:/account/me";
+		Model model, HttpServletRequest request) throws IOException {
+		RsData<Account> rsAccount = accountService.modifyInfo(id, input, request);
+		if (rsAccount.isFail()) {
+			return rq.historyBack(rsAccount);
+		}
+		model.addAttribute("account", rsAccount.getData());
+		return rq.redirectWithMsg("/account/me", rsAccount);
 	}
 
 	@PostMapping("/withdraw/{id}")

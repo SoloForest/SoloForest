@@ -21,6 +21,7 @@ import site.soloforest.soloforest.base.rsData.RsData;
 import site.soloforest.soloforest.boundedContext.article.entity.Group;
 import site.soloforest.soloforest.boundedContext.article.groupForm;
 import site.soloforest.soloforest.boundedContext.article.service.GroupService;
+import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 
 @Controller
 @RequestMapping("/article/group")
@@ -30,7 +31,7 @@ public class GroupController {
 	private final Rq rq;
 
 	@GetMapping("/detail/{id}")
-	public String detail(Model model, @PathVariable("id") Long id) {
+	public String detail(Model model, @PathVariable("id") Long id, @RequestParam(defaultValue = "0") int page) {
 		Group group = groupService.getGroup(id);
 		groupService.modifyViewed(group);
 		model.addAttribute("article", group);
@@ -40,6 +41,10 @@ public class GroupController {
 
 		boolean bookmark = groupService.alreadyBookmarked(group, rq.getAccount());
 		model.addAttribute("bookmark", bookmark);
+
+		Page<Comment> paging = rq.getPageByArticle(page, group);
+
+		model.addAttribute("paging", paging);
 		return "article/group/detail";
 	}
 
