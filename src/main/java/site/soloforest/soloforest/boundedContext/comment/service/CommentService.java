@@ -114,6 +114,16 @@ public class CommentService {
 			return getDeletableAncestorComment(parent);
 		}
 
+		// Ajax 비동기 -> 대댓글이 2개일때 -> 컨트롤러에서 remove를 하고 서비스로 넘어오면, 사이즈가 또 1이되서 위에 if문의 조건을 만족
+		// 그러면 부모 댓글을 삭제해도 된다 생각하고 위의 if문에서 부모 댓글을 반환해 부모 댓글을 지운다.
+		// 그렇게 되면 실제 자식 객체는 고아객체가 되어 사라진다.
+		// 그걸 방지하고자 사이즈가 2라면 컨틀롤러에서 자식 지우고 오지 않고, 이 메서드에서 연관관계만 끊고 삭제하라 명령한다.
+		if (parent != null && parent.getChildren().size() == 2 && parent.isDeleted() == true) {
+			parent.getChildren().remove(comment);
+
+			return comment;
+		}
+
 		return comment;
 	}
 
