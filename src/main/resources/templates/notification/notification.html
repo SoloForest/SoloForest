@@ -1,52 +1,94 @@
 <html layout:decorate="~{home/layout.html}">
 <head>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
     <title>알림 페이지</title>
 </head>
+
 <body>
 <main layout:fragment="main">
-    <div class="max-w-full w-full">
-        <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
-            <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
-        </div>
-
-        <div class="flex flex-col gap-4">
-            <h5 class="border-bottom my-3 py-2"
-                th:text="|${#lists.size(notifications)}개의 알림이 있습니다.|"></h5>
-            <div class="card bg-white shadow-xl m-3" th:each="notification, notificationIndex : ${notifications}"
-                 onclick="$(this).children('form').submit();">
-                <form hidden th:action="@{|/notification|}" method="POST" th:id="'notificationForm_' + ${notificationIndex}">
-                    <input type="hidden" name="notificationId" th:value="${notification.id}">
-                </form>
-
-                <div class="card-body cursor-pointer rounded-lg">
-                    <div class="flex flex-col gap-2">
-                        <div>
-                            <i class="fa-regular fa-clock"></i>
-                            알림
-                        </div>
-                        <div>
-                            <span class="badge badge-primary">
+    <div id="notification-list">
+        <div class="max-w-full w-full">
+            <div class="flex flex-col gap-4">
+                <div class="flex">
+                    <h5 class="border-bottom my-3 py-2 font-bold"
+                        th:text="|${#lists.size(notifications)}|"></h5>
+                    <h5 class="border-bottom my-3 py-2"> 개의 알림이 있습니다.</h5>
+                    <button class="btn border-bottom mx-2 my-1 py-2" th:classappend="${#lists.size(notifications) == 0} ? 'btn-disabled' : ''"
+                            onclick="$(this).children('form').submit();"> 전부삭제
+                        <form hidden th:action="@{|/notification/deleteAll|}" method="POST">
+                            <input type="hidden" name="accountId" th:value="${@rq.account.id}">
+                        </form>
+                    </button>
+                </div>
+                <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
+                    <i class="fa-regular fa-face-laugh"></i>
+                    최근에 받은 알림이 없습니다.
+                </div>
+                <div class="card bg-white shadow-xl m-3" th:each="notification, notificationIndex : ${notifications}">
+                    <div class="card-body cursor-pointer rounded-lg"
+                         th:classappend="${notification.eventType == 1} ? 'btn-warning' : ''">
+                        <div class="flex flex-col gap-2">
+                            <div>
+                                <i class="fa-regular fa-clock"></i>
+                                알림
+                            </div>
+                            <div>
+                            <span class="badge badge-primary bold">
                                 <span th:text="${#temporals.format(notification.createDate, 'yy.MM.dd HH:mm')}"></span>
                                 <span>, <span th:text="${notification.createDateAfterStrHuman}"></span></span>
                             </span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mt-4 flex flex-col gap-2">
-                        <div>
-                            <i class="fa-regular fa-message"></i>
-                            내용
-                        </div>
-                        <div th:if="${notification.event_type == 0}">
-                             <span th:text="${notification.content}"></span>
-                        </div>
-                        <div th:if="${notification.event_type == 1}">
-                            <span th:text="${notification.content}"> </span>
+                        <div class="mt-4 flex flex-col gap-2">
+                            <div>
+                                <i class="fa-regular fa-message"></i>
+                                내용
+                            </div>
+                            <div>
+                                <span class="font-bold" th:text="${notification.content}"></span>
+                            </div>
+                            <button class="btn" th:if="${!(notification.eventType == 1)}"
+                                    onclick="$(this).children('form').submit();"> 보러가기
+                                <form hidden th:action="@{|/notification|}" method="POST">
+                                    <input type="hidden" name="notificationId" th:value="${notification.id}">
+                                </form>
+                            </button>
+                            <button class="btn" th:data-notification="${notification.id}"
+                                    onclick="deleteNotification(this.getAttribute('data-notification'))">
+                                삭제
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <script th:inline="javascript">
+            const deleteNotification = (notificationId) => {
+                var header = $("meta[name='_csrf_header']").attr('content');
+                var token = $("meta[name='_csrf']").attr('content');
+
+                $.ajax({
+                    // 요청방식: post, 요청주소: /notification/delete
+                    // 요청데이터: 작성내용, 게시글번호, 비밀 댓글 여부, 부모 댓글 id
+                    type: "post",
+                    url: "/notification/delete",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    data: {
+                        "notificationId": notificationId
+                    },
+                    success: function (fragment) {
+                        $('#notification-list').replaceWith(fragment);
+                        toastNotice('해당 알림이 삭제되었습니다');
+                    },
+                    error: function (err) {
+                        console.log("요청 실패", err);
+                    }
+                });
+            }
+        </script>
 </main>
 </body>
 

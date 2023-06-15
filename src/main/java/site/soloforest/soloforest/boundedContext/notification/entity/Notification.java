@@ -1,6 +1,5 @@
 package site.soloforest.soloforest.boundedContext.notification.entity;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
@@ -8,20 +7,15 @@ import java.time.temporal.ChronoUnit;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.soloforest.soloforest.boundedContext.account.entity.Account;
-import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 
 @Entity
 @Getter
@@ -43,19 +37,12 @@ public class Notification {
 	 * 0: 댓글 발생
 	 * 1: 신고 발생
 	 */
-	private int event_type;
+	private int eventType;
 
 	/**
 	 * comment_id 또는 report_id 저장
 	 */
-	private Long event_id;
-
-	// 연관관계 맺기
-	@OneToOne(mappedBy = "notification", cascade = CascadeType.REMOVE)
-	private Comment comment;
-
-	@ManyToOne
-	private Account account;
+	private Long eventId;
 
 	// 읽은 날짜 표기 -> 안읽음 알림만 모아보기
 	private LocalDateTime readDate;
@@ -87,12 +74,18 @@ public class Notification {
 
 		StringBuilder sb = new StringBuilder();
 
-		if (diffYears > 0) sb.append(diffYears).append("년 ");
-		if (diffMonths > 0) sb.append(diffMonths).append("개월 ");
-		if (diffDays > 0) sb.append(diffDays).append("일 ");
-		if (diffHours > 0) sb.append(diffHours).append("시간 ");
-		if (diffMinutes > 0) sb.append(diffMinutes).append("분 ");
-		if (sb.isEmpty()) sb.append("1분 ");
+		if (diffYears > 0)
+			sb.append(diffYears).append("년 ");
+		if (diffMonths > 0)
+			sb.append(diffMonths).append("개월 ");
+		if (diffDays > 0)
+			sb.append(diffDays).append("일 ");
+		if (diffHours > 0)
+			sb.append(diffHours).append("시간 ");
+		if (diffMinutes > 0)
+			sb.append(diffMinutes).append("분 ");
+		if (sb.isEmpty())
+			sb.append("1분 ");
 
 		return sb.append(suffix).toString();
 	}

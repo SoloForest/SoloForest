@@ -14,7 +14,6 @@ import site.soloforest.soloforest.base.event.EventCommentCreate;
 import site.soloforest.soloforest.base.event.EventReplyCommentCreate;
 import site.soloforest.soloforest.boundedContext.account.entity.Account;
 import site.soloforest.soloforest.boundedContext.article.entity.Article;
-import site.soloforest.soloforest.boundedContext.article.repository.ArticleRepository;
 import site.soloforest.soloforest.boundedContext.comment.entity.Comment;
 import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepository;
 
@@ -24,8 +23,6 @@ import site.soloforest.soloforest.boundedContext.comment.repository.CommentRepos
 public class CommentService {
 
 	private final CommentRepository commentRepository;
-
-	private final ArticleRepository articleRepository;
 
 	private final ApplicationEventPublisher publisher;
 
@@ -134,10 +131,33 @@ public class CommentService {
 		return commentRepository.findAllByArticle(article, pageable);
 	}
 
+	// 마지막 페이지 번호 가져오기
 	public int getLastPageNumber(Article article) {
 		int commentCount = commentRepository.countByArticle(article);
 		int pageSize = 10; // 페이지 당 댓글 수 (조정 가능)
 		int lastPageNumber = (int)Math.ceil((double)commentCount / pageSize);
-		return lastPageNumber - 1;
+		// 스프링 0페이지 부터 시작하니 1 빼주기
+		// 단 댓글이 1개도 없던 상황일 경우, 댓글이 달린 직후에는 0일테니 -1하면 음수값이 나온다.
+		// 따라서 음수이면 0을 반환하도록 수정
+		if (lastPageNumber - 1 < 0)
+			return 0;
+		else
+			return lastPageNumber - 1;
+	}
+
+	// 현재 페이지 번호 가져오기
+	public int getPage(Comment comment) {
+		int pageSize = 10; // 페이지 당 댓글 수 (조정 가능)
+		// 인자로 받은 댓글보다 이전에 달린 댓글 갯수 / 페이지 당 갯수 => 현재 댓글이 있는 페이지 확인
+		int commentIndex =
+			commentRepository.countByArticleAndCreateDateBefore(comment.getArticle(), comment.getCreateDate());
+		int pageNumber = (int)Math.ceil((double)commentIndex / pageSize);
+		// 스프링 0페이지 부터 시작하니 1 빼주기
+		// 단 댓글이 1개도 없던 상황일 경우, 댓글이 달린 직후에는 0일테니 -1하면 음수값이 나온다.
+		// 따라서 음수이면 0을 반환하도록 수정
+		if (pageNumber - 1 < 0)
+			return 0;
+		else
+			return pageNumber - 1;
 	}
 }
