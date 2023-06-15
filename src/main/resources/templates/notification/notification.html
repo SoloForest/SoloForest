@@ -15,7 +15,7 @@
                         th:text="|${#lists.size(notifications)}|"></h5>
                     <h5 class="border-bottom my-3 py-2"> 개의 알림이 있습니다.</h5>
                     <button class="btn border-bottom mx-2 my-1 py-2" th:classappend="${#lists.size(notifications) == 0} ? 'btn-disabled' : ''"
-                            onclick="$(this).children('form').submit();"> 전부삭제
+                            onclick="$(this).children('form').submit();"> 전체 삭제
                         <form hidden th:action="@{|/notification/deleteAll|}" method="POST">
                             <input type="hidden" name="accountId" th:value="${@rq.account.id}">
                         </form>
