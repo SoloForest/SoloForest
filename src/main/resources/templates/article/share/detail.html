@@ -74,12 +74,12 @@
                 <i class="fa-regular fa-comment ml-3"></i>
                 <span class="gap-1" th:text="${article.comments.size()}"></span>
             </div>
-            <hr class="mb-8" style="border: none; border-top: 1px solid;">
-        </div>
-        <!-- 댓글 시작 -->
-        <div class="comments">
-            <!-- comment.html Include -->
-            <div layout:include="comment/comment.html"></div>
+            <hr style="border: none; border-top: 1px solid;">
+            <!-- 댓글 시작 -->
+            <div class="comments">
+                <!-- comment.html Include -->
+                <div layout:include="comment/comment.html"></div>
+            </div>
         </div>
 
         <!-- 댓글 끝 -->

@@ -16,6 +16,7 @@ import site.soloforest.soloforest.boundedContext.notification.repository.Notific
 @Transactional(readOnly = true)
 public class NotificationService {
 	private final NotificationRepository notificationRepository;
+
 	@Transactional
 	public void whenCreateComment(Comment comment) {
 		String content = comment.getWriter().getUsername() + "님이 회원님의 게시글에 댓글을 남겼습니다.";
@@ -23,9 +24,8 @@ public class NotificationService {
 
 		Notification notification = Notification.builder()
 			.content(content)
-			.event_type(0)
-			.account(account)
-			.event_id(comment.getId())
+			.eventType(0)
+			.eventId(comment.getId())
 			.build();
 
 		notificationRepository.save(notification);
@@ -38,9 +38,8 @@ public class NotificationService {
 
 		Notification notification = Notification.builder()
 			.content(content)
-			.event_type(0)
-			.account(account)
-			.event_id(replyComment.getId())
+			.eventType(0)
+			.eventId(replyComment.getId())
 			.build();
 
 		notificationRepository.save(notification);
@@ -57,10 +56,35 @@ public class NotificationService {
 	}
 
 	public List<Notification> getNotifications(Account account) {
-		return notificationRepository.findByAccountOrderByIdDesc(account);
+		return notificationRepository.findByEventIdOrderByIdDesc(account.getId());
 	}
 
 	public Notification getNotification(Long notificationId) {
 		return notificationRepository.findById(notificationId).orElse(null);
+	}
+
+	public void whenReportSubmit(Account account) {
+		String content = "누군가 당신을 신고하였습니다. 누적 횟수 3회가 되면 3일간 로그인이 제한되니 주의해주세요(현재 %d회)".formatted(account.getReported());
+		Notification notification = Notification.builder()
+			.content(content)
+			.eventType(1)
+			.eventId(account.getId())
+			.build();
+
+		notificationRepository.save(notification);
+	}
+
+	@Transactional
+	public void delete(Notification notification) {
+		notificationRepository.delete(notification);
+	}
+
+	@Transactional
+	public void deleteAll(Long accountId) {
+		notificationRepository.deleteAllByEventId(accountId);
+	}
+
+	public boolean countUnreadNotifications(Long accountId) {
+		return notificationRepository.countByEventIdAndReadDateIsNull(accountId) > 0;
 	}
 }
