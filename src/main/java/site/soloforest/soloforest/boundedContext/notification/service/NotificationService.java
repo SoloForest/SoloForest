@@ -35,9 +35,11 @@ public class NotificationService {
 
 	@Transactional
 	public void whenReplyCommentCreate(Comment replyComment) {
-		if (replyComment.getWriter().getId() != replyComment.getArticle().getAccount().getId()) {
+		//부모 댓글과 자식 댓글 작성자가 다르다 -> 다른사람이 댓글에 답글 남겨준 거니 알림
+		if (replyComment.getWriter().getId() != replyComment.getParent().getWriter().getId()) {
 			String content = replyComment.getWriter().getNickname() + "님이 회원님의 댓글에 댓글을 남겼습니다.";
-			Long accountId = replyComment.getArticle().getAccount().getId();
+			// 부모 댓글쓴 사용자에게 알림 가게 설정
+			Long accountId = replyComment.getParent().getWriter().getId();
 
 			Notification notification = Notification.builder()
 				.content(content)
