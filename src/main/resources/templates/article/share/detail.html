@@ -2,6 +2,7 @@
 <head>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
+    <script src="/common/report.js"></script>
     <title th:text="${article.subject}"></title>
 </head>
 
@@ -35,7 +36,12 @@
                         <span class="font-bold text-primary"
                               th:text="${article.account.nickname}"></span>
                         <ul class="bg-white">
-                            <li><a>신고하기</a></li>
+                            <li>
+                                <button th:data-child-index="${article.account.id}"
+                                        onclick="sendReport(this.getAttribute('data-child-index'))">
+                                    <span>신고하기</span>
+                                </button>
+                            </li>
                         </ul>
                     </li>
                 </ul>
