@@ -37,7 +37,13 @@
                             <li tabindex="0">
                                 <span>[[${comment.writer.username}]] </span>
                                 <ul class="bg-base-100">
-                                    <li><a>신고하기</a></li>
+                                    <li>
+                                        <button th:data-child-index="${comment.writer.id}"
+                                                th:if="${!comment.deleted}"
+                                                onclick="sendReport(this.getAttribute('data-child-index'))">
+                                            <span>신고하기</span>
+                                        </button>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -152,7 +158,12 @@
                                     <li tabindex="0">
                                         <span>[[${childComment.writer.username}]]</span>
                                         <ul class="bg-base-100">
-                                            <li><a>신고하기</a></li>
+                                            <li>
+                                                <button th:data-child-index="${comment.writer.id}"
+                                                        onclick="sendReport(this.getAttribute('data-child-index'))">
+                                                    <span>신고하기</span>
+                                                </button>
+                                            </li>
                                         </ul>
                                     </li>
                                 </ul>

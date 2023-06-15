@@ -6,6 +6,7 @@
 <head>
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
+    <script src="/common/report.js"></script>
     <title th:text="${article.subject}"></title>
 </head>
 <body>
@@ -37,8 +38,21 @@
                         <span class="text-3xl font-semibold" th:text="${article.subject}"></span>
                         <div class="flex justify-between">
                             <div>
-                                <a>작성자 <span th:text="${article.account.username}"></span></a>
-                                <a>작성일 <span
+                                <ul class="menu menu-horizontal menu-compact">
+                                    <li tabindex="0">
+                                        <span class="font-bold text-primary"
+                                              th:text="${article.account.nickname}"></span>
+                                        <ul class="bg-white">
+                                            <li>
+                                                <button th:data-child-index="${article.account.id}"
+                                                        onclick="sendReport(this.getAttribute('data-child-index'))">
+                                                    <span>신고하기</span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                                <a><span
                                         th:text="${#temporals.format(article.createDate, 'YYYY.MM.dd (HH:mm)')}"></span></a>
                             </div>
                             <div>
@@ -81,7 +95,7 @@
                     </div>
                 </div>
 
-                <div class="m-8 space-y-2.5 space-x-1 flex justify-center" style="margin-left: 230px;">
+                <div class="m-8 space-y-2.5 space-x-1 flex justify-center">
                     <input type="hidden" id="id" th:value="${article.id}">
                     <input type="hidden" id="accountId"
                            th:value="${@rq.isLogin()} ? ${@rq.getAccount().getId()} : null">
