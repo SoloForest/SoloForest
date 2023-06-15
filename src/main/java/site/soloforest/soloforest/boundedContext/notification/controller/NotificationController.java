@@ -69,7 +69,7 @@ public class NotificationController {
 		Account account = rq.getAccount();
 
 		Notification notification = notificationService.getNotification(notificationId);
-		if (account.getId() != rq.getAccountById(notification.getEventId()).getId()) {
+		if (account.getId() != rq.getAccountById(notification.getAccountId()).getId()) {
 			rq.redirectWithMsg("/main", "본인만 삭제할 수 있습니다.");
 		}
 
