@@ -33,10 +33,6 @@ public class PictureHandler {
 
 		String path = "src/main/resources/static/images/" + creatDate;
 		File file = new File(path);
-		if (!file.exists()) {
-			//디렉토리 존재하지 않을 때 생성
-			file.mkdirs();
-		}
 
 		if (!multipartFile.isEmpty()) {
 			String contentType = multipartFile.getContentType();
@@ -53,6 +49,11 @@ public class PictureHandler {
 				else {
 					return RsData.of("F-2", "이미지 파일만 가능합니다.");
 				}
+			}
+
+			if (!file.exists()) {
+				//디렉토리 존재하지 않을 때 생성
+				file.mkdirs();
 			}
 
 			String newFileName = Long.toString(System.nanoTime()) + originalFileExtension;
