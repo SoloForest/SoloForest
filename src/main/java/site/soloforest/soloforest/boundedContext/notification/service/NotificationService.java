@@ -25,7 +25,7 @@ public class NotificationService {
 		Notification notification = Notification.builder()
 			.content(content)
 			.eventType(0)
-			.eventId(comment.getId())
+			.eventId(account.getId())
 			.build();
 
 		notificationRepository.save(notification);
@@ -34,12 +34,12 @@ public class NotificationService {
 	@Transactional
 	public void whenReplyCommentCreate(Comment replyComment) {
 		String content = replyComment.getWriter().getUsername() + "님이 회원님의 댓글에 댓글을 남겼습니다.";
-		Account account = replyComment.getParent().getWriter();
+		Account parentCommentAccount = replyComment.getParent().getWriter();
 
 		Notification notification = Notification.builder()
 			.content(content)
 			.eventType(0)
-			.eventId(replyComment.getId())
+			.eventId(parentCommentAccount.getId())
 			.build();
 
 		notificationRepository.save(notification);
