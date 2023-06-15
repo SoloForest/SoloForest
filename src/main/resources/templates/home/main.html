@@ -41,7 +41,7 @@
                 <div class="w-full">
                     <table class="table table-compact w-full">
                         <tbody>
-                        <tr class="hover" th:each="community : ${communityList}" th:onclick="'location.href=\'/article/share/detail/' + ${community.id} + '\''">
+                        <tr class="hover cursor-pointer" th:each="community : ${communityList}" th:onclick="'location.href=\'/article/share/detail/' + ${community.id} + '\''">
                             <td class="w-4/5" th:text="${community.subject}"></td>
                             <td class="w-1/5 text-center"><i class="ml-2 fa-solid fa-eye"></i> <spna th:text="${community.viewed}"></spna></td>
                         </tr>
@@ -65,7 +65,7 @@
                 <div class="w-full">
                     <table class="table table-compact w-full">
                         <tbody>
-                        <tr class="hover" th:each="group : ${groupList}" th:onclick="'location.href=\'/article/group/detail/' + ${group.id} + '\''">
+                        <tr class="hover cursor-pointer" th:each="group : ${groupList}" th:onclick="'location.href=\'/article/group/detail/' + ${group.id} + '\''">
                             <td class="w-7/12" th:text="${group.subject}"></td>
                             <td class="w-1/12 text-center" th:text="${#temporals.format(group.startDate, 'yy.MM.dd')}"></td>
                             <td class="w-1/12 text-center">~</td>
