@@ -19,30 +19,36 @@ public class NotificationService {
 
 	@Transactional
 	public void whenCreateComment(Comment comment) {
-		String content = comment.getWriter().getUsername() + "님이 회원님의 게시글에 댓글을 남겼습니다.";
-		Account account = comment.getArticle().getAccount();
-
-		Notification notification = Notification.builder()
-			.content(content)
-			.eventType(0)
-			.eventId(account.getId())
-			.build();
-
-		notificationRepository.save(notification);
+		if (comment.getWriter().getId() != comment.getArticle().getAccount().getId()) {
+			String content = comment.getWriter().getNickname() + "님이 회원님의 게시글에 댓글을 남겼습니다.";
+			Long accountId = comment.getArticle().getAccount().getId();
+			Notification notification = Notification.builder()
+				.content(content)
+				.eventType(0)
+				.eventId(comment.getId())
+				.accountId(accountId)
+				.readDate(null)
+				.build();
+			notificationRepository.save(notification);
+		}
 	}
 
 	@Transactional
 	public void whenReplyCommentCreate(Comment replyComment) {
-		String content = replyComment.getWriter().getUsername() + "님이 회원님의 댓글에 댓글을 남겼습니다.";
-		Account parentCommentAccount = replyComment.getParent().getWriter();
+		if (replyComment.getWriter().getId() != replyComment.getArticle().getAccount().getId()) {
+			String content = replyComment.getWriter().getNickname() + "님이 회원님의 댓글에 댓글을 남겼습니다.";
+			Long accountId = replyComment.getArticle().getAccount().getId();
 
-		Notification notification = Notification.builder()
-			.content(content)
-			.eventType(0)
-			.eventId(parentCommentAccount.getId())
-			.build();
+			Notification notification = Notification.builder()
+				.content(content)
+				.eventType(0)
+				.eventId(replyComment.getId())
+				.accountId(accountId)
+				.readDate(null)
+				.build();
 
-		notificationRepository.save(notification);
+			notificationRepository.save(notification);
+		}
 	}
 
 	@Transactional
@@ -56,7 +62,7 @@ public class NotificationService {
 	}
 
 	public List<Notification> getNotifications(Account account) {
-		return notificationRepository.findByEventIdOrderByIdDesc(account.getId());
+		return notificationRepository.findByAccountIdOrderByIdDesc(account.getId());
 	}
 
 	public Notification getNotification(Long notificationId) {
@@ -69,6 +75,7 @@ public class NotificationService {
 			.content(content)
 			.eventType(1)
 			.eventId(account.getId())
+			.accountId(account.getId())
 			.build();
 
 		notificationRepository.save(notification);
@@ -81,10 +88,10 @@ public class NotificationService {
 
 	@Transactional
 	public void deleteAll(Long accountId) {
-		notificationRepository.deleteAllByEventId(accountId);
+		notificationRepository.deleteAllByAccountId(accountId);
 	}
 
 	public boolean countUnreadNotifications(Long accountId) {
-		return notificationRepository.countByEventIdAndReadDateIsNull(accountId) > 0;
+		return notificationRepository.countByAccountIdAndReadDateIsNull(accountId) > 0;
 	}
 }

@@ -41,8 +41,13 @@ public class Notification {
 
 	/**
 	 * comment_id 또는 report_id 저장
+	 * 신고일 경우 신고 받는 사용자
+	 * 댓글일 경우 댓글의 id
 	 */
 	private Long eventId;
+
+	// 댓글일 경우 누구한테 갈지
+	private Long accountId;
 
 	// 읽은 날짜 표기 -> 안읽음 알림만 모아보기
 	private LocalDateTime readDate;

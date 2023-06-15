@@ -7,9 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import site.soloforest.soloforest.boundedContext.notification.entity.Notification;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
-	List<Notification> findByEventIdOrderByIdDesc(Long eventId);
 
-	void deleteAllByEventId(Long accountId);
+	List<Notification> findByAccountIdOrderByIdDesc(Long id);
 
-	Long countByEventIdAndReadDateIsNull(Long accountId);
+	void deleteAllByAccountId(Long accountId);
+
+	int countByAccountIdAndReadDateIsNull(Long accountId);
 }

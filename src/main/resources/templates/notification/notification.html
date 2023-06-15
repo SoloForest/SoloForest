@@ -14,7 +14,8 @@
                     <h5 class="border-bottom my-3 py-2 font-bold"
                         th:text="|${#lists.size(notifications)}|"></h5>
                     <h5 class="border-bottom my-3 py-2"> 개의 알림이 있습니다.</h5>
-                    <button class="btn border-bottom mx-2 my-1 py-2" th:classappend="${#lists.size(notifications) == 0} ? 'btn-disabled' : ''"
+                    <button class="btn border-bottom mx-2 my-1 py-2"
+                            th:classappend="${#lists.size(notifications) == 0} ? 'btn-disabled' : ''"
                             onclick="$(this).children('form').submit();"> 전체 삭제
                         <form hidden th:action="@{|/notification/deleteAll|}" method="POST">
                             <input type="hidden" name="accountId" th:value="${@rq.account.id}">
@@ -48,12 +49,17 @@
                             <div>
                                 <span class="font-bold" th:text="${notification.content}"></span>
                             </div>
-                            <button class="btn" th:if="${!(notification.eventType == 1)}"
-                                    onclick="$(this).children('form').submit();"> 보러가기
-                                <form hidden th:action="@{|/notification|}" method="POST">
-                                    <input type="hidden" name="notificationId" th:value="${notification.id}">
-                                </form>
+                            <button class="btn" th:if="${(notification.eventType == 1)}"
+                                    th:classappend="${notification.eventType == 1} ? 'hidden' : ''"> 신고당함
                             </button>
+                            <button class="btn" th:if="${!(notification.eventType == 1)}"
+                                    th:data-child-index="${notificationIndex.current.id}"
+                                    onclick="submitForm(this.getAttribute('data-child-index'))"> 보러가기
+                            </button>
+                            <form th:id="'form-' + ${notification.id}" hidden th:action="@{/notification}"
+                                  method="POST">
+                                <input type="hidden" name="notificationId">
+                            </form>
                             <button class="btn" th:data-notification="${notification.id}"
                                     onclick="deleteNotification(this.getAttribute('data-notification'))">
                                 삭제
@@ -63,32 +69,39 @@
                 </div>
             </div>
         </div>
-        <script th:inline="javascript">
-            const deleteNotification = (notificationId) => {
-                var header = $("meta[name='_csrf_header']").attr('content');
-                var token = $("meta[name='_csrf']").attr('content');
+    </div>
+    <script th:inline="javascript">
+        const deleteNotification = (notificationId) => {
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
 
-                $.ajax({
-                    // 요청방식: post, 요청주소: /notification/delete
-                    // 요청데이터: 작성내용, 게시글번호, 비밀 댓글 여부, 부모 댓글 id
-                    type: "post",
-                    url: "/notification/delete",
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader(header, token);
-                    },
-                    data: {
-                        "notificationId": notificationId
-                    },
-                    success: function (fragment) {
-                        $('#notification-list').replaceWith(fragment);
-                        toastNotice('해당 알림이 삭제되었습니다');
-                    },
-                    error: function (err) {
-                        console.log("요청 실패", err);
-                    }
-                });
-            }
-        </script>
+            $.ajax({
+                // 요청방식: post, 요청주소: /notification/delete
+                // 요청데이터: 작성내용, 게시글번호, 비밀 댓글 여부, 부모 댓글 id
+                type: "post",
+                url: "/notification/delete",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                data: {
+                    "notificationId": notificationId
+                },
+                success: function (fragment) {
+                    $('#notification-list').replaceWith(fragment);
+                    toastNotice('해당 알림이 삭제되었습니다');
+                },
+                error: function (err) {
+                    console.log("요청 실패", err);
+                }
+            });
+        }
+
+        function submitForm(notificationId) {
+            var form = document.getElementById('form-' + notificationId);
+            form.notificationId.value = notificationId;
+            form.submit();
+        }
+    </script>
 </main>
 </body>
 
