@@ -39,3 +39,4 @@ out/
 ### Custom ###
 .DS_Store
 application-secret.yml
+static/images/
