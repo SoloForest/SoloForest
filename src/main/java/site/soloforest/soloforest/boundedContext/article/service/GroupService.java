@@ -127,8 +127,11 @@ public class GroupService {
 	}
 
 	@Transactional
-	public void modify(Group group, String subject, String content) {
-		groupRepository.save(group.toBuilder().id(group.getId()).subject(subject).content(content).build());
+	public void modify(Group group, String subject, String content, int member,
+		LocalDateTime startDate, LocalDateTime endDate, int money, String location) {
+		groupRepository.save(group.toBuilder().id(group.getId()).subject(subject).content(content)
+			.startDate(startDate).endDate(endDate).money(money).location(location)
+			.build());
 	}
 
 	public void delete(Group group) {

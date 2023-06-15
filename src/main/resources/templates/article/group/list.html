@@ -57,6 +57,8 @@
                 <td>모집</td>
                 <td>
                     <a th:href="@{|/article/group/detail/${article.id}|}" th:text="${article.subject}"></a>
+                    <span class="text-gray-500">(</span><a class="text-gray-500" th:text="${article.comments.size}"></a><span
+                        class="text-gray-500">)</span>
                 </td>
                 <td><span th:if="${article.account != null}" th:text="${article.account.nickname}"></span></td>
                 <td th:text="${article.viewed}"></td>

@@ -61,6 +61,11 @@ public class GroupController {
 	public String create(String subject, String content, int member, LocalDateTime startDate, LocalDateTime endDate,
 		int money, String location) {
 
+		LocalDateTime now = LocalDateTime.now();
+		if (startDate.isBefore(now) || endDate.isBefore(startDate)) {
+			return rq.redirectWithMsg("/article/group/create", "날짜를 다시 확인해주세요.");
+		}
+
 		Group group = groupService.create(subject, content, member, startDate, endDate, money, location,
 			rq.getAccount());
 
@@ -83,14 +88,15 @@ public class GroupController {
 	@PostMapping("/modify/{id}")
 	@PreAuthorize("isAuthenticated()")
 	public String modify(@PathVariable("id") Long id,
-		String subject, String content) {
+		String subject, String content, int member, LocalDateTime startDate,
+		LocalDateTime endDate, int money, String location) {
 		Group group = groupService.getGroup(id);
 
 		if (!rq.getAccount().getId().equals(group.getAccount().getId())) {
 			return "redirect:/error/403";
 		}
 
-		groupService.modify(group, subject, content);
+		groupService.modify(group, subject, content, member, startDate, endDate, money, location);
 		return "redirect:/article/group/detail/%d".formatted(id);
 	}
 
