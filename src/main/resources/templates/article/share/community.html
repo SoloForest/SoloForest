@@ -57,7 +57,11 @@
                 <td th:text="${article.likes}"></td>
                 <td>일상</td>
                 <td>
-                    <a th:href="@{|/article/share/detail/${article.id}|}" th:text="${article.subject}"></a>
+                    <div class="flex justify-center">
+                        <a th:href="@{|/article/share/detail/${article.id}|}" th:text="${article.subject}"></a>
+                        <i class="fa-solid fa-comment mt-1 ml-2 text-neutral"></i>
+                        <p class="ml-1 text-neutral-focus" th:text="${article.comments.size}"></p>
+                    </div>
                 </td>
                 <td><span th:if="${article.account != null}" th:text="${article.account.nickname}"></span></td>
                 <td th:text="${article.viewed}"></td>

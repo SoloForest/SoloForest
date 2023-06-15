@@ -40,7 +40,7 @@
                 <td th:text="${article.likes}"></td>
                 <td>일상</td>
                 <td>
-                    <a th:if="${/article.boardNumber == 2}" th:href="@{|/article/group/detail/${article.id}|}"
+                    <a th:if="${article.boardNumber == 2}" th:href="@{|/article/group/detail/${article.id}|}"
                        th:text="${article.subject}"></a>
                     <a th:if="${article.boardNumber < 2}" th:href="@{|/article/share/detail/${article.id}|}"
                        th:text="${article.subject}"></a>
