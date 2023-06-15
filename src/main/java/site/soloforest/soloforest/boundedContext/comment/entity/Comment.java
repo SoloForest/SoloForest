@@ -8,10 +8,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import net.minidev.json.annotate.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,8 +48,9 @@ public class Comment {
 	@ManyToOne
 	private Comment parent;
 
-	// orphanRemoval 추가 이유 : Ajax 비동기적 댓글 리스트 조회로 인해 연관관계 명시적으로 끊어줘야 하기에 추가
-	@OneToMany(mappedBy = "parent", cascade = {CascadeType.REMOVE}, orphanRemoval = true)
+	// Cascade REMOVE 불가 : 자식 댓글이 있는 상태에서, 그냥 댓글 삭제하면 자식 댓글 전부 지워짐
+	// OrphanRemoval로 대댓글과 연관관계 끊어지면 삭제되게 설정
+	@OneToMany(mappedBy = "parent", orphanRemoval = true)
 	@ToString.Exclude
 	@Builder.Default // 빌더패턴 리스트시 초기화
 	private List<Comment> children = new ArrayList<>();
@@ -74,22 +70,23 @@ public class Comment {
 	private Boolean deleted = false;
 	@OneToOne
 	private Notification notification;
+
 	@PrePersist
 	public void prePersist() {
 		this.modifyDate = null;
 	}
 
-
-	public void deleteParent(){
+	public void deleteParent() {
 		deleted = true;
 	}
 
 	// 타임리프에서 비밀 댓글이면 댓글의 내용이 안보이게 하기 위함
 	// TODO : 템플릿에서 th:if(비밀글) => th:text = "비밀 댓글입니다."
 	//  + (사용자 id = 작성자 or admin or 게시글 작성자만 보이게 타임리프 조건)
- 	public boolean isSecret() {
+	public boolean isSecret() {
 		return this.secret == true;
 	}
+
 	public boolean isDeleted() {
 		return this.deleted == true;
 	}

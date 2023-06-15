@@ -131,17 +131,17 @@ public class CommentController {
 		Comment comment = commentService.getComment(commentDTO.getId());
 		// 부모(댓글)이 있을 경우 연관관계 끊어주기 -> 삭제되더라도 GET 등으로 새로 요청을 보내는 것이 아니기에
 		// 이 작업은 꼭 해줘야 대댓글 리스트도 수정된다!
-		// 부모 댓글이 삭제 상태이며, 부모의 자식이 1개(삭제하려는 자기 뿐)일 경우 연관관계 유지 시켜줘야
-		// 같이 삭제되니 연관관계 유지
-		if (comment.getParent() != null && comment.getParent().isDeleted()
-			&& comment.getParent().getChildren().size() == 1) {
-		}
-		// 댓글 자체가 삭제 상태건 아니건, 자식이 2개 이상 있는 상황이라면 그냥 대댓글만 삭제하면 되니까 해당 댓글 연관관계만 끊어주기
-		else if (comment.getParent() != null && comment.getParent().getChildren().size() > 1) {
+
+		// 부모댓글이 삭제 되지 않았다면 연관관계 끊어주기만 하면 됨
+		// => Ajax 비동기 리스트화를 위해 리스트에서 명시적 삭제
+		if (comment.getParent() != null && !comment.getParent().isDeleted()) {
 			comment.getParent().getChildren().remove(comment);
 		}
-		// 부모가 있고, 삭제 상태가 아니라면 대댓글만 삭제 => Ajax 비동기 리스트화를 위해 리스트에서 명시적 삭제
-		else if (comment.getParent() != null && !comment.isDeleted()) {
+		// 부모댓글이 삭제 상태이고 부모의 자식 댓글이 본인 포함 2개 이상이라면
+		// 자식 댓글의 삭제가 부모 댓글 객체 삭제에 영향을 주지 않으니 연관관계만 끊어주기
+		// => Ajax 비동기 리스트화를 위해 리스트에서 명시적 삭제
+		else if (comment.getParent() != null && comment.getParent().isDeleted()
+			&& comment.getParent().getChildren().size() > 1) {
 			comment.getParent().getChildren().remove(comment);
 		}
 
