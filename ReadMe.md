@@ -1,25 +1,5 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -33,36 +13,23 @@
   <p align="center">
     1인 가구를 위한 커뮤니티 프로그램
     <br />
-    <!-- <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br /> 
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>  -->
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">프로젝트 개요</a>
+      <a href="#프로젝트-개요">프로젝트 개요</a>
       <ul>
-        <li><a href="#built-with">사용 기술</a></li>
+        <li><a href="#사용-기술">사용 기술</a></li>
       </ul>
     </li>
-    <li><a href="#getting-started">시작하기</a></li>
-    <!-- <li><a href="#usage">사용법</a></li> -->
-    <!--<li><a href="#roadmap">Roadmap</a></li>-->
-    <!--<li><a href="#contributing">Contributing</a></li>-->
-    <!-- <li><a href="#license">License</a></li> -->
-    <li><a href="#contact">연락망</a></li>
-    <!-- <li><a href="#acknowledgments">Acknowledgments</a></li> -->
+    <li><a href="#시작하기">시작하기</a></li>
+    <li><a href="#각-기능별-간략-소개">각 기능별 간략 소개</a></li>
+    <li><a href="#프로젝트-결과물">프로젝트 결과물</a></li>
+    <li><a href="#기능별-담당">기능별 담당</a></li>
   </ol>
 </details>
 
@@ -79,78 +46,66 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-### 사용 기술
+## 사용 기술
 
 <img src="images/techStack.png">
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
 ## 시작하기
-
 [https://www.soloforest.site](https://www.soloforest.site)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## 각 기능별 간략 소개
 
-<!-- USAGE EXAMPLES -->
-<!-- ## 사용법
+- 회원
+  - 회원가입/회원탈퇴
+  - 회원 정보 변경
+  - ID/PW 찾기
+  - 회원 신고 기능 구현
+  - 마이페이지 구현
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+- 관리자
+  - 모든 게시글 삭제 가능
+  - 모든 댓글 수정, 삭제 가능
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+- 정보 공유 게시판 + 인원 모집 게시판
+  - 게시글 삭제, 검색, 추천, 즐겨찾기
+  - 이미지 업로드 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
+- 댓글
+  - 댓글 작성, 수정, 삭제 구현
+  - 비밀 댓글 구현(관리자, 게시글 작성자, 비밀 댓글 작성자 만 확인 가능)
+  - 댓글 페이징
+  - 대댓글 작성, 수정, 삭제 구현
+ 
+- 알림
+  - 알림 객체 자동 생성(댓글 생성, 신고)
+  - 알림 삭제 기능
+  - 알림 클릭 시 해당 게시글 댓글로 이동
+ 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## 프로젝트 결과물
 
-
-<!-- ROADMAP -->
-<!-- ## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
-
-<!-- CONTACT -->
-## 연락망
-- 박철현 - 
-- 방유진 - 
-- 이송이 -
-- 이은찬 - 
-
-Project Link: [https://github.com/SoloForest](https://github.com/SoloForest)
-
-
-Notion: (https://www.notion.so/SoloForest-6f515707e5b74cab9f8babcb23eb8c4a)
+- [프로젝트 시연 영상](https://youtu.be/FIOoXBp2CvY)
+- [노션 페이지](https://www.notion.so/SoloForest-6f515707e5b74cab9f8babcb23eb8c4a)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## 기능별 담당
 
+- 박철현 - 댓글, 알림 기능
+  - [GitHub](https://github.com/CheorHyeon)
+- 방유진 - 정보 공유성 게시판
+  - [GitHub](https://github.com/u-jineeee)
+- 이송이 - 계정
+  - [GitHub](https://github.com/elephantLikesApple)
+- 이은찬 - 인원 모집형 게시판
+  - [GitHub](https://github.com/Chan0521)
 
-<!-- ACKNOWLEDGMENTS -->
-<!-- ## Acknowledgments
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p> -->
+<!-- 템플릿 출처 : https://github.com/othneildrew/Best-README-Template -->
