@@ -35,7 +35,6 @@ public class NotProd {
 			@Override
 			@Transactional
 			public void run(String... args) throws Exception {
-				// TODO : 각 service의 create 함수가 merge되면 service를 사용해서 데이터를 생성하도록 넣어줍시다!
 				Account accountAdmin1 = Account.builder()
 					.username("admin").password("admin").nickname("관리자").email("admin@admin.admin")
 					.authority(0)

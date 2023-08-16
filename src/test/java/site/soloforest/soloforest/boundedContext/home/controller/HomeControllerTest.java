@@ -1,5 +1,9 @@
 package site.soloforest.soloforest.boundedContext.home.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -12,11 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.handler;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
@@ -24,19 +23,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class HomeControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
+	@Autowired
+	private MockMvc mvc;
 
-    @Test
-    @DisplayName("홈 컨트롤러 테스트")
-    void t001() throws Exception{
-        ResultActions resultActions = mvc
-                .perform(get("/main"))
-                .andDo(print());
+	@Test
+	@DisplayName("홈 컨트롤러 테스트")
+	void t001() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(get("/main"))
+			.andDo(print());
 
-        resultActions
-                .andExpect(handler().handlerType(HomeController.class))
-                .andExpect(handler().methodName("showMain"))
-                .andExpect(status().is2xxSuccessful());
-    }
+		resultActions
+			.andExpect(handler().handlerType(HomeController.class))
+			.andExpect(handler().methodName("showMain"))
+			.andExpect(status().is2xxSuccessful());
+	}
 }

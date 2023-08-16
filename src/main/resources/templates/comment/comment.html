@@ -283,64 +283,6 @@
     <!-- 스크립트는 main 태그 안족에, 타임리프 레이아웃에 의해 body 밖은 무시됨-->
 
     <script th:inline="javascript">
-        // 댓글 작성
-        const commentWrite = () => {
-            const secretValue = document.getElementById("secret").checked ? true : false;
-            const contents = document.getElementById("commentContents").value.trim();
-            const articleId = [[${article.id}]];
-            const lastPage = [[${paging.totalPages}]] - 1;
-
-            if (contents.length == 0) {
-                toastWarning('댓글을 입력해주세요');
-                return;
-            }
-            var header = $("meta[name='_csrf_header']").attr('content');
-            var token = $("meta[name='_csrf']").attr('content');
-            //게시글 번호
-            console.log("비밀여부: ", secretValue);
-            console.log("내용: ", contents);
-
-            $.ajax({
-                // 요청방식: post, 요청주소: /comment/create, 요청데이터: 작성내용, 게시글번호, 비밀여부
-                type: "post",
-                url: "/comment/create",
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader(header, token);
-                },
-                data: {
-                    "articleId": articleId,
-                    "secret": secretValue,
-                    "commentContents": contents,
-                    "page": lastPage
-                },
-                success: function (response) {
-                    const secret = document.getElementById("secret");
-                    const contents = document.getElementById("commentContents");
-                    const lastCommentId = "comment_" + ([[${#lists.size(article.comments)}]] - 1);
-                    const newComment = document.getElementById(lastCommentId);
-                    const newUrl = "?page=" + lastPage + "#comment_" + lastCommentId;
-
-                    // Reset comment form
-                    contents.value = "";
-                    secret.checked = false;
-
-                    // Refresh the page with anchor
-                    window.location.href = newUrl;
-
-                    // Wait for a short delay before scrolling to the new comment
-                    setTimeout(function () {
-                        // Scroll to the new comment
-                        newComment.scrollIntoView();
-                    }, 3000); // Adjust the delay as needed
-
-                    toastNotice('댓글이 작성되었습니다');
-                },
-                error: function (err) {
-                    console.log("요청 실패", err);
-                }
-            });
-        }
-
         // 답변, 댓글 수정 동시에 못하도록 하기 위한 답변 폼 숨기기 메서드
         const hideReplyForm = (commentIndex) => {
             const formId = "reply-form-" + commentIndex;
