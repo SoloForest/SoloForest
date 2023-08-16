@@ -23,15 +23,8 @@ import site.soloforest.soloforest.boundedContext.comment.service.CommentService;
 @RequiredArgsConstructor
 @RequestMapping("/comment")
 public class CommentController {
-
-	// TODO : Rq 도입시 변경
-
 	private final Rq rq;
 	private final CommentService commentService;
-
-	// 디버깅시 활용
-	// private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
-	// 	logger.info("showComment 메서드 호출");
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
@@ -72,7 +65,7 @@ public class CommentController {
 
 		// 부모 댓글 찾아오기
 		Comment parent = commentService.getComment(commentDTO.getParentId());
-		// ToDo : RsData 도입 고려
+
 		if (parent == null) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 댓글을 찾을 수 없습니다");
 		}
@@ -95,7 +88,6 @@ public class CommentController {
 		Article article = rq.getArticle(commentDTO.getArticleId());
 		Account account = rq.getAccount();
 
-		// ToDo : RsData 고민
 		if (!(account.isAdmin()) && (account.getId() != commentDTO.getCommentWriter())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다");
 		}
@@ -120,7 +112,6 @@ public class CommentController {
 		Article article = rq.getArticle(commentDTO.getArticleId());
 		Account account = rq.getAccount();
 
-		// ToDo : RsData 고려
 		// 관리자가 아니거나 현재 로그인한 사용자가 작성한 댓글이 아니면 삭제 불가
 		if (!(account.isAdmin()) && (account.getId() != commentDTO.getCommentWriter())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다");
@@ -149,7 +140,7 @@ public class CommentController {
 		}
 
 		commentService.delete(comment);
-		
+
 		model.addAttribute("article", article);
 		Page<Comment> paging = commentService.getCommentPage(page, article);
 		model.addAttribute("paging", paging);
