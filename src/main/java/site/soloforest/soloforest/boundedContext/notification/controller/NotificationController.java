@@ -59,7 +59,6 @@ public class NotificationController {
 				+ comment.getId();
 		}
 
-		// TODO : 신고 받은 알림을 클릭했다면 그냥 알림창으로 다시가게
 		return rq.redirectWithMsg("/main", "신고된 알림을 클릭하여 메인으로 이동합니다.");
 	}
 
@@ -69,8 +68,8 @@ public class NotificationController {
 		Account account = rq.getAccount();
 
 		Notification notification = notificationService.getNotification(notificationId);
-		if (account.getId() != rq.getAccountById(notification.getAccountId()).getId()) {
-			rq.redirectWithMsg("/main", "본인만 삭제할 수 있습니다.");
+		if (account.getId() != notification.getAccountId()) {
+			return rq.redirectWithMsg("/main", "본인만 삭제할 수 있습니다.");
 		}
 
 		notificationService.delete(notification);
@@ -84,6 +83,11 @@ public class NotificationController {
 	@PostMapping("/notification/deleteAll")
 	@PreAuthorize("isAuthenticated()")
 	public String deleteAllNotification(@RequestParam Long accountId) {
+		Account account = rq.getAccount();
+
+		if (account.getId() != accountId) {
+			return rq.redirectWithMsg("/main", "본인만 알림을 전체 삭제할 수 있습니다.");
+		}
 
 		notificationService.deleteAll(accountId);
 
