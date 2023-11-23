@@ -122,6 +122,10 @@ public class NotProd {
 
 				// 신고 알림 테스트용
 				accountService.report(accountAdmin1.getId());
+
+				// 부모 삭제 전 대댓글 하나 삭제 -> 대댓글만 삭제 테스트
+				Comment replyComment8888 = commentService.createReplyComment("넹의 답글", false, accounts.get(1),
+					community1, comment1);
 			}
 		};
 	}
