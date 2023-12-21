@@ -91,36 +91,39 @@ public class CommentService {
 			comment.deleteParent();
 		} else { // 자식이 없다 -> 대댓글이 없다 -> 객체 그냥 삭제해도 된다.
 			// 삭제 가능한 조상 댓글을 구해서 삭제
-			// ex) 할아버지 - 아버지 - 대댓글, 3자라 했을 때 대댓글 입장에서 자식이 없으니 삭제 가능
-			// => 삭제하면 아버지도 삭제 가능 => 할아버지도 삭제 가능하니 이런식으로 조상 찾기 메서드
+			// 조상 댓글을 구하는 이유는 만일 자식(본인)이 있기 때문에 삭제가 안된 조상을 찾음
+			// ex) 할아버지(삭제상태) - 아버지(삭제상태) - 대댓글, 3자라 했을 때 대댓글을 지우면 모두 삭제됨
 			Comment tmp = getDeletableAncestorComment(comment);
 			commentRepository.delete(tmp);
 		}
 	}
 
+	/*
+		삭제 가능한 최대 조상 찾기 메서드
+		본인 때문에 삭제가 안되던 가장 최상위 조상을 삭제시킨다.
+	 */
 	@Transactional
 	public Comment getDeletableAncestorComment(Comment comment) {
 		Comment parent = comment.getParent(); // 현재 댓글의 부모를 구함
 		if (parent != null && parent.getChildren().size() == 1 && parent.isDeleted() == true) {
 			// 부모가 있고, 부모의 자식이 1개(지금 삭제하는 댓글)이고, 부모의 삭제 상태가 TRUE인 댓글이라면 재귀
 			// 삭제가능 댓글 -> 만일 댓글의 조상(대댓글의 입장에서 할아버지 댓글)도 해당 댓글 삭제 시 삭제 가능한지 확인
-			// 삭제 -> Cascade 옵션으로 가장 부모만 삭제 해도 자식들도 다 삭제 가능
+			// 삭제 -> 부모와 연관 끊어주고 삭제 대상으로 넘겨줘서 delete하기에 계속 삭제됨
 
-			// Ajax로 비동기로 리스트 가져오기에, 대댓글 1개인거 삭제할 때 연관관계 삭제하고 부모 댓글 삭제하기 필요
+			// 대댓글 1개인거 삭제할 때 연관관계 삭제하고 부모 댓글 삭제하기 필요
 			// 컨트롤러가 아닌 서비스의 삭제에서 처리해주는 이유는 연관관계를 삭제해주면 parent를 구할 수 없기에 여기서 끊어줘야 함
-			// 연관관계만 끊어주면 orphanRemoval 옵션으로 자식 객체는 삭제되니 부모를 삭제 대상으로 넘기면 됨
+			// 연관관계만 끊어주면 orphanRemoval 옵션으로 자식 객체는 삭제되니 부모를 삭제 대상으로 넘기면 이후 자동 삭제
 			parent.getChildren().remove(comment);
 
 			return getDeletableAncestorComment(parent);
 		}
 
-		// Ajax 비동기 -> 대댓글이 2개일때 -> 컨트롤러에서 remove를 하고 서비스로 넘어오면, 사이즈가 또 1이되서 위에 if문의 조건을 만족
+		// 대댓글이 2개일때 -> 컨트롤러에서 remove를 하고 서비스로 넘어오면, 사이즈가 또 1이되서 위에 if문의 조건을 만족
 		// 그러면 부모 댓글을 삭제해도 된다 생각하고 위의 if문에서 부모 댓글을 반환해 부모 댓글을 지운다.
 		// 그렇게 되면 실제 자식 객체는 고아객체가 되어 사라진다.
 		// 그걸 방지하고자 사이즈가 2라면 컨틀롤러에서 자식 지우고 오지 않고, 이 메서드에서 연관관계만 끊고 삭제하라 명령한다.
 		if (parent != null && parent.getChildren().size() == 2 && parent.isDeleted() == true) {
 			parent.getChildren().remove(comment);
-
 			return comment;
 		}
 

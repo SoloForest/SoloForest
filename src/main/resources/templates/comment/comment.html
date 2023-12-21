@@ -47,15 +47,17 @@
                                 </ul>
                             </li>
                         </ul>
-                        <!-- 비밀댓글 표시-->
+                        <!-- 비밀댓글 자물쇠 표시-->
                         <div class="badge badge-primary gap-3" th:if="${comment.secret}"><i
                                 class="fa-solid fa-lock"></i>
                         </div>
                     </div>
                     <div class="flex justify-between">
+                        <!-- 삭제된 댓글 분기 -->
                         <p class="text-lg font-bold" th:if="${!comment.deleted and !comment.secret}">
                             [[${comment.content}]]</p>
                         <p class="text-gray-200" th:if="${comment.deleted}"> 삭제된 댓글입니다.</p>
+                        <!-- 비밀 댓글 분기 -->
                         <div th:if="${@rq.login}">
                             <p class="text-lg font-bold"
                                th:if="${comment.secret and ((comment.writer.username eq @rq.account.username) or (article.account.username eq @rq.account.username) or @rq.account.admin)}">
@@ -108,7 +110,7 @@
                     </div>
                 </div>
 
-                <!-- 답글 버튼 클릭 -->
+                <!-- 답글 버튼 클릭시 나올 폼-->
                 <div th:id="'reply-form-' + ${comment.id}" class="hidden mt-3">
                     <textarea placeholder="답글을 입력해주세요." th:id="'replyCommentContents-' + ${comment.id}" columns="4"
                               class="border border-gray-300 rounded-lg textarea-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>

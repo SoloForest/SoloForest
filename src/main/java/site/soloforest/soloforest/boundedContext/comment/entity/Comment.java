@@ -48,8 +48,10 @@ public class Comment {
 	@ManyToOne
 	private Comment parent;
 
-	// Cascade REMOVE 불가 : 자식 댓글이 있는 상태에서, 그냥 댓글 삭제하면 자식 댓글 전부 지워짐
-	// OrphanRemoval로 대댓글과 연관관계 끊어지면 삭제되게 설정
+	// orphanRemoval로 대댓글과 연관관계 끊어지면 삭제되게 설정
+	// 영속성 컨텍스트내 연관 관계 제거 -> 커밋 시 DB에 반영 -> DB 조회 시 최신 상태 반영
+	// 삭제 요청 처리 메서드에서 대댓글을 삭제하고, 다시 조회할 때 한 URI 요청 내에서 처리하므로 캐싱된 데이터를 사용
+	// 캐싱된 데이터 자체를 수정해주기 때문에 이 옵션을 선택이 아닌 필수
 	@OneToMany(mappedBy = "parent", orphanRemoval = true)
 	@ToString.Exclude
 	@Builder.Default // 빌더패턴 리스트시 초기화
@@ -65,7 +67,6 @@ public class Comment {
 	@Builder.Default
 	private Boolean secret = false;
 	// 삭제 여부 나타내는 속성 추가
-	// "삭제되었습니다" 라고 하기에는 저렇게 작성하는 사용자가 있다면 댓글 삭제된 것으로 처리될 듯
 	@Builder.Default
 	private Boolean deleted = false;
 	@OneToOne

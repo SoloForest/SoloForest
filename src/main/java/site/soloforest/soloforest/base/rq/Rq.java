@@ -140,6 +140,10 @@ public class Rq {
 	}
 
 	public int getPageNumberByComment(Comment comment) {
+		// 부모가 있다면 -> 대댓글이니깐 원래 댓글이 있는 페이지로 이동되야 하기에 부모댓글로 지정
+		if (comment.getParent() != null) {
+			comment = comment.getParent();
+		}
 		return commentService.getPage(comment);
 	}
 

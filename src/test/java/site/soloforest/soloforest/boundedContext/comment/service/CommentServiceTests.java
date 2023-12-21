@@ -42,8 +42,8 @@ public class CommentServiceTests {
 
 		Comment comment = commentService.create("테스트1234", false, account, article);
 
-		// NotProd 113번 댓글까지 있으므로, 위의 댓글은 114번이어야 함
-		Comment findComment = commentService.findById(114L);
+		// NotProd 114번 댓글까지 있으므로, 위의 댓글은 115번이어야 함
+		Comment findComment = commentService.findById(115L);
 
 		assertThat(comment.equals(findComment)).isTrue();
 	}
