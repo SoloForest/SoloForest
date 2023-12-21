@@ -53,7 +53,9 @@
 
 <!-- GETTING STARTED -->
 ## 시작하기
-[https://www.soloforest.site](https://www.soloforest.site)
+- 현재 배포는 크레딧 문제로 중단된 상태입니다. 아래는 배포 당시 이미지입니다.
+![멋쟁이사자처럼  1차 프로젝트 - SoloForest 시연 영상 (3) mp4_000020733](https://github.com/SoloForest/SoloForest/assets/126079049/ba069d50-556e-4c3f-93cc-e8fec9a10da1)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
