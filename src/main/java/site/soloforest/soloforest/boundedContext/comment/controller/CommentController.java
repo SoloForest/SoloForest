@@ -28,8 +28,7 @@ public class CommentController {
 
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create")
-	public String create(Model model, @ModelAttribute CommentDTO commentDTO,
-		@RequestParam(defaultValue = "0") int page) {
+	public String create(Model model, @ModelAttribute CommentDTO commentDTO) {
 		Article article = rq.getArticle(commentDTO.getArticleId());
 		Account account = rq.getAccount();
 
@@ -42,18 +41,22 @@ public class CommentController {
 		content = content.trim();
 
 		// 부모댓글 생성
-		Comment comment = commentService.create(content, commentDTO.getSecret(), account, article);
-		model.addAttribute("article", article);
-
+		commentService.create(content, commentDTO.getSecret(), account, article);
 		int lastPage = commentService.getLastPageNumber(article);
+		Page<Comment> commentPaging = commentService.getCommentPage(lastPage, article);
+		// 모델 추가
+		model.addAttribute("article", article);
+		model.addAttribute("paging", commentPaging);
+		model.addAttribute("totalCount", commentPaging.getTotalElements());
+		return "comment/comment :: #comment-list";
 
-		if (article.getBoardNumber() < 2) {
-			return "redirect:/article/share/detail/" + article.getId() + "?page=" + lastPage + "#" + "comment_"
-				+ comment.getId();
-		}
-
-		return "redirect:/article/group/detail/" + article.getId() + "?page=" + lastPage + "#" + "comment_"
-			+ comment.getId();
+		// if (article.getBoardNumber() < 2) {
+		// 	return "redirect:/article/share/detail/" + article.getId() + "?page=" + lastPage + "#" + "comment_"
+		// 		+ comment.getId();
+		// }
+		//
+		// return "redirect:/article/group/detail/" + article.getId() + "?page=" + lastPage + "#" + "comment_"
+		// 	+ comment.getId();
 	}
 
 	@PreAuthorize("isAuthenticated()")
@@ -75,8 +78,9 @@ public class CommentController {
 
 		model.addAttribute("article", article);
 
-		Page<Comment> paging = commentService.getCommentPage(page, article);
-		model.addAttribute("paging", paging);
+		Page<Comment> commentPaging = commentService.getCommentPage(page, article);
+		model.addAttribute("paging", commentPaging);
+		model.addAttribute("totalCount", commentPaging.getTotalElements());
 
 		return "comment/comment :: #comment-list";
 	}

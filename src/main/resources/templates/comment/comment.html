@@ -1,33 +1,43 @@
 <main>
-
+    <!-- 댓글 갯수 -->
+    <div th:data-a-comment-index="${article.id}" class="flex items-baseline gap-2 ml-1">
+        <i class="far fa-comment-dots text-blue-400"></i>
+        <div class="flex">
+            <div class="font-bold" th:text="|${#lists.size(article.comments)}|" id="comment-count"></div>
+            <div>개의 댓글이 있습니다.</div>
+        </div>
+    </div>
     <!-- 댓글 작성 부분 -->
     <div id="write">
-        <form th:action="@{|/comment/create|}" method="POST" onsubmit="CommentForm__submit(this); return false;">
-            <input type="hidden" name="articleId" th:value="${article.id}">
-            <input type="hidden" name="page" th:value="${paging.totalPages-1 < 0 ? 0 : paging.totalPages-1}">
-            <div class="flex justify-end">
-                <div class="label cursor-pointer flex space-x-2">
-                    <label class="label cursor-pointer gap-2">
-                        <i class="fa-solid fa-lock"></i>
-                        <span class="label-text font-semibold">비밀댓글</span>
-                        <input type="checkbox" name="secret" id="secret" class="toggle toggle-primary"/>
-                    </label>
-                </div>
+        <input type="hidden" name="articleId" th:value="${article.id}">
+        <input type="hidden" name="page" th:value="${paging.totalPages-1 < 0 ? 0 : paging.totalPages-1}">
+        <div class="flex justify-end">
+            <div class="label cursor-pointer flex space-x-2">
+                <label class="label cursor-pointer gap-2">
+                    <i class="fa-solid fa-lock"></i>
+                    <span class="label-text font-semibold">비밀댓글</span>
+                    <input type="checkbox" name="secret" id="secret" class="toggle toggle-primary"/>
+                </label>
             </div>
-            <div class="flex">
+        </div>
+        <div class="flex">
                 <textarea th:if="${@rq.login}" name="commentContents" placeholder="댓글을 입력해주세요." id="commentContents"
                           columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full
             focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
-                <textarea th:unless="${@rq.login}" disabled placeholder="로그인 후 댓글 작성이 가능합니다." columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full
+            <textarea th:unless="${@rq.login}" disabled placeholder="로그인 후 댓글 작성이 가능합니다." columns="4" class="border border-gray-300 rounded-lg textarea-lg w-full
             focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
-                <button id="comment-write-btn" class="btn btn-secondary w-28 h-28">
-                    <span>등록</span>
-                </button>
-            </div>
-        </form>
+            <button id="comment-write-btn" class="btn btn-secondary w-28 h-28" onclick="aCommentWrite()">
+                <span>등록</span>
+            </button>
+        </div>
+    </div>
     </div>
     <!-- 댓글 출력 부분, 일단 페이지 접속 했을때 보여지게!-->
     <div id="comment-list" class="mt-5">
+        <!-- 댓글 수 갱신용-->
+        <div id="totalCount" th:if="${totalCount !=null}" th:text="${totalCount}"
+             style="display: none;"></div>
+        <div th:if="${totalCount ==null}" th:text="${totalCount}" style="display: none;">0</div>
         <ul class="space-y-4">
             <li th:each="comment : ${paging}" th:if="${comment.parent == null}">
                 <div class="card bg-white border p-6 rounded-lg shadow-lg">
@@ -360,6 +370,53 @@
                 console.error("Element with ID '" + formId + "' not found.");
             }
 
+        }
+
+        // 댓글 작성 메서드
+        const aCommentWrite = () => {
+            const secretValue = document.getElementById("secret").checked ? true : false;
+            const contents = document.getElementById("commentContents").value.trim();
+            const articleId = [[${article.id}]];
+
+            if (contents.length == 0) {
+                alert('답글을 입력해주세요');
+                return;
+            }
+
+            var header = $("meta[name='_csrf_header']").attr('content');
+            var token = $("meta[name='_csrf']").attr('content');
+
+            $.ajax({
+                // 요청방식: post, 요청주소: /comment/create/question
+                // 요청데이터: 작성내용, 게시글번호, 비밀 댓글 여부, 부모 댓글 id
+                type: "post",
+                url: "/comment/create",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                data: {
+                    "articleId": articleId,
+                    "secret": secretValue,
+                    "commentContents": contents
+                },
+                success: function (fragment) {
+                    document.getElementById("commentContents").value = "";
+                    document.getElementById("secret").checked = false;
+
+                    // 프래그먼트로부터 jQuery 객체를 생성합니다.
+                    const $newFragment = $(fragment);
+
+                    //프래그먼트로부터 새로운 코멘트 개수를 가져옵니다.
+                    const newTotalComments = $newFragment.find('#totalCount').text();
+
+                    // 코멘트 카운트를 업데이트합니다.
+                    $(`#comment-count`).text(newTotalComments);
+                    $('#comment-list').replaceWith(fragment);
+                },
+                error: function (err) {
+                    console.log("요청 실패", err);
+                }
+            });
         }
 
         // 답글(대댓글) 작성 메서드
