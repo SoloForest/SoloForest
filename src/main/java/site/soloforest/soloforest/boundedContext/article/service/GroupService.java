@@ -131,6 +131,7 @@ public class GroupService {
 		LocalDateTime startDate, LocalDateTime endDate, int money, String location) {
 		groupRepository.save(group.toBuilder().id(group.getId()).subject(subject).content(content)
 			.startDate(startDate).endDate(endDate).money(money).location(location)
+			.modifyDate(LocalDateTime.now())
 			.build());
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -69,7 +70,7 @@ public class Comment {
 	// 삭제 여부 나타내는 속성 추가
 	@Builder.Default
 	private Boolean deleted = false;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private Notification notification;
 
 	@PrePersist

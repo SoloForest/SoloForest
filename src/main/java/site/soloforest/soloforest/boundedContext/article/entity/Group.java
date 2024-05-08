@@ -2,6 +2,7 @@ package site.soloforest.soloforest.boundedContext.article.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.Entity;
@@ -19,6 +20,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @ToString
 @Getter
+@DynamicUpdate
 public class Group extends Article {
 
 	// @NotNull(message = "인원을 정해줘야 합니다.")
