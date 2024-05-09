@@ -1,5 +1,6 @@
 package site.soloforest.soloforest.boundedContext.comment.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.context.ApplicationEventPublisher;
@@ -74,6 +75,7 @@ public class CommentService {
 		Comment mComment = comment.toBuilder()
 			.content(content)
 			.secret(secret)
+			.modifyDate(LocalDateTime.now())
 			.build();
 		commentRepository.save(mComment);
 
