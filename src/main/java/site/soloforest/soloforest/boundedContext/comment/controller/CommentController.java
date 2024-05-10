@@ -48,15 +48,8 @@ public class CommentController {
 		model.addAttribute("article", article);
 		model.addAttribute("paging", commentPaging);
 		model.addAttribute("totalCount", commentPaging.getTotalElements());
-		return "comment/comment :: #comment-list";
 
-		// if (article.getBoardNumber() < 2) {
-		// 	return "redirect:/article/share/detail/" + article.getId() + "?page=" + lastPage + "#" + "comment_"
-		// 		+ comment.getId();
-		// }
-		//
-		// return "redirect:/article/group/detail/" + article.getId() + "?page=" + lastPage + "#" + "comment_"
-		// 	+ comment.getId();
+		return "comment/comment :: #comment-list";
 	}
 
 	@PreAuthorize("isAuthenticated()")
@@ -130,7 +123,9 @@ public class CommentController {
 		Comment comment = commentService.getComment(commentDTO.getId());
 		Comment parent = comment.getParent();
 		// 부모 댓글이 있고 삭제상태가 아니라면 단순히 연관 끊어주기
-		// 영속성 컨텍스트가 하나의 요청에서 유지되기 때문에 이 작업은 필수로 해야한다.
+		// 영속성 컨텍스트가 하나의 요청에서 유지되기 때문에 Article에 달린 댓글을 조회할 때 1차 캐시에서 가져온다.
+		// 그럴 때 자식 댓글이 삭제되어도 부모 댓글의 컬렉션에서 JPA가 제거해주지 않는다.
+		// 따라서 명시적으로 제거해줘야 다시 findBy했을때도 List에서 제거된 댓글 목록이 반환된다.
 		if (parent != null && !parent.isDeleted()) {
 			comment.getParent().getChildren().remove(comment);
 		}
