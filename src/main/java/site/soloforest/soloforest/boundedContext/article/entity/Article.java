@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -46,6 +48,7 @@ public class Article {
 	@OneToMany(mappedBy = "article", cascade = {CascadeType.REMOVE})
 	@Builder.Default
 	@ToString.Exclude
+	@LazyCollection(LazyCollectionOption.EXTRA)
 	private List<Comment> comments = new ArrayList<>();
 
 	@CreatedDate

@@ -58,9 +58,9 @@ public class GroupService {
 	}
 
 	public boolean alreadyBookmarked(Group group, Account account) {
-		Optional<Bookmark> bookmarkOptional = bookmarkRepository.findByArticleAndAccount(group, account);
+		long count = bookmarkRepository.countByArticleAndAccount(group, account);
 
-		return bookmarkOptional.isPresent();
+		return count > 0;
 	}
 
 	@Transactional
@@ -90,9 +90,9 @@ public class GroupService {
 	}
 
 	public boolean alreadyLiked(Group group, Account account) {
-		Optional<Liked> likeOptional = likedRepository.findByArticleAndAccount(group, account);
+		long count = likedRepository.countByArticleAndAccount(group, account);
 
-		return likeOptional.isPresent();
+		return count > 0;
 	}
 
 	public Group getGroup(Long id) {

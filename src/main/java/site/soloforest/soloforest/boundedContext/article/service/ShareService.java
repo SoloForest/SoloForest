@@ -194,9 +194,9 @@ public class ShareService {
 	}
 
 	public boolean findLike(Share share, Account account) {
-		Optional<Liked> likeOptional = likedRepository.findByArticleAndAccount(share, account);
+		long count = likedRepository.countByArticleAndAccount(share, account);
 
-		return likeOptional.isPresent();
+		return count > 0;
 	}
 
 	@Transactional
@@ -228,9 +228,9 @@ public class ShareService {
 	}
 
 	public boolean findBookmark(Share share, Account account) {
-		Optional<Bookmark> bookmarkOptional = bookmarkRepository.findByArticleAndAccount(share, account);
+		long count = bookmarkRepository.countByArticleAndAccount(share, account);
 
-		return bookmarkOptional.isPresent();
+		return count > 0;
 	}
 
 	@Transactional

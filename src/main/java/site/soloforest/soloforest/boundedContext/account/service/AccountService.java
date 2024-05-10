@@ -314,6 +314,10 @@ public class AccountService {
 	}
 
 	private void sendUsernameEmail(Account target) {
+		// 테스트를 위해 @test.com인 이메일은 발송하지 않음
+		if (target.getEmail().endsWith("@test.com")) {
+			return;
+		}
 		Context context = new Context();
 		context.setVariable("nickname", target.getNickname());
 		context.setVariable("username", target.getUsername());
@@ -336,6 +340,10 @@ public class AccountService {
 		}
 		if (!sameEmailAccount.get().getId().equals(sameUsernameAccount.get().getId())) {
 			return "일치하는 계정이 존재하지 않습니다.";
+		}
+
+		if (sameEmailAccount.get().getEmail().endsWith("@test.com")) {
+			return "테스트용 계정 이메일 발송하지 않음";
 		}
 
 		String temporarPassword = createRandomPassword();

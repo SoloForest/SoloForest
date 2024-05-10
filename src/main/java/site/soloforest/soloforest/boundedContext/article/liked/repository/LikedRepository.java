@@ -15,4 +15,6 @@ public interface LikedRepository extends JpaRepository<Liked, Long> {
 	void deleteByArticleAndAccount(Article article, Account account);
 
 	List<Liked> findAllByArticle(Article article);
+
+	long countByArticleAndAccount(Article article, Account account);
 }
