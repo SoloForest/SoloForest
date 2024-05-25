@@ -71,6 +71,12 @@ function ModifyForm__submit(form) {
     form.nickname.value = form.nickname.value.trim();
     form.email.value = form.email.value.trim();
 
+    if (!(form.password.value.length >= 4 && form.password.value.length <= 16)) {
+        toastWarning('변경할 password는 공백 없이 4자 이상 16자 이하로 작성해야 합니다');
+        form.password.focus();
+        return false;
+    }
+
     if (form.password.value !== form.passwordCheck.value) {
         toastWarning('동일한 password를 입력해주세요');
         form.password.focus();

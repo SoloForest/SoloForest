@@ -195,7 +195,7 @@ public class AccountService {
 	}
 
 	private RsData<Account> canModifyPicture(Account target, ModifyForm input) {
-		if (input.getFile() == null) {
+		if (input.getFile() == null || input.getFile().isEmpty()) {
 			return RsData.of("F-1", "변경 사항이 없습니다.");
 		}
 		return RsData.of("S-1", "프로필 사진을 변경할 수 있습니다.");
